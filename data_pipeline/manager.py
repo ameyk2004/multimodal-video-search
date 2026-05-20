@@ -15,17 +15,14 @@ class YouTubeTranscriptManager:
         self.output_dir = output_dir
         os.makedirs(self.output_dir, exist_ok=True)
 
-    def _save_json(self, video_id: str, data: List[dict]):
-        json_path = os.path.join(self.output_dir, f"{video_id}_transcript.json")
-        with open(json_path, 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=4, ensure_ascii=False)
-        logger.info(f"Saved transcript to {json_path}")
 
-    def process_videos(self, video_ids: List[str]):
+
+    def process_videos(self, video_ids: List[str]) -> dict:
         """
-        Iterates over video IDs and fetches Marathi transcripts.
+        Iterates over video IDs and fetches Marathi transcripts. Returns a dict mapping video_id to transcript data.
         """
         logger.info(f"Starting transcript fetching pipeline for {len(video_ids)} videos.")
+        results = {}
         
         for video_id in video_ids:
             logger.info(f"Fetching transcript for video ID: {video_id}")
@@ -44,7 +41,7 @@ class YouTubeTranscriptManager:
                         "duration": getattr(entry, 'duration', entry.get('duration') if isinstance(entry, dict) else None)
                     })
                 
-                self._save_json(video_id, formatted_transcript)
+                results[video_id] = formatted_transcript
                 
             except TranscriptsDisabled:
                 logger.error(f"Transcripts are disabled for video {video_id}. Skipping.")
@@ -57,3 +54,4 @@ class YouTubeTranscriptManager:
                 logger.error(f"An unexpected error occurred for video {video_id}: {str(e)}")
                 
         logger.info("Transcript fetching pipeline completed.")
+        return results

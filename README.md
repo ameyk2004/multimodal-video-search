@@ -9,19 +9,13 @@ The project is built with a modular, service-oriented architecture:
 
 ## Step-by-step Setup on MacBook Air (Apple Silicon)
 
-1. **Install System Dependencies**
-   The audio pipeline requires `ffmpeg`. Install it via Homebrew:
-   ```bash
-   brew install ffmpeg
-   ```
-
-2. **Setup Python Environment**
+1. **Setup Python Environment**
    ```bash
    python3 -m venv venv
    source venv/bin/activate
    ```
 
-3. **Install Python Packages**
+2. **Install Python Packages**
    ```bash
    pip install -r requirements.txt
    ```
@@ -32,7 +26,7 @@ To run the data ingestion pipeline (Module 1):
 ```bash
 python data_pipeline/main.py
 ```
-This will read a list of YouTube URLs, download their audio, and use the local Whisper model to transcribe them into clean JSON files in the `data_pipeline/output/` directory.
+This will read a list of YouTube URLs and automatically fetch the auto-generated Marathi transcripts directly from YouTube, saving them into clean JSON files in the `data_pipeline/output/` directory.
 
 ## Current Modules
 - **Module 1**: Audio Ingestion Pipeline (See `docs/01-data-pipeline.md`)
