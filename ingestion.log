@@ -1,0 +1,11 @@
+2026-05-20 17:34:19,678 - data_pipeline.transcriber - INFO - Loading Whisper 'base' model on mps...
+2026-05-20 17:34:38,961 - data_pipeline.transcriber - INFO - Whisper model loaded successfully.
+2026-05-20 17:34:38,962 - data_pipeline.pipeline - INFO - Starting ingestion pipeline for 1 videos.
+2026-05-20 17:34:38,962 - data_pipeline.downloader - INFO - Starting download for https://www.youtube.com/watch?v=jNQXAC9IVRw
+2026-05-20 17:34:44,223 - data_pipeline.downloader - INFO - Successfully downloaded audio to data_pipeline/output/jNQXAC9IVRw.mp3
+2026-05-20 17:34:44,225 - data_pipeline.pipeline - INFO - Successfully downloaded 1 audio files. Starting transcription...
+2026-05-20 17:34:44,225 - data_pipeline.transcriber - INFO - Starting transcription for data_pipeline/output/jNQXAC9IVRw.mp3
+2026-05-20 17:34:49,938 - data_pipeline.transcriber - INFO - Transcription complete for data_pipeline/output/jNQXAC9IVRw.mp3. Found 4 segments.
+2026-05-20 17:34:49,939 - data_pipeline.pipeline - INFO - Saved transcription to data_pipeline/output/jNQXAC9IVRw.json
+2026-05-20 17:34:49,939 - data_pipeline.pipeline - INFO - Cleaned up temporary audio file: data_pipeline/output/jNQXAC9IVRw.mp3
+2026-05-20 17:34:49,939 - data_pipeline.pipeline - INFO - Ingestion pipeline completed.
