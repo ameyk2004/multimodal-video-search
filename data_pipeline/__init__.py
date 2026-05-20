@@ -1,3 +1,3 @@
-from .pipeline import IngestionPipeline
+from .manager import YouTubeTranscriptManager
 
-__all__ = ["IngestionPipeline"]
+__all__ = ["YouTubeTranscriptManager"]
