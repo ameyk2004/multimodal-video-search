@@ -1,3 +1,11 @@
+"""
+YouTube Transcript Manager Module.
+Provides functionality to fetch and format transcripts from YouTube videos.
+
+This is a utility module imported by the main pipeline. To run the full pipeline:
+    source venv/bin/activate
+    python data_pipeline/main.py
+"""
 import os
 import json
 import logging

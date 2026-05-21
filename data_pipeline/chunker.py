@@ -1,3 +1,11 @@
+"""
+Transcript Chunker Module.
+Aggregates fragmented word-level transcripts into rich, semantic chunks.
+
+This is a utility module imported by the main pipeline. To run the full pipeline:
+    source venv/bin/activate
+    python data_pipeline/main.py
+"""
 import logging
 from typing import List, Dict, Any
 

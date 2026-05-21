@@ -1,3 +1,10 @@
+"""
+Main execution script for the multimodal video search data pipeline.
+
+To run this script:
+    source venv/bin/activate
+    python data_pipeline/main.py
+"""
 import logging
 import os
 import sys
@@ -40,7 +47,8 @@ if __name__ == "__main__":
         "https://youtu.be/DdBv99-IWi0?si=oe-6_559ImMx_4fL",
         "https://youtu.be/bb6ip0m6_CA?si=hec0eBpTfEhNCU58",
         "https://youtu.be/BewB6S4JYqo?si=Fat2jbOQPLaESqHr",
-        "https://youtu.be/Y4D15z9Z9nU?si=7-Uijpk-vb46Tvm7"
+        "https://youtu.be/Y4D15z9Z9nU?si=7-Uijpk-vb46Tvm7",
+        "https://youtu.be/Q263c-YZJmA?si=uLXY4nm1pwK-wfAR",
     ]
     
     # Automatically extract IDs from the URLs
