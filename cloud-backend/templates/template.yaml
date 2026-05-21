@@ -1,0 +1,64 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Multimodal Guru Video Search - Serverless Backend
+  Provides a REST API that accepts English or Marathi queries,
+  generates BGE-M3 embeddings via HuggingFace, and performs
+  semantic search against the Qdrant vector database.
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 256
+    Runtime: python3.12
+
+Parameters:
+  QdrantUrl:
+    Type: String
+    Description: The Qdrant Cloud cluster URL
+  QdrantApiKey:
+    Type: String
+    Description: The Qdrant Cloud API key
+    NoEcho: true
+  HfApiKey:
+    Type: String
+    Description: The HuggingFace Inference API key
+    NoEcho: true
+
+Resources:
+  SearchGuruFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../lambdas/similarity_search/
+      Handler: index.lambda_handler
+      Description: Performs semantic search over Guru video transcripts
+      Environment:
+        Variables:
+          QDRANT_URL: !Ref QdrantUrl
+          QDRANT_API_KEY: !Ref QdrantApiKey
+          HF_API_KEY: !Ref HfApiKey
+          COLLECTION_NAME: guru-videos
+      Events:
+        SearchApi:
+          Type: Api
+          Properties:
+            Path: /search
+            Method: get
+            RestApiId: !Ref SearchApi
+
+  SearchApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Cors:
+        AllowMethods: "'GET,OPTIONS'"
+        AllowHeaders: "'Content-Type'"
+        AllowOrigin: "'*'"
+
+Outputs:
+  SearchApiUrl:
+    Description: The URL of the search API endpoint
+    Value: !Sub "https://${SearchApi}.execute-api.${AWS::Region}.amazonaws.com/prod/search"
+  SearchGuruFunctionArn:
+    Description: ARN of the Search Lambda function
+    Value: !GetAtt SearchGuruFunction.Arn
