@@ -90,8 +90,11 @@ os.environ["GEMINI_API_KEY"] = userdata.get("GEMINI_API_KEY")
 os.environ["QDRANT_URL"]     = userdata.get("QDRANT_URL")
 os.environ["QDRANT_API_KEY"] = userdata.get("QDRANT_API_KEY")
 
-# Always start fresh — delete if it already exists (safe to re-run)
+# Step out of /content/repo FIRST before deleting it —
+# otherwise the kernel loses its cwd and git/pip break.
+%cd /content
 !rm -rf /content/repo
+
 token = userdata.get("GITHUB_TOKEN")
 !git clone https://{token}@github.com/ameyk2004/multimodal-video-search.git /content/repo --quiet
 

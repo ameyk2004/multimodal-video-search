@@ -69,7 +69,6 @@ class QdrantManager:
                 payload = {
                     "video_id": video_id,
                     "marathi_raw": row.get('marathi_raw', ''),
-                    "english_translated": row.get('english_translated', ''),
                     "start_time": start_time,
                     "duration": row.get('duration', 0)
                 }

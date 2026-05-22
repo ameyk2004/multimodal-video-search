@@ -5,7 +5,7 @@ export default function ResultCard({ result, rank, style, isMarathi }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isTextExpanded, setIsTextExpanded] = useState(false);
   
-  const { video_id, start_time, marathi_raw, english_translated, score } = result;
+  const { video_id, start_time, marathi_raw, score } = result;
   
   const timeLabel = formatTime(start_time);
   const pct = Math.round(score * 100);
@@ -57,18 +57,10 @@ export default function ResultCard({ result, rank, style, isMarathi }) {
         </div>
 
         <div className="text-content">
-          {isMarathi ? (
-            <>
-              <div className={`marathi-text ${!showFullText ? 'clamped-text' : ''}`}>{marathi_raw}</div>
-              <div className={`english-text ${!showFullText ? 'clamped-text' : ''}`}>{english_translated}</div>
-            </>
-          ) : (
-            <>
-              <div className={`marathi-text en-primary ${!showFullText ? 'clamped-text' : ''}`}>{marathi_raw}</div>
-              <div className={`english-text en-primary ${!showFullText ? 'clamped-text' : ''}`}>{english_translated}</div>
-            </>
-          )}
-          
+          <div className={`marathi-text ${!showFullText ? 'clamped-text' : ''}`}>
+            {marathi_raw}
+          </div>
+
           {!showFullText && (
             <button className="view-more-btn" onClick={() => setIsTextExpanded(true)}>
               {isMarathi ? 'अधिक वाचा ▼' : 'View More ▼'}

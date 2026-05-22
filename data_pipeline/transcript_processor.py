@@ -199,7 +199,6 @@ class TranscriptProcessor:
                     "start_time": youtube_start,      # exact, zero-drift
                     "char_index": char_idx,           # kept for debugging
                     "marathi_raw": text,
-                    "english_translated": "",          # filled in Colab by NLLB
                     "embedding_vector": [],            # filled in Colab by BGE-M3
                 }
             )
