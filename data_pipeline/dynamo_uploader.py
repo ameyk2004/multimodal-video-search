@@ -53,12 +53,18 @@ def upload_metadata(input_dir: str, table_name: str = "guru-video-metadata"):
                 # Use video_id from JSON if it exists, otherwise use the filename
                 final_video_id = data.get("video_id", extracted_video_id)
                 
+                topics = data.get("topics", data.get("primary_topics", []))
+                queries = data.get("suggested_queries", [])
+                stories = data.get("stories_found", [])
+                
+                logging.info(f"File: {filepath} | ID: {final_video_id} | Topics: {len(topics)} | Queries: {len(queries)} | Stories: {len(stories)}")
+                
                 # DynamoDB Item structure
                 item = {
                     "video_id": final_video_id,
-                    "topics": data.get("topics", data.get("primary_topics", [])),
-                    "suggested_queries": data.get("suggested_queries", []),
-                    "stories": data.get("stories_found", [])
+                    "topics": topics,
+                    "suggested_queries": queries,
+                    "stories": stories
                 }
                 
                 batch.put_item(Item=item)

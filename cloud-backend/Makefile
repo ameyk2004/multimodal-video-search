@@ -40,8 +40,18 @@ release: build
 		2>/dev/null; then \
 		echo ""; \
 		echo "✅ Stack updated successfully!"; \
+		UI_BUCKET=$$(python3.12 ../scripts/aws_helper.py --action get_stack_bucket --stack $(STACK_NAME) --logical_id UiBucket 2>/dev/null || echo ""); \
 		WEBSITE_URL=$$(aws cloudformation describe-stacks --stack-name $(STACK_NAME) --query "Stacks[0].Outputs[?OutputKey=='WebsiteURL'].OutputValue" --output text 2>/dev/null); \
-		echo "🎉 Frontend is live at: $$WEBSITE_URL"; \
+		if [ -n "$$UI_BUCKET" ] && [ "$$UI_BUCKET" != "None" ]; then \
+			echo "📦 Building Frontend..."; \
+			cd ../frontend && npm install && npm run build && cd ../cloud-backend; \
+			echo "☁️ Uploading Frontend to $$UI_BUCKET..."; \
+			python3.12 ../scripts/aws_helper.py --action upload --bucket $$UI_BUCKET --source ../frontend/dist; \
+			echo ""; \
+			echo "🎉 Frontend is live at: $$WEBSITE_URL"; \
+		else \
+			echo "🎉 Frontend is live at: $$WEBSITE_URL"; \
+		fi; \
 		sam list stack-outputs --stack-name $(STACK_NAME); \
 	else \
 		echo "Stack not found or credentials missing. Generating Quick Create link..."; \
