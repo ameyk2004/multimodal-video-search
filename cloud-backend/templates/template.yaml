@@ -146,12 +146,12 @@ Resources:
       ServiceToken: !GetAtt DashboardInitiatorFunction.Arn
       BucketName: !Ref UiBucket
       ArtifactsBucket: !Ref UiArtifactsBucket
-      ApiUrl: !Sub "https://${SearchApi}.execute-api.${AWS::Region}.amazonaws.com/prod/search"
+      ApiUrl: !Sub "https://${SearchApi}.execute-api.${AWS::Region}.amazonaws.com/prod"
 
 Outputs:
-  SearchApiUrl:
-    Description: The URL of the search API endpoint
-    Value: !Sub "https://${SearchApi}.execute-api.${AWS::Region}.amazonaws.com/prod/search"
+  ApiUrl:
+    Description: The Base URL of the API Gateway
+    Value: !Sub "https://${SearchApi}.execute-api.${AWS::Region}.amazonaws.com/prod"
   SearchGuruFunctionArn:
     Description: ARN of the Search Lambda function
     Value: !GetAtt SearchGuruFunction.Arn

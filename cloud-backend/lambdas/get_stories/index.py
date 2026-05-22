@@ -35,7 +35,8 @@ def lambda_handler(event, context):
                 all_stories.append({
                     "video_id": video_id,
                     "title": story.get("title", ""),
-                    "content": story.get("moral", story.get("content", ""))
+                    "content": story.get("moral", story.get("content", "")),
+                    "start_time_seconds": story.get("start_time_seconds", 0)
                 })
         
         return _build_response(200, {

@@ -17,7 +17,6 @@ deploy: build
 
 release: build
 	@echo "🚀 Releasing $(STACK_NAME)..."
-	@# 1. Create Artifacts Bucket if it doesn't exist
 	@ACCOUNT_ID=$$(python3.12 ../scripts/aws_helper.py --action get_account 2>/dev/null || echo "") ; \
 	if [ -n "$$ACCOUNT_ID" ] && [ "$$ACCOUNT_ID" != "None" ]; then \
 		ARTIFACTS_BUCKET="multimodal-video-search-artifacts-$$ACCOUNT_ID" ; \
@@ -27,33 +26,18 @@ release: build
 		cd ../frontend && npm install && npm run build && cd ../cloud-backend ; \
 		echo "☁️ Uploading Frontend to Artifacts Bucket..." ; \
 		python3.12 ../scripts/aws_helper.py --action upload --bucket $$ARTIFACTS_BUCKET --source ../frontend/dist ; \
-		echo "🔄 Updating SAM config with Secrets and UiArtifactsBucket=$$ARTIFACTS_BUCKET..." ; \
+		echo "🔄 Updating SAM config with UiArtifactsBucket=$$ARTIFACTS_BUCKET..." ; \
 		python3 -c "import sys; sys.path.insert(0,'../scripts'); from packaging import load_env, update_samconfig; update_samconfig(load_env('../.env'), {'UiArtifactsBucket': '$$ARTIFACTS_BUCKET'})" ; \
 	else \
 		echo "⚠️ AWS CLI failed. Skipping frontend artifacts sync..." ; \
 		python3 -c "import sys; sys.path.insert(0,'../scripts'); from packaging import load_env, update_samconfig; update_samconfig(load_env('../.env'))" ; \
 	fi
-	@# 2. Try a non-interactive deploy
-	@if sam deploy \
-		--no-confirm-changeset \
-		--no-fail-on-empty-changeset \
-		2>/dev/null; then \
+	@if sam deploy --no-confirm-changeset --no-fail-on-empty-changeset 2>/dev/null; then \
 		echo ""; \
 		echo "✅ Stack updated successfully!"; \
-		UI_BUCKET=$$(python3.12 ../scripts/aws_helper.py --action get_stack_bucket --stack $(STACK_NAME) --logical_id UiBucket 2>/dev/null || echo ""); \
-		if [ -n "$$UI_BUCKET" ] && [ "$$UI_BUCKET" != "None" ]; then \
-			echo "📦 Building Frontend..."; \
-			cd ../frontend && npm install && npm run build && cd ../cloud-backend; \
-			echo "☁️ Fetching API URL to generate config.json..."; \
-			API_URL=$$(aws cloudformation describe-stacks --stack-name $(STACK_NAME) --query "Stacks[0].Outputs[?OutputKey=='SearchApiUrl'].OutputValue" --output text 2>/dev/null); \
-			if [ -n "$$API_URL" ] && [ "$$API_URL" != "None" ]; then \
-				echo "{\"VITE_API_URL\": \"$$API_URL\"}" > ../frontend/dist/config.json; \
-			fi; \
-			echo "☁️ Uploading Frontend to $$UI_BUCKET..."; \
-			python3.12 ../scripts/aws_helper.py --action upload --bucket $$UI_BUCKET --source ../frontend/dist; \
-			echo ""; \
-			echo "🎉 Frontend is live at: http://$$UI_BUCKET.s3-website-$$(aws configure get region || echo us-east-1).amazonaws.com"; \
-		fi; \
+		UI_BUCKET=$$(python3.12 ../scripts/aws_helper.py --action get_stack_output --stack $(STACK_NAME) --logical_id UiBucketName 2>/dev/null || echo ""); \
+		REGION=$$(python3 -c "import boto3; print(boto3.session.Session().region_name or 'us-east-1')" 2>/dev/null || echo "us-east-1"); \
+		echo "🎉 Frontend is live at: http://$$UI_BUCKET.s3-website-$$REGION.amazonaws.com"; \
 		sam list stack-outputs --stack-name $(STACK_NAME); \
 	else \
 		echo "Stack not found or credentials missing. Generating Quick Create link..."; \
@@ -81,3 +65,19 @@ clean:
 	@echo "Cleaning up local build artifacts..."
 	rm -rf .aws-sam
 	@echo "Clean complete."
+
+refresh:
+	@echo "🔄 Refreshing Frontend and Backend..."
+	@ACCOUNT_ID=$$(python3.12 ../scripts/aws_helper.py --action get_account 2>/dev/null || echo ""); \
+	ARTIFACTS_BUCKET="multimodal-video-search-artifacts-$$ACCOUNT_ID"; \
+	echo "📦 Building Frontend..."; \
+	cd ../frontend && npm install && npm run build && cd ../cloud-backend; \
+	echo "☁️ Pushing Frontend to Artifacts Bucket: $$ARTIFACTS_BUCKET"; \
+	python3.12 ../scripts/aws_helper.py --action upload --bucket $$ARTIFACTS_BUCKET --source ../frontend/dist; \
+	echo "🔨 Building SAM Application..."; \
+	sam build -t $(TEMPLATE_FILE) && \
+	echo "☁️ Deploying SAM Application..."; \
+	sam deploy --no-confirm-changeset --no-fail-on-empty-changeset && \
+	UI_BUCKET=$$(python3.12 ../scripts/aws_helper.py --action get_stack_output --stack $(STACK_NAME) --logical_id UiBucketName 2>/dev/null || echo ""); \
+	REGION=$$(python3 -c "import boto3; print(boto3.session.Session().region_name or 'us-east-1')" 2>/dev/null || echo "us-east-1"); \
+	echo "🎉 Refresh Complete! Frontend is live at: http://$$UI_BUCKET.s3-website-$$REGION.amazonaws.com"

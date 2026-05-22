@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { Routes, Route, NavLink, useNavigate, useLocation } from 'react-router-dom';
-import ParticleCanvas from './components/ParticleCanvas';
 import ResultCard from './components/ResultCard';
+import StoryCard from './components/StoryCard';
 import petheImage from './assets/images/pethekaka.png';
+import { api } from './utils/api';
 
 const CONTENT = {
   mr: {
@@ -58,8 +59,6 @@ export default function App() {
   const [query, setQuery] = useState('');
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [apiUrl, setApiUrl] = useState(import.meta.env.VITE_API_URL || '');
-  const [configLoaded, setConfigLoaded] = useState(false);
   
   const [allStories, setAllStories] = useState([]);
   const [allVideos, setAllVideos] = useState([]);
@@ -76,13 +75,7 @@ export default function App() {
   const t = CONTENT[lang];
 
   useEffect(() => {
-    fetch('/config.json')
-      .then(res => res.json())
-      .then(data => {
-        if (data.VITE_API_URL) setApiUrl(data.VITE_API_URL);
-      })
-      .catch(err => console.log('No config.json found'))
-      .finally(() => setConfigLoaded(true));
+    api.getConfig().catch(console.error);
   }, []);
 
   useEffect(() => {
@@ -93,12 +86,10 @@ export default function App() {
 
   // Fetch stories and library data once
   useEffect(() => {
-    if (!hasFetchedData && apiUrl) {
+    if (!hasFetchedData) {
       setHasFetchedData(true);
       setDataLoading(true);
-      const baseUrl = apiUrl.replace(/\/search$/, '');
-      fetch(`${baseUrl}/stories`)
-        .then(res => res.json())
+      api.getStories()
         .then(data => {
           if (data.stories) setAllStories(data.stories);
           if (data.videos) setAllVideos(data.videos);
@@ -106,19 +97,17 @@ export default function App() {
         .catch(err => console.error("Failed to fetch data:", err))
         .finally(() => setDataLoading(false));
     }
-  }, [apiUrl, hasFetchedData]);
+  }, [hasFetchedData]);
 
   const handleSearch = async (q) => {
     const searchQuery = (q || query).trim();
-    if (!searchQuery || loading || !apiUrl) return;
+    if (!searchQuery || loading) return;
     setQuery('');
     setLoading(true);
     navigate('/');
 
     try {
-      const res = await fetch(`${apiUrl}?q=${encodeURIComponent(searchQuery)}`);
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || t.searchErr);
+      const data = await api.search(searchQuery);
       
       setSessions(prev => [...prev, { 
         query: searchQuery, 
@@ -142,8 +131,6 @@ export default function App() {
   return (
     <>
       <div className="bg-gradient" />
-      <ParticleCanvas />
-
       <div className="app">
         <header className="header">
           <div className="logo-nav-group">
@@ -196,10 +183,7 @@ export default function App() {
                       <p className="no-results">{t.noStories}</p>
                     ) : (
                       filteredStories.map((story, i) => (
-                        <div key={i} className="story-card">
-                          <h3 className="story-card-title">{story.title}</h3>
-                          <p className="story-card-content">{story.content}</p>
-                        </div>
+                        <StoryCard key={i} story={story} />
                       ))
                     )}
                   </div>

@@ -60,7 +60,7 @@ def handler(event, context):
                         )
 
         # Always write the config.json generated from the CloudFormation parameters
-        config_content = json.dumps({"VITE_API_URL": api_url})
+        config_content = json.dumps({"API_BASE_URL": api_url})
         s3.put_object(
             Bucket=bucket,
             Key='config.json',

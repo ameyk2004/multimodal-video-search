@@ -1,0 +1,120 @@
+/* ── StoryCard Playable Styles ───────────────────────── */
+.story-card-playable {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s;
+  height: 100%;
+}
+
+.story-card-playable:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.story-media-section {
+  width: 100%;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  background: #000;
+}
+
+.story-thumbnail-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  cursor: pointer;
+}
+
+.story-video-thumb {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+.story-play-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.3);
+  transition: background 0.2s;
+}
+
+.story-thumbnail-wrapper:hover .story-play-overlay {
+  background: rgba(0,0,0,0.1);
+}
+
+.story-play-btn {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: rgba(230, 81, 0, 0.9);
+  color: #fff;
+  border: none;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 4px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.story-thumbnail-wrapper:hover .story-play-btn {
+  transform: scale(1.1);
+}
+
+.story-thumb-time-badge {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.story-video-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  background: #000;
+}
+
+.story-video-wrapper iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+
+.story-card-content-playable {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.story-header-playable h3 {
+  color: var(--text);
+  font-size: 20px;
+  margin: 0;
+  font-weight: 600;
+  font-family: var(--font-dev);
+}
+
+.story-text-playable p {
+  color: var(--text-dim);
+  font-size: 16px;
+  line-height: 1.6;
+  font-family: var(--font-dev);
+  margin: 0;
+  text-align: justify;
+}

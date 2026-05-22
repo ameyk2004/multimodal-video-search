@@ -66,35 +66,6 @@ export default function ResultCard({ result, rank, style, isMarathi, metadata, o
               {isMarathi ? 'अधिक वाचा ▼' : 'View More ▼'}
             </button>
           )}
-
-          {metadata && (
-            <div className="metadata-section">
-              {metadata.topics && metadata.topics.length > 0 && (
-                <div className="topics-wrap">
-                  <div className="meta-label">🏷 {isMarathi ? 'विषय' : 'Topics'}:</div>
-                  <div className="topics-list">
-                    {metadata.topics.map(t => (
-                      <span key={t} className="topic-tag" onClick={() => onSearch && onSearch(t)}>{t}</span>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
-              {metadata.stories && metadata.stories.length > 0 && (
-                <div className="stories-wrap">
-                  <div className="meta-label">📖 {isMarathi ? 'गोष्टी / कथा' : 'Stories'}:</div>
-                  <div className="stories-list">
-                    {metadata.stories.map((s, idx) => (
-                      <div key={idx} className="story-item">
-                        <strong>{s.title}</strong>
-                        <p>{s.content}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
         </div>
       </div>
     </div>

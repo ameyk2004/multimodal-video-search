@@ -116,6 +116,8 @@ class VideoEnricher:
         if not metadata:
             return None
 
+        self._resolve_story_timestamps(metadata, fragments)
+
         # Attach video_id and save
         metadata["video_id"] = video_id
         with open(out_path, "w", encoding="utf-8") as f:
@@ -143,6 +145,37 @@ class VideoEnricher:
         return results
 
     # ── Private helpers ───────────────────────────────────────────────────────
+    
+    def _resolve_story_timestamps(self, metadata: dict, fragments: list):
+        import difflib
+        stories = metadata.get("stories_found", [])
+        for story in stories:
+            start_text = story.get("exact_start_text", "")
+            if not start_text:
+                continue
+                
+            # Naive fuzzy match to find the first fragment that matches the start text reasonably well
+            start_words = start_text.lower().split()
+            best_match_idx = -1
+            best_match_score = 0
+            
+            for i, frag in enumerate(fragments):
+                frag_text = frag.get("text", frag.get("marathi_raw", "")).lower()
+                
+                # Check sequence match using difflib
+                matcher = difflib.SequenceMatcher(None, start_text.lower(), frag_text)
+                match_score = matcher.find_longest_match(0, len(start_text), 0, len(frag_text)).size / max(len(start_text), 1)
+                
+                # If exact text is completely inside fragment
+                if start_text.lower() in frag_text:
+                    best_match_idx = i
+                    break
+                elif match_score > best_match_score:
+                    best_match_score = match_score
+                    best_match_idx = i
+
+            if best_match_idx != -1:
+                story["start_time_seconds"] = fragments[best_match_idx].get("start", fragments[best_match_idx].get("start_time", 0))
 
     def _reconstruct_transcript(self, fragments: list) -> str:
         """Concatenate all fragment texts into a single clean string."""
