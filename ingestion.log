@@ -43,3 +43,23 @@
 2026-05-21 00:38:58,040 - data_pipeline.chunker - INFO - Successfully created 112 aggregated chunks.
 2026-05-21 00:38:58,043 - data_pipeline.chunker - INFO - Chunking 1129 raw segments (Target: 30.0s - 60.0s, Pause: >1.0s)
 2026-05-21 00:38:58,044 - data_pipeline.chunker - INFO - Successfully created 57 aggregated chunks.
+2026-05-21 21:08:47,539 - data_pipeline.manager - INFO - Starting transcript fetching pipeline for 6 videos.
+2026-05-21 21:08:47,539 - data_pipeline.manager - INFO - Fetching transcript for video ID: 9RAqjOZEOh4
+2026-05-21 21:08:48,426 - data_pipeline.manager - INFO - Fetching transcript for video ID: DdBv99-IWi0
+2026-05-21 21:08:49,430 - data_pipeline.manager - INFO - Fetching transcript for video ID: bb6ip0m6_CA
+2026-05-21 21:08:50,507 - data_pipeline.manager - INFO - Fetching transcript for video ID: BewB6S4JYqo
+2026-05-21 21:08:51,487 - data_pipeline.manager - INFO - Fetching transcript for video ID: Y4D15z9Z9nU
+2026-05-21 21:08:52,952 - data_pipeline.manager - INFO - Fetching transcript for video ID: Q263c-YZJmA
+2026-05-21 21:08:54,196 - data_pipeline.manager - INFO - Transcript fetching pipeline completed.
+2026-05-21 21:08:54,198 - data_pipeline.chunker - INFO - Chunking 752 raw segments (Target: 30.0s - 60.0s, Pause: >1.0s)
+2026-05-21 21:08:54,199 - data_pipeline.chunker - INFO - Successfully created 37 aggregated chunks.
+2026-05-21 21:08:54,201 - data_pipeline.chunker - INFO - Chunking 1524 raw segments (Target: 30.0s - 60.0s, Pause: >1.0s)
+2026-05-21 21:08:54,202 - data_pipeline.chunker - INFO - Successfully created 75 aggregated chunks.
+2026-05-21 21:08:54,204 - data_pipeline.chunker - INFO - Chunking 1687 raw segments (Target: 30.0s - 60.0s, Pause: >1.0s)
+2026-05-21 21:08:54,206 - data_pipeline.chunker - INFO - Successfully created 82 aggregated chunks.
+2026-05-21 21:08:54,208 - data_pipeline.chunker - INFO - Chunking 2289 raw segments (Target: 30.0s - 60.0s, Pause: >1.0s)
+2026-05-21 21:08:54,210 - data_pipeline.chunker - INFO - Successfully created 112 aggregated chunks.
+2026-05-21 21:08:54,213 - data_pipeline.chunker - INFO - Chunking 1129 raw segments (Target: 30.0s - 60.0s, Pause: >1.0s)
+2026-05-21 21:08:54,214 - data_pipeline.chunker - INFO - Successfully created 57 aggregated chunks.
+2026-05-21 21:08:54,215 - data_pipeline.chunker - INFO - Chunking 818 raw segments (Target: 30.0s - 60.0s, Pause: >1.0s)
+2026-05-21 21:08:54,216 - data_pipeline.chunker - INFO - Successfully created 40 aggregated chunks.

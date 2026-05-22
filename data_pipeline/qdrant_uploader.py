@@ -27,16 +27,17 @@ class QdrantManager:
         self.client = QdrantClient(url=url, api_key=api_key)
         self.collection_name = collection_name
 
-        # Configure the Database (Create Collection if it doesn't exist)
-        if not self.client.collection_exists(collection_name=self.collection_name):
-            print(f"Creating new collection: {self.collection_name}...")
-            self.client.create_collection(
-                collection_name=self.collection_name,
-                vectors_config=VectorParams(size=1024, distance=Distance.COSINE),
-            )
-            print("Collection configured successfully!")
-        else:
-            print(f"Connected to existing collection: {self.collection_name}")
+        # Clean the Database: Delete if exists, then recreate
+        if self.client.collection_exists(collection_name=self.collection_name):
+            print(f"Collection {self.collection_name} already exists. Deleting it to clean the DB...")
+            self.client.delete_collection(collection_name=self.collection_name)
+            
+        print(f"Creating fresh collection: {self.collection_name}...")
+        self.client.create_collection(
+            collection_name=self.collection_name,
+            vectors_config=VectorParams(size=1024, distance=Distance.COSINE),
+        )
+        print("Collection configured successfully!")
 
     def upload_data(self, input_directory: str, batch_size: int = 100):
         json_files = glob.glob(f"{input_directory}/*_enriched.json")

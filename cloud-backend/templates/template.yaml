@@ -24,8 +24,27 @@ Parameters:
     Type: String
     Description: The HuggingFace Inference API key
     NoEcho: true
+  DynamoDbTableName:
+    Type: String
+    Description: Name of the DynamoDB table for video metadata
+    Default: guru-video-metadata
 
 Resources:
+  # ── DynamoDB: Video-level metadata (topics, queries, stories) ──────────────
+  VideoMetadataTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Ref DynamoDbTableName
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: video_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: video_id
+          KeyType: HASH
+      Tags:
+        - Key: Project
+          Value: PetheKaka
   SearchGuruFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -38,6 +57,10 @@ Resources:
           QDRANT_API_KEY: !Ref QdrantApiKey
           HF_API_KEY: !Ref HfApiKey
           COLLECTION_NAME: guru-videos
+          DYNAMODB_TABLE: !Ref DynamoDbTableName
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref DynamoDbTableName
       Events:
         SearchApi:
           Type: Api
@@ -62,3 +85,9 @@ Outputs:
   SearchGuruFunctionArn:
     Description: ARN of the Search Lambda function
     Value: !GetAtt SearchGuruFunction.Arn
+  VideoMetadataTableName:
+    Description: Name of the DynamoDB video metadata table
+    Value: !Ref VideoMetadataTable
+  VideoMetadataTableArn:
+    Description: ARN of the DynamoDB video metadata table
+    Value: !GetAtt VideoMetadataTable.Arn
