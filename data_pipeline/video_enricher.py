@@ -73,7 +73,7 @@ class VideoEnricher:
         if not api_key:
             raise ValueError("GEMINI_API_KEY not set in environment / .env file.")
         self._genai_client = genai.Client(api_key=api_key)
-        self._model_name = "gemini-2.0-flash"
+        self._model_name = "gemini-2.5-flash"
         self._gen_config = types.GenerateContentConfig(
             system_instruction=_SYSTEM_PROMPT,
             response_mime_type="application/json",   # ask for raw JSON directly
