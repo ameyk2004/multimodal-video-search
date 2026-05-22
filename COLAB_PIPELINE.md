@@ -28,8 +28,11 @@ Used by `VideoEnricher` to extract topics, queries, and stories.
    - **Cluster URL** e.g. `https://xxxx.us-east4-0.gcp.cloud.qdrant.io`
    - **API Key** → Access → API Keys → Create Key → Copy
 
-### 4. HuggingFace Token *(for the deployed Lambda only — not needed for pipeline)*
-1. **[huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)** → New token → Read → Copy
+### 4. AWS Access Keys
+Colab needs this to upload the extracted metadata to DynamoDB.
+1. **AWS Console → IAM → Users** → Select your user → **Security credentials**
+2. Click **"Create access key"** (CLI use case) → Copy **Access Key ID** and **Secret Access Key**
+3. Keep track of your default region (e.g., `us-east-1`).
 
 ---
 
@@ -47,12 +50,15 @@ Click the 🔑 **key icon** in the left sidebar:
 | `GEMINI_API_KEY` | Your Gemini API Key |
 | `QDRANT_URL` | Your Qdrant Cluster URL |
 | `QDRANT_API_KEY` | Your Qdrant API Key |
+| `AWS_ACCESS_KEY_ID` | Your AWS Access Key |
+| `AWS_SECRET_ACCESS_KEY` | Your AWS Secret Key |
+| `AWS_DEFAULT_REGION` | Your AWS Region (e.g., us-east-1) |
 
 Enable the toggle "Notebook access" for each secret after adding it.
 
 ---
 
-## 🚀 Part 3: Run the Pipeline (8 Cells, Top to Bottom)
+## 🚀 Part 3: Run the Pipeline (Top to Bottom)
 
 Open a fresh notebook at **[colab.research.google.com](https://colab.research.google.com)**.
 
@@ -89,6 +95,10 @@ from google.colab import userdata
 os.environ["GEMINI_API_KEY"] = userdata.get("GEMINI_API_KEY")
 os.environ["QDRANT_URL"]     = userdata.get("QDRANT_URL")
 os.environ["QDRANT_API_KEY"] = userdata.get("QDRANT_API_KEY")
+
+os.environ["AWS_ACCESS_KEY_ID"]     = userdata.get("AWS_ACCESS_KEY_ID")
+os.environ["AWS_SECRET_ACCESS_KEY"] = userdata.get("AWS_SECRET_ACCESS_KEY")
+os.environ["AWS_DEFAULT_REGION"]    = userdata.get("AWS_DEFAULT_REGION")
 
 # Step out of /content/repo FIRST before deleting it —
 # otherwise the kernel loses its cwd and git/pip break.
@@ -242,7 +252,23 @@ print("✅ Upload complete — Qdrant is live!")
 
 ---
 
-### 🟦 Cell 8 (Optional) — Backup to Google Drive
+### 🟦 Cell 8 — Upload Metadata to DynamoDB
+*Uploads topics, stories, and queries to your deployed AWS backend.*
+```python
+import sys
+sys.path.insert(0, "/content/repo")
+
+from data_pipeline.dynamo_uploader import upload_metadata
+
+# This will automatically check if your AWS stack is deployed.
+# If not, it will throw an error telling you to deploy it first.
+upload_metadata(input_dir="/content/repo/data_pipeline/enriched_metadata")
+print("✅ DynamoDB upload complete!")
+```
+
+---
+
+### 🟦 Cell 9 (Optional) — Backup to Google Drive
 *Run this if you want to preserve your enriched files across Colab sessions.*
 ```python
 from google.colab import drive
@@ -256,6 +282,10 @@ os.makedirs(BACKUP_DIR, exist_ok=True)
 for f in glob.glob("/content/repo/data_pipeline/enriched_json/*_enriched.json"):
     shutil.copy(f, BACKUP_DIR)
     print(f"  Backed up: {os.path.basename(f)}")
+
+for f in glob.glob("/content/repo/data_pipeline/enriched_metadata/*.json"):
+    shutil.copy(f, BACKUP_DIR)
+    print(f"  Backed up metadata: {os.path.basename(f)}")
 
 print("✅ Backup complete")
 ```

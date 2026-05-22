@@ -12,6 +12,23 @@ def upload_metadata(input_dir: str, table_name: str = "guru-video-metadata"):
     Reads all JSON files in the input_dir and uploads them to the specified DynamoDB table.
     """
     dynamodb = boto3.resource('dynamodb')
+    client = boto3.client('dynamodb')
+    
+    # Check if table exists
+    try:
+        client.describe_table(TableName=table_name)
+    except ClientError as e:
+        if e.response['Error']['Code'] == 'ResourceNotFoundException':
+            raise ValueError(
+                f"\n❌ ERROR: DynamoDB table '{table_name}' does not exist!\n"
+                f"Please deploy the cloud-backend stack first before uploading metadata.\n"
+                f"1. Open your terminal on your local machine.\n"
+                f"2. Run: cd cloud-backend && make release\n"
+                f"3. Once the stack is fully deployed, run this Colab cell again."
+            )
+        else:
+            raise
+
     table = dynamodb.Table(table_name)
     
     files = glob.glob(os.path.join(input_dir, "*.json"))
