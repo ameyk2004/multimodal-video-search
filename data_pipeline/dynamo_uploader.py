@@ -1,4 +1,5 @@
 import json
+import decimal
 import os
 import glob
 import boto3
@@ -48,7 +49,7 @@ def upload_metadata(input_dir: str, table_name: str = "guru-video-metadata"):
             
             try:
                 with open(filepath, 'r', encoding='utf-8') as f:
-                    data = json.load(f)
+                    data = json.load(f, parse_float=decimal.Decimal)
                 
                 # Use video_id from JSON if it exists, otherwise use the filename
                 final_video_id = data.get("video_id", extracted_video_id)

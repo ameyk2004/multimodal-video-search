@@ -68,16 +68,16 @@ clean:
 
 refresh:
 	@echo "🔄 Refreshing Frontend and Backend..."
-	@ACCOUNT_ID=$$(python3.12 ../scripts/aws_helper.py --action get_account 2>/dev/null || echo ""); \
-	ARTIFACTS_BUCKET="multimodal-video-search-artifacts-$$ACCOUNT_ID"; \
-	echo "📦 Building Frontend..."; \
+	@echo "📦 Building Frontend..."; \
 	cd ../frontend && npm install && npm run build && cd ../cloud-backend; \
-	echo "☁️ Pushing Frontend to Artifacts Bucket: $$ARTIFACTS_BUCKET"; \
-	python3.12 ../scripts/aws_helper.py --action upload --bucket $$ARTIFACTS_BUCKET --source ../frontend/dist; \
 	echo "🔨 Building SAM Application..."; \
 	sam build -t $(TEMPLATE_FILE) && \
 	echo "☁️ Deploying SAM Application..."; \
 	sam deploy --no-confirm-changeset --no-fail-on-empty-changeset && \
 	UI_BUCKET=$$(python3.12 ../scripts/aws_helper.py --action get_stack_output --stack $(STACK_NAME) --logical_id UiBucketName 2>/dev/null || echo ""); \
+	if [ -n "$$UI_BUCKET" ]; then \
+		echo "☁️ Pushing Frontend directly to UI Bucket: $$UI_BUCKET"; \
+		python3.12 ../scripts/aws_helper.py --action upload --bucket $$UI_BUCKET --source ../frontend/dist; \
+	fi; \
 	REGION=$$(python3 -c "import boto3; print(boto3.session.Session().region_name or 'us-east-1')" 2>/dev/null || echo "us-east-1"); \
 	echo "🎉 Refresh Complete! Frontend is live at: http://$$UI_BUCKET.s3-website-$$REGION.amazonaws.com"

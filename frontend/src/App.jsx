@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Routes, Route, NavLink, useNavigate, useLocation } from 'react-router-dom';
+import ParticleCanvas from './components/ParticleCanvas';
 import ResultCard from './components/ResultCard';
 import StoryCard from './components/StoryCard';
 import petheImage from './assets/images/pethekaka.png';
@@ -131,6 +132,7 @@ export default function App() {
   return (
     <>
       <div className="bg-gradient" />
+      <ParticleCanvas />
       <div className="app">
         <header className="header">
           <div className="logo-nav-group">
