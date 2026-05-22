@@ -80,7 +80,36 @@ def lambda_handler(event: dict, context: Any) -> dict:
         results = searcher.search(vector, top_k=5)
         logger.info("Found %d results", len(results))
 
-        return _build_response(200, {"query": query, "results": results})
+        # ── Step 3: Fetch video metadata from DynamoDB ────────────────────
+        video_ids = list({r["video_id"] for r in results if r.get("video_id")})
+        video_metadata = {}
+        
+        if video_ids:
+            try:
+                import boto3
+                dynamodb = boto3.resource("dynamodb")
+                table_name = os.environ.get("DYNAMODB_TABLE", "guru-video-metadata")
+                table = dynamodb.Table(table_name)
+                
+                # Fetch metadata for unique video IDs
+                for vid in video_ids:
+                    resp = table.get_item(Key={"video_id": vid})
+                    if "Item" in resp:
+                        # Clean up Item for JSON serialization (convert Decimals if any)
+                        item = resp["Item"]
+                        video_metadata[vid] = {
+                            "topics": item.get("topics", []),
+                            "suggested_queries": item.get("suggested_queries", []),
+                            "stories": item.get("stories", [])
+                        }
+            except Exception as e:
+                logger.error("Failed to fetch DynamoDB metadata: %s", e)
+
+        return _build_response(200, {
+            "query": query, 
+            "results": results,
+            "metadata": video_metadata
+        })
 
     except ConnectionError as exc:
         logger.error("HuggingFace API connection error: %s", exc)
