@@ -3,6 +3,8 @@ import { Routes, Route, NavLink, useNavigate, useLocation } from 'react-router-d
 import ParticleCanvas from './components/ParticleCanvas';
 import ResultCard from './components/ResultCard';
 import StoryCard from './components/StoryCard';
+import VideoLibraryCard from './components/VideoLibraryCard';
+import CinematicVideoPanel from './components/CinematicVideoPanel';
 import petheImage from './assets/images/pethekaka.png';
 import { api } from './utils/api';
 
@@ -66,6 +68,29 @@ export default function App() {
   const [dataLoading, setDataLoading] = useState(false);
   const [hasFetchedData, setHasFetchedData] = useState(false);
   const [storySearchQuery, setStorySearchQuery] = useState('');
+  const [activeFilter, setActiveFilter] = useState('सर्व');
+  const STORY_FILTERS = ['सर्व', 'प्रेरणा', 'जीवन धडे', 'भक्ती', 'शिस्त', 'ध्यान'];
+  const [isListening, setIsListening] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedVideoTitle, setSelectedVideoTitle] = useState('');
+
+  const startVoiceSearch = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert('Your browser does not support voice search.');
+      return;
+    }
+    const recognition = new SpeechRecognition();
+    recognition.lang = lang === 'mr' ? 'mr-IN' : 'en-US';
+    recognition.onstart = () => setIsListening(true);
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      setStorySearchQuery(transcript);
+    };
+    recognition.onerror = (e) => console.error("Speech error", e);
+    recognition.onend = () => setIsListening(false);
+    recognition.start();
+  };
   
   const bottomRef = useRef(null);
   const inputRef = useRef(null);
@@ -90,13 +115,16 @@ export default function App() {
     if (!hasFetchedData) {
       setHasFetchedData(true);
       setDataLoading(true);
-      api.getStories()
-        .then(data => {
-          if (data.stories) setAllStories(data.stories);
-          if (data.videos) setAllVideos(data.videos);
-        })
-        .catch(err => console.error("Failed to fetch data:", err))
-        .finally(() => setDataLoading(false));
+      
+      Promise.all([
+        api.getStories().catch(e => { console.error(e); return { stories: [] }; }),
+        api.getVideos().catch(e => { console.error(e); return { videos: [] }; })
+      ])
+      .then(([storiesData, videosData]) => {
+        if (storiesData.stories) setAllStories(storiesData.stories);
+        if (videosData.videos) setAllVideos(videosData.videos);
+      })
+      .finally(() => setDataLoading(false));
     }
   }, [hasFetchedData]);
 
@@ -124,10 +152,12 @@ export default function App() {
     }
   };
 
-  const filteredStories = allStories.filter(s => 
-    (s.title || '').toLowerCase().includes(storySearchQuery.toLowerCase()) || 
-    (s.content || '').toLowerCase().includes(storySearchQuery.toLowerCase())
-  );
+  const filteredStories = allStories.filter(s => {
+    const textToSearch = (s.searchable_text || s.title || '').toLowerCase();
+    const queryMatch = textToSearch.includes(storySearchQuery.toLowerCase());
+    const filterMatch = activeFilter === 'सर्व' ? true : textToSearch.includes(activeFilter.toLowerCase());
+    return queryMatch && filterMatch;
+  });
 
   return (
     <>
@@ -163,15 +193,39 @@ export default function App() {
           <Routes>
             <Route path="/stories" element={
               <div className="stories-page">
-                <div className="stories-header">
-                  <h2>{t.storiesTitle}</h2>
-                  <input 
-                    type="text" 
-                    className="story-search-input"
-                    placeholder={t.searchStories}
-                    value={storySearchQuery}
-                    onChange={(e) => setStorySearchQuery(e.target.value)}
-                  />
+                <div className="stories-header" style={{ marginBottom: '16px', borderBottom: 'none' }}>
+                  <h2 style={{ fontSize: '36px' }}>{t.storiesTitle}</h2>
+                </div>
+                
+                <div className="premium-search-container">
+                  <div className="premium-search-box">
+                    <span className="premium-search-icon">🔍</span>
+                    <input 
+                      type="text" 
+                      className="premium-search-input"
+                      placeholder="कथा, शिकवण किंवा संत शोधा..."
+                      value={storySearchQuery}
+                      onChange={(e) => setStorySearchQuery(e.target.value)}
+                    />
+                    <button 
+                      onClick={startVoiceSearch} 
+                      className={`voice-search-btn ${isListening ? 'listening' : ''}`}
+                      title="Voice Search"
+                    >
+                      🎤
+                    </button>
+                  </div>
+                  <div className="premium-filters">
+                    {STORY_FILTERS.map(filter => (
+                      <button 
+                        key={filter} 
+                        onClick={() => setActiveFilter(filter)}
+                        className={`premium-filter-pill ${activeFilter === filter ? 'active' : ''}`}
+                      >
+                        {filter}
+                      </button>
+                    ))}
+                  </div>
                 </div>
                 
                 {dataLoading ? (
@@ -180,12 +234,14 @@ export default function App() {
                     <span className="loading-text">{t.loadingStories}</span>
                   </div>
                 ) : (
-                  <div className="stories-grid">
+                  <div className="stories-list" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                     {filteredStories.length === 0 ? (
-                      <p className="no-results">{t.noStories}</p>
+                      <p className="no-results" style={{ textAlign: 'center', padding: '40px', color: 'var(--text-dim)' }}>
+                        {t.noStories}
+                      </p>
                     ) : (
                       filteredStories.map((story, i) => (
-                        <StoryCard key={i} story={story} />
+                        <StoryCard key={`${story.video_id}-${i}`} story={story} />
                       ))
                     )}
                   </div>
@@ -194,52 +250,84 @@ export default function App() {
             } />
 
             <Route path="/library" element={
-              <div className="stories-page">
-                <div className="stories-header">
-                  <h2>{t.libraryTitle}</h2>
-                  <p className="library-subtitle">{t.librarySub}</p>
+              <div className="library-page">
+                {/* Immersive Top Discovery Area */}
+                <div className="library-top-discovery">
+                  <div className="library-search-container">
+                    <span className="library-search-icon">🔍</span>
+                    <input 
+                      type="text" 
+                      className="library-premium-search" 
+                      placeholder="प्रवचन, विषय, प्रश्न किंवा शिकवण शोधा..." 
+                    />
+                  </div>
+                  
+                  <div className="library-category-pills">
+                    {['भक्ती', 'मन', 'साधना', 'जीवन', 'वैराग्य', 'गुरु', 'आत्मज्ञान'].map(cat => (
+                      <button key={cat} className="library-pill-premium">{cat}</button>
+                    ))}
+                  </div>
                 </div>
                 
                 {dataLoading ? (
                   <div className="loading-wrapper">
                     <div className="energy-ring" />
-                    <span className="loading-text">{t.loadingStories}</span>
+                    <span className="loading-text">Loading Library...</span>
                   </div>
                 ) : (
-                  <div className="library-grid">
-                    {allVideos.map((video, i) => (
-                      <div key={i} className="library-card">
-                        <div className="library-card-header">
-                          <span className="library-video-icon">🎥</span>
-                          <h3>{t.videoLabel} {video.video_id}</h3>
+                  <>
+                    {/* Featured Preview (First Video) */}
+                    {allVideos.length > 0 && (
+                      <div className="library-featured-section">
+                        <div 
+                          className="library-featured-card"
+                          onClick={() => {
+                            setSelectedVideo(allVideos[0]);
+                            setSelectedVideoTitle("Featured Teaching");
+                          }}
+                        >
+                          <img 
+                            src={`https://img.youtube.com/vi/${allVideos[0].video_id}/maxresdefault.jpg`} 
+                            onError={(e) => { e.target.src = `https://img.youtube.com/vi/${allVideos[0].video_id}/hqdefault.jpg`; }}
+                            alt="Featured Teaching" 
+                            className="library-featured-thumb" 
+                          />
+                          <div className="library-featured-overlay">
+                            <span className="featured-badge">Featured Teaching</span>
+                            <h2 className="featured-title">Guruji's Core Discourse</h2>
+                            <p className="featured-meta">
+                              {allVideos[0].topic_count} Topics Covered • {allVideos[0].query_count} Questions
+                            </p>
+                          </div>
                         </div>
-                        
-                        {video.topics && video.topics.length > 0 && (
-                          <div className="library-section">
-                            <h4>{t.topicsLabel}</h4>
-                            <div className="library-tags">
-                              {video.topics.map((topic, idx) => (
-                                <span key={idx} className="library-tag topic-tag">{topic}</span>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {video.suggested_queries && video.suggested_queries.length > 0 && (
-                          <div className="library-section">
-                            <h4>{t.queriesLabel}</h4>
-                            <div className="library-tags">
-                              {video.suggested_queries.map((sq, idx) => (
-                                <button key={idx} className="library-tag query-tag" onClick={() => handleSearch(sq)}>
-                                  {sq}
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-                        )}
                       </div>
-                    ))}
-                  </div>
+                    )}
+
+                    {/* Shelf */}
+                    <div className="library-shelf">
+                      <h3 className="library-shelf-title">Popular Teachings</h3>
+                      <div className="library-shelf-scroll">
+                        {allVideos.map((video, i) => (
+                          <VideoLibraryCard 
+                            key={i} 
+                            video={video} 
+                            onClick={(title) => {
+                              setSelectedVideo(video);
+                              setSelectedVideoTitle(title);
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                )}
+                
+                {selectedVideo && (
+                  <CinematicVideoPanel 
+                    videoSummary={selectedVideo} 
+                    initialTitle={selectedVideoTitle}
+                    onClose={() => setSelectedVideo(null)} 
+                  />
                 )}
               </div>
             } />

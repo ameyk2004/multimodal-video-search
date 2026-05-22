@@ -7,7 +7,7 @@ class HuggingFaceEmbedder:
     correct endpoint (router.huggingface.co).
     """
     def __init__(self, api_key: str, model_id: str = "BAAI/bge-m3", vector_dimension: int = 1024):
-        self.client = InferenceClient(token=api_key)
+        self.client = InferenceClient(token=api_key, timeout=25)
         self.model_id = model_id
         self.vector_dimension = vector_dimension
 

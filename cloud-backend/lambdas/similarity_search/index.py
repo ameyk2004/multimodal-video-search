@@ -4,7 +4,17 @@ AWS Lambda Entry Point for the Multimodal Guru Video Search Engine.
 import json
 import os
 import logging
+import decimal
 from typing import Any
+
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, decimal.Decimal):
+            if obj % 1 > 0:
+                return float(obj)
+            else:
+                return int(obj)
+        return super(DecimalEncoder, self).default(obj)
 
 
 from embedding import HuggingFaceEmbedder
@@ -49,7 +59,7 @@ def _build_response(status_code: int, body: dict[str, Any]) -> dict:
     return {
         "statusCode": status_code,
         "headers": CORS_HEADERS,
-        "body": json.dumps(body, ensure_ascii=False),
+        "body": json.dumps(body, ensure_ascii=False, cls=DecimalEncoder),
     }
 
 # ─── Lambda entry point ─────────────────────────────────────────────────────

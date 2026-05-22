@@ -92,6 +92,44 @@ Resources:
             Method: get
             RestApiId: !Ref SearchApi
 
+  LibraryApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../lambdas/library_api/
+      Handler: index.lambda_handler
+      Description: Library APIs for videos and video details
+      Environment:
+        Variables:
+          DYNAMODB_TABLE: !Ref DynamoDbTableName
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref DynamoDbTableName
+      Events:
+        GetVideosApi:
+          Type: Api
+          Properties:
+            Path: /videos
+            Method: get
+            RestApiId: !Ref SearchApi
+        GetVideoDetailsApi:
+          Type: Api
+          Properties:
+            Path: /videos/{videoId}
+            Method: get
+            RestApiId: !Ref SearchApi
+        GetVideoTopicsApi:
+          Type: Api
+          Properties:
+            Path: /videos/{videoId}/topics
+            Method: get
+            RestApiId: !Ref SearchApi
+        GetVideoQuestionsApi:
+          Type: Api
+          Properties:
+            Path: /videos/{videoId}/questions
+            Method: get
+            RestApiId: !Ref SearchApi
+
   SearchApi:
     Type: AWS::Serverless::Api
     Properties:
