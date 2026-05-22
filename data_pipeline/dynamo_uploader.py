@@ -11,8 +11,9 @@ def upload_metadata(input_dir: str, table_name: str = "guru-video-metadata"):
     """
     Reads all JSON files in the input_dir and uploads them to the specified DynamoDB table.
     """
-    dynamodb = boto3.resource('dynamodb')
-    client = boto3.client('dynamodb')
+    region = os.environ.get("AWS_DEFAULT_REGION", os.environ.get("AWS_REGION", "us-east-1"))
+    dynamodb = boto3.resource('dynamodb', region_name=region)
+    client = boto3.client('dynamodb', region_name=region)
     
     # Check if table exists
     try:
@@ -49,9 +50,9 @@ def upload_metadata(input_dir: str, table_name: str = "guru-video-metadata"):
                 # DynamoDB Item structure
                 item = {
                     "video_id": video_id,
-                    "topics": data.get("topics", []),
+                    "topics": data.get("topics", data.get("primary_topics", [])),
                     "suggested_queries": data.get("suggested_queries", []),
-                    "stories": data.get("stories", [])
+                    "stories": data.get("stories_found", [])
                 }
                 
                 batch.put_item(Item=item)

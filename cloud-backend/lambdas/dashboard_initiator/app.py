@@ -38,9 +38,29 @@ def handler(event, context):
         props = event['ResourceProperties']
         bucket = props['BucketName']
         api_url = props['ApiUrl']
+        artifacts_bucket = props.get('ArtifactsBucket')
         
-        config_content = json.dumps({"VITE_API_URL": api_url})
         s3 = boto3.client('s3')
+
+        if artifacts_bucket:
+            # Copy all files from the artifacts bucket to the destination bucket
+            paginator = s3.get_paginator('list_objects_v2')
+            for page in paginator.paginate(Bucket=artifacts_bucket):
+                if 'Contents' in page:
+                    for obj in page['Contents']:
+                        key = obj['Key']
+                        # Do not overwrite config.json if it exists in artifacts
+                        if key == 'config.json':
+                            continue
+                        print(f"Copying {key} from {artifacts_bucket} to {bucket}")
+                        s3.copy_object(
+                            CopySource={'Bucket': artifacts_bucket, 'Key': key},
+                            Bucket=bucket,
+                            Key=key
+                        )
+
+        # Always write the config.json generated from the CloudFormation parameters
+        config_content = json.dumps({"VITE_API_URL": api_url})
         s3.put_object(
             Bucket=bucket,
             Key='config.json',

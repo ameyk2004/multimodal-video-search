@@ -89,6 +89,7 @@ print("✅ Done")
 ### 🟦 Cell 2 — Clone Repo & Load Secrets
 ```python
 import os
+import shutil
 from google.colab import userdata
 
 # Load secrets into environment
@@ -100,6 +101,21 @@ os.environ["AWS_ACCESS_KEY_ID"]     = userdata.get("AWS_ACCESS_KEY_ID")
 os.environ["AWS_SECRET_ACCESS_KEY"] = userdata.get("AWS_SECRET_ACCESS_KEY")
 os.environ["AWS_DEFAULT_REGION"]    = userdata.get("AWS_DEFAULT_REGION")
 
+# 1. Backup any existing processed data
+dirs_to_preserve = [
+    "/content/repo/data_pipeline/output",
+    "/content/repo/data_pipeline/enriched_json",
+    "/content/repo/data_pipeline/enriched_metadata"
+]
+
+for d in dirs_to_preserve:
+    if os.path.exists(d):
+        backup_path = f"/content/backup_{os.path.basename(d)}"
+        if os.path.exists(backup_path):
+            shutil.rmtree(backup_path)
+        shutil.copytree(d, backup_path)
+        print(f"📦 Backed up existing data: {os.path.basename(d)}")
+
 # Step out of /content/repo FIRST before deleting it —
 # otherwise the kernel loses its cwd and git/pip break.
 %cd /content
@@ -108,12 +124,21 @@ os.environ["AWS_DEFAULT_REGION"]    = userdata.get("AWS_DEFAULT_REGION")
 token = userdata.get("GITHUB_TOKEN")
 !git clone https://{token}@github.com/ameyk2004/multimodal-video-search.git /content/repo --quiet
 
+# 2. Restore processed data
+for d in dirs_to_preserve:
+    backup_path = f"/content/backup_{os.path.basename(d)}"
+    if os.path.exists(backup_path):
+        if os.path.exists(d):
+            shutil.rmtree(d)
+        shutil.copytree(backup_path, d)
+        print(f"♻️ Restored data: {os.path.basename(d)}")
+
 # Install the data_pipeline package in editable mode.
 # This registers it with Python's import system — no sys.path needed.
 !pip install -q -e /content/repo
 
 %cd /content/repo
-print("✅ Repo cloned, package installed, secrets loaded")
+print("✅ Repo cloned, data restored, package installed, secrets loaded")
 ```
 
 ---

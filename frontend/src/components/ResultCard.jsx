@@ -67,7 +67,7 @@ export default function ResultCard({ result, rank, style, isMarathi, metadata, o
             </button>
           )}
 
-          {showFullText && metadata && (
+          {metadata && (
             <div className="metadata-section">
               {metadata.topics && metadata.topics.length > 0 && (
                 <div className="topics-wrap">

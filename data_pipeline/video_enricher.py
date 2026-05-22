@@ -83,7 +83,8 @@ class VideoEnricher:
         # Optional DynamoDB
         self._ddb = None
         if self.dynamodb_table:
-            self._ddb = boto3.resource("dynamodb").Table(self.dynamodb_table)
+            region = os.environ.get("AWS_DEFAULT_REGION", os.environ.get("AWS_REGION", "us-east-1"))
+            self._ddb = boto3.resource("dynamodb", region_name=region).Table(self.dynamodb_table)
             logger.info("DynamoDB table '%s' connected.", self.dynamodb_table)
 
     # ── Public API ────────────────────────────────────────────────────────────

@@ -28,6 +28,9 @@ Parameters:
     Type: String
     Description: Name of the DynamoDB table for video metadata
     Default: guru-video-metadata
+  UiArtifactsBucket:
+    Type: String
+    Description: Name of the artifacts bucket where the UI is uploaded before deploy
 
 Resources:
   # ── DynamoDB: Video-level metadata (topics, queries, stories) ──────────────
@@ -66,6 +69,26 @@ Resources:
           Type: Api
           Properties:
             Path: /search
+            Method: get
+            RestApiId: !Ref SearchApi
+
+  GetStoriesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../lambdas/get_stories/
+      Handler: index.lambda_handler
+      Description: Fetches all stories from DynamoDB
+      Environment:
+        Variables:
+          DYNAMODB_TABLE: !Ref DynamoDbTableName
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref DynamoDbTableName
+      Events:
+        GetStoriesApi:
+          Type: Api
+          Properties:
+            Path: /stories
             Method: get
             RestApiId: !Ref SearchApi
 
@@ -114,12 +137,15 @@ Resources:
       Policies:
         - S3CrudPolicy:
             BucketName: !Ref UiBucket
+        - S3ReadPolicy:
+            BucketName: !Ref UiArtifactsBucket
 
   WriteConfigResource:
     Type: Custom::ConfigWriter
     Properties:
       ServiceToken: !GetAtt DashboardInitiatorFunction.Arn
       BucketName: !Ref UiBucket
+      ArtifactsBucket: !Ref UiArtifactsBucket
       ApiUrl: !Sub "https://${SearchApi}.execute-api.${AWS::Region}.amazonaws.com/prod/search"
 
 Outputs:

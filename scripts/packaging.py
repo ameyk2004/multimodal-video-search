@@ -19,8 +19,11 @@ def load_env(filepath: str) -> dict:
     return env_vars
 
 
-def update_samconfig(env_vars: dict):
+def update_samconfig(env_vars: dict, extra_overrides: dict = None):
     """Update samconfig.toml with parameter overrides from .env so non-interactive deploy works."""
+    if extra_overrides is None:
+        extra_overrides = {}
+        
     qdrant_url = env_vars.get("QDRANT_URL", "")
     qdrant_api_key = env_vars.get("QDRANT_API_KEY", "")
     hf_api_key = env_vars.get("HF_API_KEY", "")
@@ -33,10 +36,15 @@ def update_samconfig(env_vars: dict):
         lines = f.readlines()
 
     # Build the new parameter_overrides line using SAM's expected TOML format
-    new_line = 'parameter_overrides = "' \
-               'QdrantUrl=\\"' + qdrant_url + '\\" ' \
-               'QdrantApiKey=\\"' + qdrant_api_key + '\\" ' \
-               'HfApiKey=\\"' + hf_api_key + '\\""\n'
+    overrides = [
+        f'QdrantUrl=\\"{qdrant_url}\\"',
+        f'QdrantApiKey=\\"{qdrant_api_key}\\"',
+        f'HfApiKey=\\"{hf_api_key}\\"'
+    ]
+    for k, v in extra_overrides.items():
+        overrides.append(f'{k}=\\"{v}\\"')
+        
+    new_line = 'parameter_overrides = "' + ' '.join(overrides) + '"\n'
 
     with open(samconfig_path, "w") as f:
         for line in lines:

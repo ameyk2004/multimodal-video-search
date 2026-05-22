@@ -5,9 +5,9 @@ import petheImage from './assets/images/pethekaka.png';
 
 const CONTENT = {
   mr: {
-    title: 'श्री पेठेकाका ज्ञानकोश',
+    title: 'साधना नंदादीप',
     subtitle: 'डॉ. सुहास पेठे (श्री पेठेकाका) यांच्या शिकवणींचा आणि साहित्याचा AI-आधारित शोध. अभंग, आरत्या, श्लोक आणि चिंतने येथे शोधा.',
-    bio: 'संत श्री पेठे काका हे साताऱ्याच्या भूमीतून अध्यात्म, साधना आणि नामस्मरणाचा दिवा प्रज्वलित करणारे एक प्रेरणादायी व्यक्तिमत्त्व मानले जातात. त्यांच्या वाणीमध्ये साधेपणा, विचारांमध्ये गूढ अध्यात्म आणि प्रत्येक भक्ताविषयी अपार प्रेम दिसून येते. त्यांनी लोकांना केवळ धर्म शिकवला नाही, तर जीवन कसे शांत, समाधानी आणि सद्गुणी पद्धतीने जगावे हेही समजावून सांगितले. त्यांच्या मार्गदर्शनामुळे अनेकांच्या जीवनात सकारात्मक बदल घडले असून, श्रद्धा, भक्ती आणि आत्मविश्वासाचा नवा प्रकाश निर्माण झाला आहे. त्यांच्या शिकवणीत अहंकारापेक्षा नम्रता, दिखाव्यापेक्षा साधेपणा आणि शब्दांपेक्षा आचरणाला अधिक महत्त्व दिले जाते. अशा या संतस्वरूप व्यक्तिमत्त्वाने अनेकांच्या मनात अढळ श्रद्धेचे स्थान निर्माण केले आहे.',
+    bio: 'डॉ. सुहास पेठे तथा श्री पेठेकाका हे महाराष्ट्रातील सातारा येथे वास्तव्यास असणारे एक तत्त्वज्ञ संत आहेत. माणूस, सृष्टी यांची दु:खे व त्यांचा निरास - हे श्री काकांच्या कार्याचे केंद्रबिंदू असून, आपल्या विविधांगी व्यासंगाचा त्यांनी अगणित व्यक्तींना विनामूल्य लाभ आजन्म करून दिला आहे. या ॲपमध्ये श्री काकांनी संकलित केलेले विविध संतांचे अभंग आणि श्री काकांनी स्वतः लिहिलेले अभंग, आरत्या, श्लोक, विविध नित्यपाठ, चिंतने, ७५ पुस्तके व इतर प्रासंगिक रचनांचा समावेश आहे. या सर्व रचनांना श्री काकांनी अतिशय भावपूर्ण चाली दिल्या असून गेली सुमारे पस्तीस वर्षे जिज्ञासू साधक त्यांचा वैयक्तिक उपासनेसाठी व साधनेकरिता अभ्यासासाठी म्हणून उपयोग करीत आहेत. श्री काकांचे हे नि:स्वार्थकार्य शांतपणे तेवणाऱ्या "नंदादीपा"प्रमाणे अविरत चालू असून त्या प्रकाशात आजवर अनेक साधकांचे जीवनपथ उजळून निघाले आहेत.',
     placeholder: 'मराठी किंवा इंग्रजीत प्रश्न विचारा...',
     suggestions: ['ध्यान मार्ग', 'अभंग', 'सृष्टीची दुःखे', 'आरती', 'ज्ञानेश्वरी'],
     loading: 'शोधत आहे...',
@@ -16,9 +16,9 @@ const CONTENT = {
     tryThese: 'हे प्रश्न विचारून पहा:'
   },
   en: {
-    title: 'Shree Pethe Kaka Knowledge Portal',
+    title: 'Sadhana Nandadeep',
     subtitle: 'AI-powered search through the teachings, abhangs, and spiritual literature of Dr. Suhas Pethe (Shree Pethe Kaka).',
-    bio: 'Sant Shree Pethe Kaka is considered an inspiring personality from the land of Satara who ignited the lamp of spirituality, spiritual practice, and chanting. His speech reflects simplicity, his thoughts deep spirituality, and his immense love for every devotee. He not only taught religion but also how to live a peaceful, contented, and virtuous life. Under his guidance, many have experienced positive changes in their lives, bringing a new light of faith, devotion, and self-confidence. His teachings emphasize humility over ego, simplicity over show, and action over words. Such a saintly figure has created a place of unwavering faith in the minds of many.',
+    bio: 'Dr. Suhas Pethe, also known as Shree Pethe Kaka, is a philosopher saint residing in Satara, Maharashtra. The sorrows of human beings and nature, and their eradication, are the focal points of Shree Kaka\'s work. Through his multifaceted studies, he has provided invaluable benefits to countless individuals for free throughout his life. This app includes various Abhangs of saints compiled by Shree Kaka, as well as Abhangs, Aartis, Shlokas, daily prayers, meditations, 75 books, and other occasional compositions written by Shree Kaka himself. Shree Kaka has composed extremely soulful tunes for all these works, and for the last 35 years, curious seekers have been using them for personal worship and spiritual practice. This selfless work of Shree Kaka continues uninterrupted like a quietly burning "Nandadeep" (lamp), and its light has illuminated the life paths of many seekers to date.',
     placeholder: 'Ask your question in English or Marathi...',
     suggestions: ['Meditation path', 'Abhangs', 'Sorrows of life', 'Arati', 'Dnyaneshwari'],
     loading: 'Searching wisdom...',
@@ -30,11 +30,17 @@ const CONTENT = {
 
 export default function App() {
   const [lang, setLang] = useState('mr'); // 'mr' or 'en'
+  const [currentTab, setCurrentTab] = useState('search'); // 'search' or 'stories'
   const [query, setQuery] = useState('');
   const [sessions, setSessions] = useState([]); // [{query, results, metadata, error}]
   const [loading, setLoading] = useState(false);
   const [apiUrl, setApiUrl] = useState(import.meta.env.VITE_API_URL);
   const [configLoaded, setConfigLoaded] = useState(false);
+  
+  const [allStories, setAllStories] = useState([]);
+  const [storiesLoading, setStoriesLoading] = useState(false);
+  const [hasFetchedStories, setHasFetchedStories] = useState(false);
+  const [storySearchQuery, setStorySearchQuery] = useState('');
   
   const bottomRef = useRef(null);
   const inputRef = useRef(null);
@@ -58,11 +64,26 @@ export default function App() {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [sessions, loading]);
 
+  useEffect(() => {
+    if (currentTab === 'stories' && !hasFetchedStories) {
+      setHasFetchedStories(true); // Ensure we don't infinitely retry if it fails
+      setStoriesLoading(true);
+      const baseUrl = apiUrl.replace(/\/search$/, '');
+      fetch(`${baseUrl}/stories`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.stories) setAllStories(data.stories);
+        })
+        .catch(err => console.error("Failed to fetch stories:", err))
+        .finally(() => setStoriesLoading(false));
+    }
+  }, [currentTab, apiUrl, hasFetchedStories]);
   const handleSearch = async (q) => {
     const searchQuery = (q || query).trim();
     if (!searchQuery || loading || !apiUrl) return;
     setQuery('');
     setLoading(true);
+    setCurrentTab('search');
 
     try {
       const res = await fetch(`${apiUrl}?q=${encodeURIComponent(searchQuery)}`);
@@ -87,7 +108,10 @@ export default function App() {
     if (e.key === 'Enter') handleSearch();
   };
 
-  if (!configLoaded) return null; // wait for config before rendering
+  const filteredStories = allStories.filter(s => 
+    (s.title || '').toLowerCase().includes(storySearchQuery.toLowerCase()) || 
+    (s.content || '').toLowerCase().includes(storySearchQuery.toLowerCase())
+  );
 
   return (
     <>
@@ -97,10 +121,26 @@ export default function App() {
       <div className="app">
         {/* Header */}
         <header className="header">
-          <a className="logo" href="/">
-            <span className="logo-icon">🪔</span>
-            <span className="logo-text">{lang === 'mr' ? 'श्री पेठेकाका' : 'Shree Pethe Kaka'}</span>
-          </a>
+          <div className="logo-nav-group">
+            <a className="logo" href="#" onClick={(e) => { e.preventDefault(); setCurrentTab('search'); }}>
+              <span className="logo-icon">🪔</span>
+              <span className="logo-text">{lang === 'mr' ? 'साधना नंदादीप' : 'Sadhana Nandadeep'}</span>
+            </a>
+            <nav className="desktop-nav">
+              <button 
+                className={`nav-link ${currentTab === 'search' ? 'active' : ''}`}
+                onClick={() => setCurrentTab('search')}
+              >
+                {lang === 'mr' ? 'ज्ञानकोश' : 'Search'}
+              </button>
+              <button 
+                className={`nav-link ${currentTab === 'stories' ? 'active' : ''}`}
+                onClick={() => setCurrentTab('stories')}
+              >
+                {lang === 'mr' ? 'कथा व गोष्टी' : 'Stories'}
+              </button>
+            </nav>
+          </div>
           <div className="header-controls">
             <button className="lang-toggle" onClick={() => setLang(l => l === 'mr' ? 'en' : 'mr')}>
               {lang === 'mr' ? 'English' : 'मराठी'}
@@ -110,38 +150,74 @@ export default function App() {
 
         {/* Main content */}
         <main className="main">
-          {sessions.length === 0 && !loading && (
+          {currentTab === 'stories' && (
+            <div className="stories-page">
+              <div className="stories-header">
+                <h2>{lang === 'mr' ? 'अध्यात्मिक गोष्टी व कथा' : 'Spiritual Stories & Tales'}</h2>
+                <input 
+                  type="text" 
+                  className="story-search-input"
+                  placeholder={lang === 'mr' ? 'कथा शोधा...' : 'Search stories...'}
+                  value={storySearchQuery}
+                  onChange={(e) => setStorySearchQuery(e.target.value)}
+                />
+              </div>
+              
+              {storiesLoading ? (
+                <div className="loading-wrapper">
+                  <div className="energy-ring" />
+                  <span className="loading-text">{lang === 'mr' ? 'कथा लोड होत आहेत...' : 'Loading stories...'}</span>
+                </div>
+              ) : (
+                <div className="stories-grid">
+                  {filteredStories.length === 0 ? (
+                    <p className="no-results">{lang === 'mr' ? 'कोणतीही कथा आढळली नाही.' : 'No stories found.'}</p>
+                  ) : (
+                    filteredStories.map((story, i) => (
+                      <div key={i} className="story-card">
+                        <h3 className="story-card-title">{story.title}</h3>
+                        <p className="story-card-content">{story.content}</p>
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
+          {currentTab === 'search' && sessions.length === 0 && !loading && (
             <div className="hero">
-              <div className="hero-content-wrapper">
+              <div className="hero-top">
+                <span className="hero-om">🪔</span>
+                <h1 className="hero-title">{t.title}</h1>
+                <p className="hero-sub">{t.subtitle}</p>
+                
+                <div className="hero-search-prompt">
+                  <p>{t.placeholder}</p>
+                  <div className="hero-suggestions">
+                    {t.suggestions.map(s => (
+                      <button key={s} className="suggestion-chip" onClick={() => handleSearch(s)}>
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="hero-about">
                 <div className="hero-image-container">
                   <div className="hero-image-glow"></div>
                   <img src={petheImage} alt="Shree Pethe Kaka" className="hero-image" />
                 </div>
-                <div className="hero-text-container">
-                  <span className="hero-om">🪔</span>
-                  <h1 className="hero-title">{t.title}</h1>
-                  <p className="hero-sub">{t.subtitle}</p>
-                  <div className="hero-bio-card">
-                    <p className="hero-bio">{t.bio}</p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="hero-search-prompt">
-                <p>{t.placeholder}</p>
-                <div className="hero-suggestions">
-                  {t.suggestions.map(s => (
-                    <button key={s} className="suggestion-chip" onClick={() => handleSearch(s)}>
-                      {s}
-                    </button>
-                  ))}
+                <div className="hero-bio-card">
+                  <p className="hero-bio">{t.bio}</p>
                 </div>
               </div>
             </div>
           )}
 
           {/* Chat thread */}
-          {sessions.map((session, si) => {
+          {currentTab === 'search' && sessions.map((session, si) => {
             // Aggregate all suggested queries from the returned videos
             const allSuggestions = new Set();
             Object.values(session.metadata || {}).forEach(m => {
@@ -197,7 +273,7 @@ export default function App() {
           })}
 
           {/* Loading State */}
-          {loading && (
+          {currentTab === 'search' && loading && (
             <div className="chat-thread">
               <div className="user-bubble-row">
                 <div className="user-bubble" style={{ opacity: 0.7 }}>...</div>
@@ -213,7 +289,8 @@ export default function App() {
         </main>
 
         {/* Fixed search bar */}
-        <div className="search-bar-wrap">
+        {currentTab === 'search' && (
+          <div className="search-bar-wrap">
           <div className="search-form">
             <input
               ref={inputRef}
@@ -235,6 +312,7 @@ export default function App() {
             </button>
           </div>
         </div>
+        )}
       </div>
     </>
   );
