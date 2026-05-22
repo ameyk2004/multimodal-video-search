@@ -42,14 +42,20 @@ def upload_metadata(input_dir: str, table_name: str = "guru-video-metadata"):
     success_count = 0
     with table.batch_writer() as batch:
         for filepath in files:
-            video_id = os.path.splitext(os.path.basename(filepath))[0]
+            base_name = os.path.splitext(os.path.basename(filepath))[0]
+            # Strip suffixes if the file is named e.g. '9RAqjOZEOh4_meta.json'
+            extracted_video_id = base_name.replace("_meta", "").replace("_enriched", "")
+            
             try:
                 with open(filepath, 'r', encoding='utf-8') as f:
                     data = json.load(f)
                 
+                # Use video_id from JSON if it exists, otherwise use the filename
+                final_video_id = data.get("video_id", extracted_video_id)
+                
                 # DynamoDB Item structure
                 item = {
-                    "video_id": video_id,
+                    "video_id": final_video_id,
                     "topics": data.get("topics", data.get("primary_topics", [])),
                     "suggested_queries": data.get("suggested_queries", []),
                     "stories": data.get("stories_found", [])
@@ -57,11 +63,16 @@ def upload_metadata(input_dir: str, table_name: str = "guru-video-metadata"):
                 
                 batch.put_item(Item=item)
                 success_count += 1
-                logging.info(f"Queued upload for video: {video_id}")
+                logging.info(f"Queued upload for video: {final_video_id}")
                 
             except Exception as e:
                 logging.error(f"Failed to process {filepath}: {e}")
+                raise
 
+    if success_count == 0:
+        logging.error("Failed to upload any records. Check the logs above.")
+        raise ValueError("0 records uploaded to DynamoDB.")
+        
     logging.info(f"Successfully uploaded {success_count} records to DynamoDB.")
 
 if __name__ == "__main__":

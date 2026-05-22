@@ -39,7 +39,8 @@ def lambda_handler(event, context):
                 })
         
         return _build_response(200, {
-            "stories": all_stories
+            "stories": all_stories,
+            "videos": items
         })
 
     except Exception as exc:

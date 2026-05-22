@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { Routes, Route, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import ParticleCanvas from './components/ParticleCanvas';
 import ResultCard from './components/ResultCard';
 import petheImage from './assets/images/pethekaka.png';
@@ -13,7 +14,19 @@ const CONTENT = {
     loading: 'शोधत आहे...',
     found: 'ज्ञानाचे मोती सापडले',
     searchErr: 'शोध अयशस्वी',
-    tryThese: 'हे प्रश्न विचारून पहा:'
+    tryThese: 'हे प्रश्न विचारून पहा:',
+    searchTab: 'ज्ञानकोश',
+    storiesTab: 'कथा व गोष्टी',
+    libraryTab: 'अध्यात्मिक संग्रह',
+    storiesTitle: 'अध्यात्मिक गोष्टी व कथा',
+    searchStories: 'कथा शोधा...',
+    loadingStories: 'कथा व संग्रह लोड होत आहेत...',
+    noStories: 'कोणतीही कथा आढळली नाही.',
+    libraryTitle: 'प्रवचने आणि शिकवण',
+    librarySub: 'या संग्रहात उपलब्ध असलेली प्रवचने, त्यांचे विषय आणि विचारण्यासाठी योग्य प्रश्न',
+    videoLabel: 'प्रवचन विभाग',
+    topicsLabel: 'शिकवणीचे विषय:',
+    queriesLabel: 'साधकांचे संभाव्य प्रश्न:',
   },
   en: {
     title: 'Sadhana Nandadeep',
@@ -24,66 +37,83 @@ const CONTENT = {
     loading: 'Searching wisdom...',
     found: 'teachings found',
     searchErr: 'Search failed',
-    tryThese: 'Suggested Queries:'
+    tryThese: 'Suggested Queries:',
+    searchTab: 'Search',
+    storiesTab: 'Stories',
+    libraryTab: 'Spiritual Library',
+    storiesTitle: 'Spiritual Stories & Tales',
+    searchStories: 'Search stories...',
+    loadingStories: 'Loading stories & library...',
+    noStories: 'No stories found.',
+    libraryTitle: 'Discourses & Teachings',
+    librarySub: 'Explore the available spiritual discourses, the topics they cover, and suggested questions for seekers.',
+    videoLabel: 'Discourse Segment',
+    topicsLabel: 'Topics Covered:',
+    queriesLabel: 'Suggested Queries for Seekers:',
   }
 };
 
 export default function App() {
-  const [lang, setLang] = useState('mr'); // 'mr' or 'en'
-  const [currentTab, setCurrentTab] = useState('search'); // 'search' or 'stories'
+  const [lang, setLang] = useState('mr');
   const [query, setQuery] = useState('');
-  const [sessions, setSessions] = useState([]); // [{query, results, metadata, error}]
+  const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [apiUrl, setApiUrl] = useState(import.meta.env.VITE_API_URL);
+  const [apiUrl, setApiUrl] = useState(import.meta.env.VITE_API_URL || '');
   const [configLoaded, setConfigLoaded] = useState(false);
   
   const [allStories, setAllStories] = useState([]);
-  const [storiesLoading, setStoriesLoading] = useState(false);
-  const [hasFetchedStories, setHasFetchedStories] = useState(false);
+  const [allVideos, setAllVideos] = useState([]);
+  const [dataLoading, setDataLoading] = useState(false);
+  const [hasFetchedData, setHasFetchedData] = useState(false);
   const [storySearchQuery, setStorySearchQuery] = useState('');
   
   const bottomRef = useRef(null);
   const inputRef = useRef(null);
+  
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const t = CONTENT[lang];
 
-  // Fetch config.json on mount to support AWS Custom Resource dynamic API URLs
   useEffect(() => {
     fetch('/config.json')
       .then(res => res.json())
       .then(data => {
-        if (data.VITE_API_URL) {
-          setApiUrl(data.VITE_API_URL);
-        }
+        if (data.VITE_API_URL) setApiUrl(data.VITE_API_URL);
       })
-      .catch(err => console.log('No config.json found, falling back to .env'))
+      .catch(err => console.log('No config.json found'))
       .finally(() => setConfigLoaded(true));
   }, []);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [sessions, loading]);
+    if (location.pathname === '/') {
+      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [sessions, loading, location.pathname]);
 
+  // Fetch stories and library data once
   useEffect(() => {
-    if (currentTab === 'stories' && !hasFetchedStories) {
-      setHasFetchedStories(true); // Ensure we don't infinitely retry if it fails
-      setStoriesLoading(true);
+    if (!hasFetchedData && apiUrl) {
+      setHasFetchedData(true);
+      setDataLoading(true);
       const baseUrl = apiUrl.replace(/\/search$/, '');
       fetch(`${baseUrl}/stories`)
         .then(res => res.json())
         .then(data => {
           if (data.stories) setAllStories(data.stories);
+          if (data.videos) setAllVideos(data.videos);
         })
-        .catch(err => console.error("Failed to fetch stories:", err))
-        .finally(() => setStoriesLoading(false));
+        .catch(err => console.error("Failed to fetch data:", err))
+        .finally(() => setDataLoading(false));
     }
-  }, [currentTab, apiUrl, hasFetchedStories]);
+  }, [apiUrl, hasFetchedData]);
+
   const handleSearch = async (q) => {
     const searchQuery = (q || query).trim();
     if (!searchQuery || loading || !apiUrl) return;
     setQuery('');
     setLoading(true);
-    setCurrentTab('search');
+    navigate('/');
 
     try {
       const res = await fetch(`${apiUrl}?q=${encodeURIComponent(searchQuery)}`);
@@ -100,12 +130,8 @@ export default function App() {
       setSessions(prev => [...prev, { query: searchQuery, results: [], metadata: {}, error: err.message }]);
     } finally {
       setLoading(false);
-      inputRef.current?.focus();
+      setTimeout(() => inputRef.current?.focus(), 100);
     }
-  };
-
-  const handleKey = (e) => {
-    if (e.key === 'Enter') handleSearch();
   };
 
   const filteredStories = allStories.filter(s => 
@@ -119,26 +145,22 @@ export default function App() {
       <ParticleCanvas />
 
       <div className="app">
-        {/* Header */}
         <header className="header">
           <div className="logo-nav-group">
-            <a className="logo" href="#" onClick={(e) => { e.preventDefault(); setCurrentTab('search'); }}>
+            <NavLink to="/" className="logo">
               <span className="logo-icon">🪔</span>
               <span className="logo-text">{lang === 'mr' ? 'साधना नंदादीप' : 'Sadhana Nandadeep'}</span>
-            </a>
+            </NavLink>
             <nav className="desktop-nav">
-              <button 
-                className={`nav-link ${currentTab === 'search' ? 'active' : ''}`}
-                onClick={() => setCurrentTab('search')}
-              >
-                {lang === 'mr' ? 'ज्ञानकोश' : 'Search'}
-              </button>
-              <button 
-                className={`nav-link ${currentTab === 'stories' ? 'active' : ''}`}
-                onClick={() => setCurrentTab('stories')}
-              >
-                {lang === 'mr' ? 'कथा व गोष्टी' : 'Stories'}
-              </button>
+              <NavLink to="/" className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>
+                {t.searchTab}
+              </NavLink>
+              <NavLink to="/stories" className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>
+                {t.storiesTab}
+              </NavLink>
+              <NavLink to="/library" className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>
+                {t.libraryTab}
+              </NavLink>
             </nav>
           </div>
           <div className="header-controls">
@@ -148,170 +170,221 @@ export default function App() {
           </div>
         </header>
 
-        {/* Main content */}
         <main className="main">
-          {currentTab === 'stories' && (
-            <div className="stories-page">
-              <div className="stories-header">
-                <h2>{lang === 'mr' ? 'अध्यात्मिक गोष्टी व कथा' : 'Spiritual Stories & Tales'}</h2>
-                <input 
-                  type="text" 
-                  className="story-search-input"
-                  placeholder={lang === 'mr' ? 'कथा शोधा...' : 'Search stories...'}
-                  value={storySearchQuery}
-                  onChange={(e) => setStorySearchQuery(e.target.value)}
-                />
-              </div>
-              
-              {storiesLoading ? (
-                <div className="loading-wrapper">
-                  <div className="energy-ring" />
-                  <span className="loading-text">{lang === 'mr' ? 'कथा लोड होत आहेत...' : 'Loading stories...'}</span>
+          <Routes>
+            <Route path="/stories" element={
+              <div className="stories-page">
+                <div className="stories-header">
+                  <h2>{t.storiesTitle}</h2>
+                  <input 
+                    type="text" 
+                    className="story-search-input"
+                    placeholder={t.searchStories}
+                    value={storySearchQuery}
+                    onChange={(e) => setStorySearchQuery(e.target.value)}
+                  />
                 </div>
-              ) : (
-                <div className="stories-grid">
-                  {filteredStories.length === 0 ? (
-                    <p className="no-results">{lang === 'mr' ? 'कोणतीही कथा आढळली नाही.' : 'No stories found.'}</p>
-                  ) : (
-                    filteredStories.map((story, i) => (
-                      <div key={i} className="story-card">
-                        <h3 className="story-card-title">{story.title}</h3>
-                        <p className="story-card-content">{story.content}</p>
-                      </div>
-                    ))
-                  )}
-                </div>
-              )}
-            </div>
-          )}
-
-          {currentTab === 'search' && sessions.length === 0 && !loading && (
-            <div className="hero">
-              <div className="hero-top">
-                <span className="hero-om">🪔</span>
-                <h1 className="hero-title">{t.title}</h1>
-                <p className="hero-sub">{t.subtitle}</p>
                 
-                <div className="hero-search-prompt">
-                  <p>{t.placeholder}</p>
-                  <div className="hero-suggestions">
-                    {t.suggestions.map(s => (
-                      <button key={s} className="suggestion-chip" onClick={() => handleSearch(s)}>
-                        {s}
-                      </button>
+                {dataLoading ? (
+                  <div className="loading-wrapper">
+                    <div className="energy-ring" />
+                    <span className="loading-text">{t.loadingStories}</span>
+                  </div>
+                ) : (
+                  <div className="stories-grid">
+                    {filteredStories.length === 0 ? (
+                      <p className="no-results">{t.noStories}</p>
+                    ) : (
+                      filteredStories.map((story, i) => (
+                        <div key={i} className="story-card">
+                          <h3 className="story-card-title">{story.title}</h3>
+                          <p className="story-card-content">{story.content}</p>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )}
+              </div>
+            } />
+
+            <Route path="/library" element={
+              <div className="stories-page">
+                <div className="stories-header">
+                  <h2>{t.libraryTitle}</h2>
+                  <p className="library-subtitle">{t.librarySub}</p>
+                </div>
+                
+                {dataLoading ? (
+                  <div className="loading-wrapper">
+                    <div className="energy-ring" />
+                    <span className="loading-text">{t.loadingStories}</span>
+                  </div>
+                ) : (
+                  <div className="library-grid">
+                    {allVideos.map((video, i) => (
+                      <div key={i} className="library-card">
+                        <div className="library-card-header">
+                          <span className="library-video-icon">🎥</span>
+                          <h3>{t.videoLabel} {video.video_id}</h3>
+                        </div>
+                        
+                        {video.topics && video.topics.length > 0 && (
+                          <div className="library-section">
+                            <h4>{t.topicsLabel}</h4>
+                            <div className="library-tags">
+                              {video.topics.map((topic, idx) => (
+                                <span key={idx} className="library-tag topic-tag">{topic}</span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {video.suggested_queries && video.suggested_queries.length > 0 && (
+                          <div className="library-section">
+                            <h4>{t.queriesLabel}</h4>
+                            <div className="library-tags">
+                              {video.suggested_queries.map((sq, idx) => (
+                                <button key={idx} className="library-tag query-tag" onClick={() => handleSearch(sq)}>
+                                  {sq}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     ))}
                   </div>
-                </div>
-              </div>
-
-              <div className="hero-about">
-                <div className="hero-image-container">
-                  <div className="hero-image-glow"></div>
-                  <img src={petheImage} alt="Shree Pethe Kaka" className="hero-image" />
-                </div>
-                <div className="hero-bio-card">
-                  <p className="hero-bio">{t.bio}</p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Chat thread */}
-          {currentTab === 'search' && sessions.map((session, si) => {
-            // Aggregate all suggested queries from the returned videos
-            const allSuggestions = new Set();
-            Object.values(session.metadata || {}).forEach(m => {
-              if (m.suggested_queries) m.suggested_queries.forEach(sq => allSuggestions.add(sq));
-            });
-            const topSuggestions = Array.from(allSuggestions).slice(0, 5);
-
-            return (
-              <div key={si} className="chat-thread">
-                <div className="user-bubble-row">
-                  <div className="user-bubble">{session.query}</div>
-                </div>
-
-                {session.error && (
-                  <div className="error-box">⚠ {session.error}</div>
                 )}
+              </div>
+            } />
 
-                {session.results.length > 0 && (
-                  <div>
-                    <div className="results-header">
-                      <span>✧ {lang === 'mr' ? `${session.results.length} ${t.found}` : `${session.results.length} ${t.found}`}</span>
-                    </div>
-                    <div className="results-list">
-                      {session.results.map((r, i) => (
-                        <ResultCard
-                          key={`${r.video_id}-${r.start_time}-${i}`}
-                          result={r}
-                          rank={i + 1}
-                          isMarathi={lang === 'mr'}
-                          metadata={session.metadata?.[r.video_id]}
-                          onSearch={handleSearch}
-                          style={{ animationDelay: `${i * 0.08}s` }}
-                        />
-                      ))}
-                    </div>
-                    
-                    {topSuggestions.length > 0 && (
-                      <div className="dynamic-suggestions">
-                        <div className="suggestions-label">{t.tryThese}</div>
-                        <div className="hero-suggestions" style={{justifyContent: 'flex-start', marginTop: '8px'}}>
-                          {topSuggestions.map(s => (
+            <Route path="/" element={
+              <>
+                {sessions.length === 0 && !loading && (
+                  <div className="hero">
+                    <div className="hero-top">
+                      <span className="hero-om">🪔</span>
+                      <h1 className="hero-title">{t.title}</h1>
+                      <p className="hero-sub">{t.subtitle}</p>
+                      
+                      <div className="hero-search-prompt">
+                        <p>{t.placeholder}</p>
+                        <div className="hero-suggestions">
+                          {t.suggestions.map(s => (
                             <button key={s} className="suggestion-chip" onClick={() => handleSearch(s)}>
                               {s}
                             </button>
                           ))}
                         </div>
                       </div>
-                    )}
+                    </div>
+
+                    <div className="hero-about">
+                      <div className="hero-image-container">
+                        <div className="hero-image-glow"></div>
+                        <img src={petheImage} alt="Shree Pethe Kaka" className="hero-image" />
+                      </div>
+                      <div className="hero-bio-card">
+                        <p className="hero-bio">{t.bio}</p>
+                      </div>
+                    </div>
                   </div>
                 )}
-              </div>
-            );
-          })}
 
-          {/* Loading State */}
-          {currentTab === 'search' && loading && (
-            <div className="chat-thread">
-              <div className="user-bubble-row">
-                <div className="user-bubble" style={{ opacity: 0.7 }}>...</div>
-              </div>
-              <div className="loading-wrapper">
-                <div className="energy-ring" />
-                <span className="loading-text">{t.loading}</span>
-              </div>
-            </div>
-          )}
+                {sessions.map((session, si) => {
+                  const allSuggestions = new Set();
+                  Object.values(session.metadata || {}).forEach(m => {
+                    if (m.suggested_queries) m.suggested_queries.forEach(sq => allSuggestions.add(sq));
+                  });
+                  const topSuggestions = Array.from(allSuggestions).slice(0, 5);
 
-          <div ref={bottomRef} />
+                  return (
+                    <div key={si} className="chat-thread">
+                      <div className="user-bubble-row">
+                        <div className="user-bubble">{session.query}</div>
+                      </div>
+
+                      {session.error && (
+                        <div className="error-box">⚠ {session.error}</div>
+                      )}
+
+                      {session.results.length > 0 && (
+                        <div>
+                          <div className="results-header">
+                            <span>✧ {lang === 'mr' ? `${session.results.length} ${t.found}` : `${session.results.length} ${t.found}`}</span>
+                          </div>
+                          <div className="results-list">
+                            {session.results.map((r, i) => (
+                              <ResultCard
+                                key={`${r.video_id}-${r.start_time}-${i}`}
+                                result={r}
+                                rank={i + 1}
+                                isMarathi={lang === 'mr'}
+                                metadata={session.metadata?.[r.video_id]}
+                                onSearch={handleSearch}
+                                style={{ animationDelay: `${i * 0.08}s` }}
+                              />
+                            ))}
+                          </div>
+                          
+                          {topSuggestions.length > 0 && (
+                            <div className="dynamic-suggestions">
+                              <div className="suggestions-label">{t.tryThese}</div>
+                              <div className="hero-suggestions" style={{justifyContent: 'flex-start', marginTop: '8px'}}>
+                                {topSuggestions.map(s => (
+                                  <button key={s} className="suggestion-chip" onClick={() => handleSearch(s)}>
+                                    {s}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+
+                {loading && (
+                  <div className="chat-thread">
+                    <div className="user-bubble-row">
+                      <div className="user-bubble" style={{ opacity: 0.7 }}>...</div>
+                    </div>
+                    <div className="loading-wrapper">
+                      <div className="energy-ring" />
+                      <span className="loading-text">{t.loading}</span>
+                    </div>
+                  </div>
+                )}
+                <div ref={bottomRef} />
+              </>
+            } />
+          </Routes>
         </main>
 
-        {/* Fixed search bar */}
-        {currentTab === 'search' && (
+        {location.pathname === '/' && (
           <div className="search-bar-wrap">
-          <div className="search-form">
-            <input
-              ref={inputRef}
-              className="search-input"
-              type="text"
-              value={query}
-              onChange={e => setQuery(e.target.value)}
-              onKeyDown={handleKey}
-              placeholder={t.placeholder}
-              autoComplete="off"
-              disabled={loading}
-            />
-            <button
-              className="search-btn"
-              onClick={() => handleSearch()}
-              disabled={loading || !query.trim()}
-            >
-              ➔
-            </button>
+            <div className="search-form">
+              <input
+                ref={inputRef}
+                className="search-input"
+                type="text"
+                value={query}
+                onChange={e => setQuery(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                placeholder={t.placeholder}
+                autoComplete="off"
+                disabled={loading}
+              />
+              <button
+                className="search-btn"
+                onClick={() => handleSearch()}
+                disabled={loading || !query.trim()}
+              >
+                ➔
+              </button>
+            </div>
           </div>
-        </div>
         )}
       </div>
     </>
