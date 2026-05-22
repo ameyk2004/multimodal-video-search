@@ -33,7 +33,6 @@ class QdrantSearcher:
                     "start_time": hit.payload.get("start_time", 0),
                     "duration": hit.payload.get("duration", 0),
                     "marathi_raw": hit.payload.get("marathi_raw", ""),
-                    "english_translated": hit.payload.get("english_translated", ""),
                 }
             )
 
