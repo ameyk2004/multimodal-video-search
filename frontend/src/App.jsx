@@ -1,11 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 import ParticleCanvas from './components/ParticleCanvas';
 import ResultCard from './components/ResultCard';
+import petheImage from './assets/images/pethekaka.png';
 
 const CONTENT = {
   mr: {
     title: 'श्री पेठेकाका ज्ञानकोश',
     subtitle: 'डॉ. सुहास पेठे (श्री पेठेकाका) यांच्या शिकवणींचा आणि साहित्याचा AI-आधारित शोध. अभंग, आरत्या, श्लोक आणि चिंतने येथे शोधा.',
+    bio: 'संत श्री पेठे काका हे साताऱ्याच्या भूमीतून अध्यात्म, साधना आणि नामस्मरणाचा दिवा प्रज्वलित करणारे एक प्रेरणादायी व्यक्तिमत्त्व मानले जातात. त्यांच्या वाणीमध्ये साधेपणा, विचारांमध्ये गूढ अध्यात्म आणि प्रत्येक भक्ताविषयी अपार प्रेम दिसून येते. त्यांनी लोकांना केवळ धर्म शिकवला नाही, तर जीवन कसे शांत, समाधानी आणि सद्गुणी पद्धतीने जगावे हेही समजावून सांगितले. त्यांच्या मार्गदर्शनामुळे अनेकांच्या जीवनात सकारात्मक बदल घडले असून, श्रद्धा, भक्ती आणि आत्मविश्वासाचा नवा प्रकाश निर्माण झाला आहे. त्यांच्या शिकवणीत अहंकारापेक्षा नम्रता, दिखाव्यापेक्षा साधेपणा आणि शब्दांपेक्षा आचरणाला अधिक महत्त्व दिले जाते. अशा या संतस्वरूप व्यक्तिमत्त्वाने अनेकांच्या मनात अढळ श्रद्धेचे स्थान निर्माण केले आहे.',
     placeholder: 'मराठी किंवा इंग्रजीत प्रश्न विचारा...',
     suggestions: ['ध्यान मार्ग', 'अभंग', 'सृष्टीची दुःखे', 'आरती', 'ज्ञानेश्वरी'],
     loading: 'शोधत आहे...',
@@ -16,6 +18,7 @@ const CONTENT = {
   en: {
     title: 'Shree Pethe Kaka Knowledge Portal',
     subtitle: 'AI-powered search through the teachings, abhangs, and spiritual literature of Dr. Suhas Pethe (Shree Pethe Kaka).',
+    bio: 'Sant Shree Pethe Kaka is considered an inspiring personality from the land of Satara who ignited the lamp of spirituality, spiritual practice, and chanting. His speech reflects simplicity, his thoughts deep spirituality, and his immense love for every devotee. He not only taught religion but also how to live a peaceful, contented, and virtuous life. Under his guidance, many have experienced positive changes in their lives, bringing a new light of faith, devotion, and self-confidence. His teachings emphasize humility over ego, simplicity over show, and action over words. Such a saintly figure has created a place of unwavering faith in the minds of many.',
     placeholder: 'Ask your question in English or Marathi...',
     suggestions: ['Meditation path', 'Abhangs', 'Sorrows of life', 'Arati', 'Dnyaneshwari'],
     loading: 'Searching wisdom...',
@@ -109,15 +112,30 @@ export default function App() {
         <main className="main">
           {sessions.length === 0 && !loading && (
             <div className="hero">
-              <span className="hero-om">🪔</span>
-              <h1 className="hero-title">{t.title}</h1>
-              <p className="hero-sub">{t.subtitle}</p>
-              <div className="hero-suggestions">
-                {t.suggestions.map(s => (
-                  <button key={s} className="suggestion-chip" onClick={() => handleSearch(s)}>
-                    {s}
-                  </button>
-                ))}
+              <div className="hero-content-wrapper">
+                <div className="hero-image-container">
+                  <div className="hero-image-glow"></div>
+                  <img src={petheImage} alt="Shree Pethe Kaka" className="hero-image" />
+                </div>
+                <div className="hero-text-container">
+                  <span className="hero-om">🪔</span>
+                  <h1 className="hero-title">{t.title}</h1>
+                  <p className="hero-sub">{t.subtitle}</p>
+                  <div className="hero-bio-card">
+                    <p className="hero-bio">{t.bio}</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="hero-search-prompt">
+                <p>{t.placeholder}</p>
+                <div className="hero-suggestions">
+                  {t.suggestions.map(s => (
+                    <button key={s} className="suggestion-chip" onClick={() => handleSearch(s)}>
+                      {s}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           )}
