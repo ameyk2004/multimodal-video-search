@@ -30,7 +30,7 @@ def upload_directory_to_s3(bucket_name, source_dir):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--action', required=True, choices=['get_account', 'create_bucket', 'upload', 'empty_bucket', 'delete_bucket', 'get_stack_bucket'])
+    parser.add_argument('--action', required=True, choices=['get_account', 'create_bucket', 'upload', 'empty_bucket', 'delete_bucket', 'get_stack_bucket', 'list_buckets'])
     parser.add_argument('--bucket', required=False)
     parser.add_argument('--source', required=False)
     parser.add_argument('--stack', required=False)
@@ -95,6 +95,11 @@ def main():
             print("Missing --bucket or --source")
             sys.exit(1)
         upload_directory_to_s3(args.bucket, args.source)
+        
+    elif args.action == 'list_buckets':
+        s3 = boto3.client('s3')
+        for bucket in s3.list_buckets().get('Buckets', []):
+            print(bucket['Name'])
 
 if __name__ == "__main__":
     main()

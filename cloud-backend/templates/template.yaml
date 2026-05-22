@@ -166,4 +166,4 @@ Outputs:
     Value: !Ref UiBucket
   WebsiteURL:
     Description: URL of the frontend static website
-    Value: !GetAtt UiBucket.WebsiteURL
+    Value: !Sub "http://${UiBucket}.s3-website-${AWS::Region}.amazonaws.com"

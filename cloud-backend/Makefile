@@ -41,16 +41,18 @@ release: build
 		echo ""; \
 		echo "✅ Stack updated successfully!"; \
 		UI_BUCKET=$$(python3.12 ../scripts/aws_helper.py --action get_stack_bucket --stack $(STACK_NAME) --logical_id UiBucket 2>/dev/null || echo ""); \
-		WEBSITE_URL=$$(aws cloudformation describe-stacks --stack-name $(STACK_NAME) --query "Stacks[0].Outputs[?OutputKey=='WebsiteURL'].OutputValue" --output text 2>/dev/null); \
 		if [ -n "$$UI_BUCKET" ] && [ "$$UI_BUCKET" != "None" ]; then \
 			echo "📦 Building Frontend..."; \
 			cd ../frontend && npm install && npm run build && cd ../cloud-backend; \
+			echo "☁️ Fetching API URL to generate config.json..."; \
+			API_URL=$$(aws cloudformation describe-stacks --stack-name $(STACK_NAME) --query "Stacks[0].Outputs[?OutputKey=='SearchApiUrl'].OutputValue" --output text 2>/dev/null); \
+			if [ -n "$$API_URL" ] && [ "$$API_URL" != "None" ]; then \
+				echo "{\"VITE_API_URL\": \"$$API_URL\"}" > ../frontend/dist/config.json; \
+			fi; \
 			echo "☁️ Uploading Frontend to $$UI_BUCKET..."; \
 			python3.12 ../scripts/aws_helper.py --action upload --bucket $$UI_BUCKET --source ../frontend/dist; \
 			echo ""; \
-			echo "🎉 Frontend is live at: $$WEBSITE_URL"; \
-		else \
-			echo "🎉 Frontend is live at: $$WEBSITE_URL"; \
+			echo "🎉 Frontend is live at: http://$$UI_BUCKET.s3-website-$$(aws configure get region || echo us-east-1).amazonaws.com"; \
 		fi; \
 		sam list stack-outputs --stack-name $(STACK_NAME); \
 	else \
