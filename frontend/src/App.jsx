@@ -5,7 +5,8 @@ import ResultCard from './components/ResultCard';
 import StoryCard from './components/StoryCard';
 import VideoLibraryCard from './components/VideoLibraryCard';
 import CinematicVideoPanel from './components/CinematicVideoPanel';
-import petheImage from './assets/images/pethekaka.png';
+import HomePage from './components/HomePage';
+import SearchPage from './components/SearchPage';
 import { api } from './utils/api';
 
 const CONTENT = {
@@ -146,7 +147,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (location.pathname === '/') {
+    if (location.pathname === '/search') {
       if (latestSessionRef.current) {
         latestSessionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
@@ -178,7 +179,7 @@ export default function App() {
     if (!searchQuery || loading) return;
     setQuery('');
     setLoading(true);
-    navigate('/');
+    navigate('/search');
 
     try {
       const data = await api.search(searchQuery);
@@ -406,56 +407,21 @@ export default function App() {
                   </div>
                 ) : (
                   <>
-                    {/* Featured Preview (First Video) */}
-                    {allVideos.length > 0 && (
-                      <div className="library-featured-section">
-                        <div 
-                          className="library-featured-card"
-                          onClick={() => {
-                            setSelectedVideo(allVideos[0]);
-                            setSelectedVideoTitle("Featured Teaching");
-                          }}
-                        >
-                          <img 
-                            src={`https://img.youtube.com/vi/${allVideos[0].video_id}/maxresdefault.jpg`} 
-                            onError={(e) => { e.target.src = `https://img.youtube.com/vi/${allVideos[0].video_id}/hqdefault.jpg`; }}
-                            alt="Featured Teaching" 
-                            className="library-featured-thumb" 
-                          />
-                          <div className="library-featured-overlay">
-                            <span className="featured-badge">Featured Teaching</span>
-                            <h2 className="featured-title">Guruji's Core Discourse</h2>
-                            <p className="featured-meta">
-                              {allVideos[0].topic_count} Topics Covered • {allVideos[0].query_count} Questions
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Shelves */}
-                    <div className="library-shelves-container">
-                      {(libraryActiveFilter === 'सर्व' ? _LIBRARY_TOPICS : [libraryActiveFilter]).map(topic => {
-                        const topicVideos = allVideos.filter(v => v.topics && v.topics.includes(topic));
-                        if (topicVideos.length === 0) return null;
-                        return (
-                          <div key={topic} className="library-shelf">
-                            <h3 className="library-shelf-title">{topic}</h3>
-                            <div className="library-shelf-scroll">
-                              {topicVideos.map((video, i) => (
-                                <VideoLibraryCard 
-                                  key={`${video.video_id}-${i}`} 
-                                  video={video} 
-                                  onClick={(title) => {
-                                    setSelectedVideo(video);
-                                    setSelectedVideoTitle(title);
-                                  }}
-                                />
-                              ))}
-                            </div>
-                          </div>
-                        );
-                      })}
+                    {/* Simple Grid of all videos from /videos */}
+                    <div className="library-shelves-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '24px', padding: '20px 0' }}>
+                      {allVideos.filter(v => {
+                        if (libraryActiveFilter === 'सर्व') return true;
+                        return (v.topics && v.topics.includes(libraryActiveFilter)) || (v.key_topics && v.key_topics.includes(libraryActiveFilter));
+                      }).map((v, i) => (
+                        <VideoLibraryCard 
+                          key={`${v.video_id}-${i}`} 
+                          video={v} 
+                          onClick={(title) => {
+                            setSelectedVideo(v);
+                            setSelectedVideoTitle(title || "Teaching Module");
+                          }} 
+                        />
+                      ))}
                     </div>
                   </>
                 )}
@@ -474,142 +440,29 @@ export default function App() {
               </div>
             } />
 
-            <Route path="/" element={
-              <>
-                {sessions.length === 0 && !loading && (
-                  <div className="hero">
-                    <div className="hero-top">
-                      <span className="hero-om">🪔</span>
-                      <h1 className="hero-title">{t.title}</h1>
-                      <p className="hero-sub">{t.subtitle}</p>
-                      
-                      <div className="hero-search-prompt">
-                        <p>{t.placeholder}</p>
-                        <div className="hero-suggestions">
-                          {t.suggestions.map(s => (
-                            <button key={s} className="suggestion-chip" onClick={() => handleSearch(s)}>
-                              {s}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="hero-about">
-                      <div className="hero-image-container">
-                        <div className="hero-image-glow"></div>
-                        <img src={petheImage} alt="Shree Pethe Kaka" className="hero-image" />
-                      </div>
-                      <div className="hero-bio-card">
-                        <p className="hero-bio">{t.bio}</p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {sessions.map((session, si) => {
-                  const isLatest = si === sessions.length - 1;
-                  const allSuggestions = new Set();
-                  Object.values(session.metadata || {}).forEach(m => {
-                    if (m.suggested_queries) m.suggested_queries.forEach(sq => allSuggestions.add(sq));
-                  });
-                  const topSuggestions = Array.from(allSuggestions).slice(0, 5);
-
-                  return (
-                    <div key={si} className="chat-thread" ref={isLatest ? latestSessionRef : null}>
-                      <div className="user-bubble-row">
-                        <div className="user-bubble">{session.query}</div>
-                      </div>
-
-                      {session.error && (
-                        <div className="error-box">⚠ {session.error}</div>
-                      )}
-
-                      {session.results.length > 0 && (
-                        <div>
-                          <div className="results-header">
-                            <span>✧ {lang === 'mr' ? `${session.results.length} ${t.found}` : `${session.results.length} ${t.found}`}</span>
-                          </div>
-                          <div className="results-list">
-                            {session.results.map((r, i) => (
-                              <ResultCard
-                                key={`${r.video_id}-${r.start_time}-${i}`}
-                                result={r}
-                                rank={i + 1}
-                                isMarathi={lang === 'mr'}
-                                metadata={session.metadata?.[r.video_id]}
-                                onSearch={handleSearch}
-                                style={{ animationDelay: `${i * 0.08}s` }}
-                              />
-                            ))}
-                          </div>
-                          
-                          {topSuggestions.length > 0 && (
-                            <div className="dynamic-suggestions">
-                              <div className="suggestions-label">{t.tryThese}</div>
-                              <div className="hero-suggestions" style={{justifyContent: 'flex-start', marginTop: '8px'}}>
-                                {topSuggestions.map(s => (
-                                  <button key={s} className="suggestion-chip" onClick={() => handleSearch(s)}>
-                                    {s}
-                                  </button>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-
-                {loading && (
-                  <div className="chat-thread">
-                    <div className="user-bubble-row">
-                      <div className="user-bubble" style={{ opacity: 0.7 }}>...</div>
-                    </div>
-                    <div className="loading-wrapper">
-                      <div className="energy-ring" />
-                      <span className="loading-text">{t.loading}</span>
-                    </div>
-                  </div>
-                )}
-                <div ref={bottomRef} />
-              </>
+            <Route path="/" element={<HomePage t={t} lang={lang} allVideos={allVideos} onSearch={handleSearch} />} />
+            
+            <Route path="/search" element={
+              <SearchPage 
+                lang={lang} 
+                t={t} 
+                query={query} 
+                setQuery={setQuery} 
+                sessions={sessions} 
+                setSessions={setSessions} 
+                loading={loading} 
+                setLoading={setLoading}
+                isListening={isListening} 
+                setIsListening={setIsListening}
+                handleSearch={handleSearch} 
+                startVoiceSearch={startVoiceSearch}
+                bottomRef={bottomRef} 
+                latestSessionRef={latestSessionRef} 
+                inputRef={inputRef}
+              />
             } />
           </Routes>
         </main>
-
-        {location.pathname === '/' && (
-          <div className="search-bar-wrap">
-            <div className="search-form">
-              <input
-                ref={inputRef}
-                className="search-input"
-                type="text"
-                value={query}
-                onChange={e => setQuery(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                placeholder={t.placeholder}
-                autoComplete="off"
-                disabled={loading}
-              />
-              <button 
-                onClick={() => startVoiceSearch(setQuery)} 
-                className={`icon-btn ${isListening ? 'listening' : ''}`}
-                title="Voice Search"
-              >
-                🎤
-              </button>
-              <button
-                className="search-btn"
-                onClick={() => handleSearch()}
-                disabled={loading || !query.trim()}
-              >
-                ➔
-              </button>
-            </div>
-          </div>
-        )}
       </div>
     </>
   );

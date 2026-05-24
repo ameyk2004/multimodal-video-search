@@ -109,7 +109,7 @@ def lambda_handler(event: dict, context: Any) -> dict:
                         item = resp["Item"]
                         video_metadata[vid] = {
                             "topics": item.get("topics", []),
-                            "suggested_queries": item.get("suggested_queries", []),
+                            "queries": item.get("queries", []),
                             "stories": item.get("stories", [])
                         }
             except Exception as e:

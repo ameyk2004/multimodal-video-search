@@ -73,20 +73,20 @@ export default function VideoDetailModal({ video, initialTitle, onClose }) {
               )}
 
               {/* Queries Section */}
-              {details.suggested_queries && details.suggested_queries.length > 0 && (
+              {details.queries && details.queries.length > 0 && (
                 <div className="library-modal-section">
                   <h3>Sample Questions</h3>
                   <div className="library-queries-list">
-                    {(showAllQueries ? details.suggested_queries : details.suggested_queries.slice(0, 5)).map((q, i) => (
+                    {(showAllQueries ? details.queries : details.queries.slice(0, 5)).map((q, i) => (
                       <div key={i} className="library-query-item">
                         <span className="query-icon">?</span>
                         <p>{q}</p>
                       </div>
                     ))}
                   </div>
-                  {details.suggested_queries.length > 5 && (
+                  {details.queries.length > 5 && (
                     <button className="library-view-more" onClick={() => setShowAllQueries(!showAllQueries)}>
-                      {showAllQueries ? "Show Less Questions" : `View ${details.suggested_queries.length - 5} More Questions`}
+                      {showAllQueries ? "Show Less Questions" : `View ${details.queries.length - 5} More Questions`}
                     </button>
                   )}
                 </div>

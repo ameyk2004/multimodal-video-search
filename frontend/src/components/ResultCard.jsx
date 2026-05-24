@@ -1,11 +1,17 @@
 import { useState } from 'react';
 import { formatTime, ytEmbedUrl, ytThumb } from '../utils';
 
-export default function ResultCard({ result, rank, style, isMarathi, metadata, onSearch }) {
-  const [isPlaying, setIsPlaying] = useState(false);
+export default function ResultCard({ result, rank, style, isMarathi, metadata, onSearch, playingVideoId, setPlayingVideoId }) {
   const [isTextExpanded, setIsTextExpanded] = useState(false);
   
   const { video_id, start_time, marathi_raw, score } = result;
+  const currentId = `${video_id}-${start_time}`;
+  const isPlaying = playingVideoId === currentId;
+  const setIsPlaying = (play) => {
+    if (setPlayingVideoId) {
+      setPlayingVideoId(play ? currentId : null);
+    }
+  };
   
   const timeLabel = formatTime(start_time);
   const pct = Math.round(score * 100);
@@ -25,6 +31,11 @@ export default function ResultCard({ result, rank, style, isMarathi, metadata, o
               alt="Video Thumbnail" 
               className="video-thumb" 
               loading="lazy"
+              onError={(e) => {
+                if (e.target.src.includes('mqdefault')) {
+                  e.target.src = `https://img.youtube.com/vi/${video_id}/0.jpg`;
+                }
+              }}
             />
             <div className="play-overlay">
               <button className="play-btn">▶</button>

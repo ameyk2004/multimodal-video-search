@@ -26,8 +26,15 @@ export default function VideoLibraryCard({ video, onClick }) {
     <div className="video-library-card" onClick={() => onClick(youtubeTitle)}>
       <div className="library-card-thumb-container">
         <img 
-          src={`https://img.youtube.com/vi/${video.video_id}/maxresdefault.jpg`} 
-          onError={(e) => { e.target.src = `https://img.youtube.com/vi/${video.video_id}/hqdefault.jpg`; }}
+          src={`https://img.youtube.com/vi/${video.video_id}/hqdefault.jpg`} 
+          onError={(e) => { 
+            const currentSrc = e.target.src;
+            if (currentSrc.includes('hqdefault')) {
+              e.target.src = `https://img.youtube.com/vi/${video.video_id}/mqdefault.jpg`;
+            } else if (currentSrc.includes('mqdefault')) {
+              e.target.src = `https://img.youtube.com/vi/${video.video_id}/0.jpg`;
+            }
+          }}
           alt={youtubeTitle} 
           className="library-card-thumb" 
         />

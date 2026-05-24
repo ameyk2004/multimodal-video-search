@@ -18,8 +18,7 @@ const StoryModal = ({ story, onClose }) => {
     };
   }, [onClose]);
 
-  const fallbackThumbnailUrl = `https://img.youtube.com/vi/${video_id}/mqdefault.jpg`;
-  const thumbUrl = story.thumbnail_url || fallbackThumbnailUrl;
+  const [thumbSrc, setThumbSrc] = useState(story.thumbnail_url || `https://img.youtube.com/vi/${video_id}/hqdefault.jpg`);
 
   return (
     <div className="story-modal-overlay" onClick={onClose}>
@@ -29,7 +28,15 @@ const StoryModal = ({ story, onClose }) => {
         <div className="story-modal-video">
           {!iframeLoaded && (
             <div className="video-loading-placeholder" style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#000', overflow: 'hidden' }}>
-              <img src={thumbUrl} alt="Loading..." style={{ width: '100%', height: '100%', objectFit: 'cover', transform: 'scale(1.35)', position: 'absolute' }} />
+              <img 
+                src={thumbSrc} 
+                alt="Loading..." 
+                style={{ width: '100%', height: '100%', objectFit: 'cover', transform: 'scale(1.35)', position: 'absolute' }} 
+                onError={() => {
+                  if (thumbSrc.includes('hqdefault')) setThumbSrc(`https://img.youtube.com/vi/${video_id}/mqdefault.jpg`);
+                  else if (thumbSrc.includes('mqdefault')) setThumbSrc(`https://img.youtube.com/vi/${video_id}/0.jpg`);
+                }}
+              />
               <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)' }}></div>
               <div className="energy-ring" style={{ position: 'relative', zIndex: 2, marginBottom: '16px' }}></div>
               <span style={{ position: 'relative', zIndex: 2, color: '#fff', fontSize: '18px', fontWeight: 600, letterSpacing: '0.5px' }}>व्हिडिओ लोड होत आहे...</span>
@@ -96,8 +103,7 @@ const StoryCard = ({ story }) => {
     thumbnail_url
   } = story;
 
-  const fallbackThumbnailUrl = `https://img.youtube.com/vi/${video_id}/hqdefault.jpg`;
-  const thumbUrl = thumbnail_url || fallbackThumbnailUrl;
+  const [thumbSrc, setThumbSrc] = useState(thumbnail_url || `https://img.youtube.com/vi/${video_id}/hqdefault.jpg`);
 
   const formatTime = (seconds) => {
     if (!seconds) return "0:00";
@@ -111,8 +117,11 @@ const StoryCard = ({ story }) => {
       <div className="premium-story-card" onClick={() => setIsModalOpen(true)}>
         <div className="story-card-left">
           <img 
-            src={thumbUrl} 
-            onError={(e) => { e.target.onerror = null; e.target.src = fallbackThumbnailUrl; }}
+            src={thumbSrc} 
+            onError={() => {
+              if (thumbSrc.includes('hqdefault')) setThumbSrc(`https://img.youtube.com/vi/${video_id}/mqdefault.jpg`);
+              else if (thumbSrc.includes('mqdefault')) setThumbSrc(`https://img.youtube.com/vi/${video_id}/0.jpg`);
+            }}
             alt={title} 
             className="story-card-thumb" 
           />

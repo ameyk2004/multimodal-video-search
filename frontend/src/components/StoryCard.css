@@ -277,7 +277,8 @@
 
 .story-modal-video {
   width: 100%;
-  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  max-height: 55vh;
+  aspect-ratio: 16 / 9;
   background: #000;
   border-radius: 16px;
   overflow: hidden;
