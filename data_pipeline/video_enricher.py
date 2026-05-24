@@ -141,13 +141,27 @@ class VideoEnricher:
         Process every raw JSON in input_dir. Idempotent.
         """
         import glob
-        raw_files = glob.glob(os.path.join(self.input_dir, "*.json"))
+        raw_files = sorted(glob.glob(os.path.join(self.input_dir, "*.json")))
+        total_files = len(raw_files)
+        logger.info(f"Starting enrichment process for {total_files} videos.")
+        print(f"🚀 Starting enrichment process for {total_files} videos in {self.input_dir}")
+        
         results = []
-        for filepath in raw_files:
+        for idx, filepath in enumerate(raw_files, start=1):
             video_id = os.path.splitext(os.path.basename(filepath))[0]
-            result = self.process_video(video_id)
-            if result:
-                results.append(result)
+            print(f"[{idx}/{total_files}] Processing {video_id}...")
+            try:
+                result = self.process_video(video_id)
+                if result:
+                    results.append(result)
+                    print(f"  ✅ Success: {video_id} enriched.")
+                else:
+                    print(f"  ⚠️ Skipped / No result: {video_id}")
+            except Exception as e:
+                logger.error(f"Failed to process video {video_id}", exc_info=True)
+                print(f"  ❌ Error processing {video_id}: {e}")
+                
+        print(f"🎉 Enrichment complete! Successfully processed {len(results)} out of {total_files} videos.")
         return results
 
     # ── Private helpers ───────────────────────────────────────────────────────
