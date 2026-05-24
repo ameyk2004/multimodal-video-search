@@ -1,7 +1,7 @@
 """
 Video Enricher Module.
 Runs ONCE per video over the full concatenated transcript to extract structured
-metadata (topics, queries, stories) using the Gemini LLM.
+metadata (topics, queries, stories, actionable practices, quoted verses) using the Gemini LLM.
 
 The enrichment artefact is saved to:
     data_pipeline/enriched_metadata/<video_id>_meta.json
@@ -16,9 +16,8 @@ import os
 import json
 import logging
 import time
+import bisect
 from typing import Optional
-import boto3
-from botocore.exceptions import ClientError
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
@@ -26,46 +25,60 @@ from dotenv import load_dotenv
 load_dotenv()
 logger = logging.getLogger(__name__)
 
-# ── Strict Marathi system prompt ──────────────────────────────────────────────
-_SYSTEM_PROMPT = """तू एक अत्यंत ज्ञानी आध्यात्मिक विश्लेषक आहेस. तुझे ध्येय अशा साधकांना किंवा शिष्यांना मदत करणे आहे ज्यांच्या मनात आध्यात्मिक शंका आहेत.
+_MASTER_TOPICS = '["भक्ती", "कर्मयोग", "ध्यान/साधना", "चित्तशुद्धी", "अहंकार नाश", "सत्संग", "वैराग्य", "नामस्मरण", "ईश्वरप्राप्ती", "संसार आणि परमार्थ"]'
+
+_SYSTEM_PROMPT = f"""तू एक अत्यंत ज्ञानी आध्यात्मिक विश्लेषक आहेस. तुझे ध्येय अशा साधकांना मदत करणे आहे ज्यांच्या मनात आध्यात्मिक शंका आहेत.
 तुला संपूर्ण व्हिडिओची ट्रान्स्क्रिप्ट दिली जाईल. तुझे विचार आणि संपूर्ण आउटपुट फक्त आणि फक्त 'मराठी' भाषेत असावे.
 
-१. 'primary_topics': व्हिडिओमध्ये जेवढे महत्त्वाचे आध्यात्मिक विषय सविस्तर हाताळले आहेत, ते सर्व विषय यादीत लिहा. कोणतीही संख्यात्मक मर्यादा नाही.
-२. 'suggested_queries': शिष्यांच्या मनात ज्या खऱ्या आणि प्रामाणिक शंका येऊ शकतात, तसे प्रश्न तयार करा. (उदा. 'माझे मन अभ्यासात/साधनेत एकाग्र कसे करू?'). अट एकच: तू तयार केलेल्या प्रत्येक प्रश्नाचे अचूक आणि स्पष्ट उत्तर या व्हिडिओमध्ये गुरूजींनी दिलेले असलेच पाहिजे.
-३. 'stories_found': व्हिडिओमध्ये गुरूजींनी सांगितलेली कोणतीही कथा, दृष्टांत किंवा उदाहरण शोधून काढा. प्रत्येक कथेचे शीर्षक, संतांचे/पात्राचे नाव (नसल्यास 'सामान्य'), आणि कथेचे तात्पर्य (moral) स्पष्ट लिहा.
-४. कथेच्या अचूक वेळेसाठी (timestamps) कथेचे पहिले ५-१० शब्द ('exact_start_text') आणि शेवटचे ५-१० शब्द ('exact_end_text') जसेच्या तसे ट्रान्स्क्रिप्टमधून उचलून लिहा.
+तुझे नियम (STRICT RULES):
+१. Topics (विषय): खालील दिलेल्या अधिकृत यादीमधूनच विषय निवडा. स्वतःचे नवीन विषय बनवू नका. 
+अधिकृत यादी: {_MASTER_TOPICS}
+२. Queries: शिष्यांच्या मनात येणाऱ्या खऱ्या शंका (उदा. 'माझे मन एकाग्र कसे करू?'). प्रत्येक प्रश्नाचे उत्तर या व्हिडिओत असलेच पाहिजे.
+३. Stories (कथा): व्हिडिओमधील कथा शोधा. 
+   - 'normalized_saint_name': संतांचे नाव नेहमी प्रमाणित असावे (उदा. 'तुकोबा' ऐवजी 'संत तुकाराम महाराज', 'माऊली' ऐवजी 'संत ज्ञानेश्वर महाराज'). नसल्यास 'सामान्य' लिहा.
+   - 'associated_topics': ही कथा कोणत्या विषयावर आहे, ते वरील अधिकृत यादीतून निवडून लिहा.
+   - 'moral': कथेचे तात्पर्य अतिशय सविस्तर, किमान ३ ते ४ ओळींचे (lines) असावे.
+   - 'exact_start_text' / 'exact_end_text': कथेचे पहिले आणि शेवटचे ५-१० शब्द जसेच्या तसे लिहा.
+४. Actionable Practices (साधना/आचरण): गुरूजींनी शिष्यांना प्रत्यक्ष कृतीत आणण्यासाठी काय उपाय किंवा कृती सांगितली आहे (उदा. 'रोज १० मिनिटे नामस्मरण करा'), त्याची यादी करा.
+५. Quoted Verses (श्लोक/अभंग): गुरूजींनी एखादा श्लोक, अभंग किंवा ओवी जशीच्या तशी म्हटली असेल, तर ती वेगळी काढा.
 
 तुझे उत्तर खालील JSON schema मध्ये दे. JSON च्या बाहेर काहीही लिहू नकोस:
-{
-  "primary_topics": ["string", ...],
-  "suggested_queries": ["string", ...],
-  "stories_found": [
-    {
+{{
+  "topics": ["MUST be from the Master List"],
+  "queries": ["string"],
+  "stories": [
+    {{
       "title": "string",
-      "character_or_saint": "string",
-      "moral": "string",
+      "normalized_saint_name": "string",
+      "associated_topics": ["MUST be from the Master List"],
+      "moral": "string (Detailed, 3 to 4 lines long)",
       "exact_start_text": "string",
       "exact_end_text": "string"
-    }
+    }}
+  ],
+  "actionable_practices": ["string"],
+  "quoted_verses": [
+    {{
+      "verse_text": "string",
+      "source_or_author": "string (e.g., 'श्रीमद्भगवद्गीता', 'संत तुकाराम महाराज' or 'अज्ञात')"
+    }}
   ]
-}"""
+}}"""
 
 
 class VideoEnricher:
     """
     Runs once per video over the full concatenated Marathi transcript.
-    Uses Gemini to extract structured metadata and optionally saves it to DynamoDB.
+    Uses Gemini to extract structured metadata.
     """
 
     def __init__(
         self,
         input_dir: str = "data_pipeline/output",
         output_dir: str = "data_pipeline/enriched_metadata",
-        dynamodb_table: Optional[str] = None,
     ):
         self.input_dir = input_dir
         self.output_dir = output_dir
-        self.dynamodb_table = dynamodb_table
         os.makedirs(self.output_dir, exist_ok=True)
 
         # Gemini setup — google.genai SDK
@@ -77,15 +90,9 @@ class VideoEnricher:
         self._gen_config = types.GenerateContentConfig(
             system_instruction=_SYSTEM_PROMPT,
             response_mime_type="application/json",   # ask for raw JSON directly
+            temperature=0.0,
         )
-        logger.info("VideoEnricher initialised with Gemini (%s).", self._model_name)
-
-        # Optional DynamoDB
-        self._ddb = None
-        if self.dynamodb_table:
-            region = os.environ.get("AWS_DEFAULT_REGION", os.environ.get("AWS_REGION", "us-east-1"))
-            self._ddb = boto3.resource("dynamodb", region_name=region).Table(self.dynamodb_table)
-            logger.info("DynamoDB table '%s' connected.", self.dynamodb_table)
+        logger.info("VideoEnricher initialised with Gemini (%s) deterministic mode.", self._model_name)
 
     # ── Public API ────────────────────────────────────────────────────────────
 
@@ -97,7 +104,8 @@ class VideoEnricher:
         out_path = os.path.join(self.output_dir, f"{video_id}_meta.json")
         if os.path.exists(out_path):
             logger.info("Skipping %s – metadata already exists.", video_id)
-            return json.loads(open(out_path, encoding="utf-8").read())
+            with open(out_path, encoding="utf-8") as f:
+                return json.loads(f.read())
 
         raw_path = os.path.join(self.input_dir, f"{video_id}.json")
         if not os.path.exists(raw_path):
@@ -107,7 +115,7 @@ class VideoEnricher:
         with open(raw_path, encoding="utf-8") as f:
             fragments = json.load(f)
 
-        full_text = self._reconstruct_transcript(fragments)
+        full_text, char_to_time_map = self._reconstruct_transcript(fragments)
         if not full_text.strip():
             logger.warning("Empty transcript for %s. Skipping.", video_id)
             return None
@@ -116,17 +124,13 @@ class VideoEnricher:
         if not metadata:
             return None
 
-        self._resolve_story_timestamps(metadata, fragments)
+        self._resolve_story_timestamps(metadata, full_text, char_to_time_map)
 
         # Attach video_id and save
         metadata["video_id"] = video_id
         with open(out_path, "w", encoding="utf-8") as f:
             json.dump(metadata, f, ensure_ascii=False, indent=2)
         logger.info("Saved metadata for %s → %s", video_id, out_path)
-
-        # Push to DynamoDB if configured
-        if self._ddb:
-            self._push_to_dynamodb(metadata)
 
         return metadata
 
@@ -146,44 +150,53 @@ class VideoEnricher:
 
     # ── Private helpers ───────────────────────────────────────────────────────
     
-    def _resolve_story_timestamps(self, metadata: dict, fragments: list):
-        import difflib
-        stories = metadata.get("stories_found", [])
+    def _resolve_story_timestamps(self, metadata: dict, full_text: str, char_to_time_map: list):
+        """Find the start index of exact_start_text and map it to time."""
+        stories = metadata.get("stories", [])
+        if not stories:
+            return
+            
+        # Extract just the char indices for bisect
+        char_indices = [idx for idx, _ in char_to_time_map]
+
         for story in stories:
             start_text = story.get("exact_start_text", "")
             if not start_text:
                 continue
                 
-            # Naive fuzzy match to find the first fragment that matches the start text reasonably well
-            start_words = start_text.lower().split()
-            best_match_idx = -1
-            best_match_score = 0
+            start_index = full_text.find(start_text)
+            if start_index == -1:
+                logger.warning(f"Hallucination detected: Could not find exact_start_text '{start_text}' in transcript.")
+                continue
+
+            # Find the largest character index that is less than or equal to start_index
+            idx = bisect.bisect_right(char_indices, start_index) - 1
+            if idx >= 0:
+                story["start_time_seconds"] = char_to_time_map[idx][1]
+            else:
+                story["start_time_seconds"] = 0.0
+
+    def _reconstruct_transcript(self, fragments: list) -> tuple[str, list]:
+        """Concatenate all fragment texts and build a char index to timestamp map."""
+        full_text_parts = []
+        char_to_time_map = []
+        current_char_length = 0
+
+        for f in fragments:
+            text = f.get("text", f.get("marathi_raw", "")).strip()
+            if not text:
+                continue
+                
+            # Assume start time mapping
+            start_time = f.get("start", f.get("start_time", 0.0))
+            char_to_time_map.append((current_char_length, start_time))
             
-            for i, frag in enumerate(fragments):
-                frag_text = frag.get("text", frag.get("marathi_raw", "")).lower()
-                
-                # Check sequence match using difflib
-                matcher = difflib.SequenceMatcher(None, start_text.lower(), frag_text)
-                match_score = matcher.find_longest_match(0, len(start_text), 0, len(frag_text)).size / max(len(start_text), 1)
-                
-                # If exact text is completely inside fragment
-                if start_text.lower() in frag_text:
-                    best_match_idx = i
-                    break
-                elif match_score > best_match_score:
-                    best_match_score = match_score
-                    best_match_idx = i
-
-            if best_match_idx != -1:
-                story["start_time_seconds"] = fragments[best_match_idx].get("start", fragments[best_match_idx].get("start_time", 0))
-
-    def _reconstruct_transcript(self, fragments: list) -> str:
-        """Concatenate all fragment texts into a single clean string."""
-        return " ".join(
-            f.get("text", f.get("marathi_raw", "")).strip()
-            for f in fragments
-            if f.get("text") or f.get("marathi_raw")
-        )
+            full_text_parts.append(text)
+            # length of text plus the space added during join
+            current_char_length += len(text) + 1
+            
+        full_text = " ".join(full_text_parts)
+        return full_text, char_to_time_map
 
     def _call_llm(self, video_id: str, full_text: str) -> Optional[dict]:
         """Send the full transcript to Gemini and parse the JSON response."""
@@ -213,14 +226,6 @@ class VideoEnricher:
                     time.sleep(2 ** attempt)  # Exponential back-off
         return None
 
-    def _push_to_dynamodb(self, metadata: dict):
-        """Upsert the metadata record into DynamoDB."""
-        try:
-            self._ddb.put_item(Item=metadata)
-            logger.info("Pushed video_id=%s to DynamoDB.", metadata.get("video_id"))
-        except ClientError as e:
-            logger.error("DynamoDB write failed: %s", e.response["Error"]["Message"])
-
 
 # ── Standalone entry-point ────────────────────────────────────────────────────
 if __name__ == "__main__":
@@ -231,6 +236,5 @@ if __name__ == "__main__":
     enricher = VideoEnricher(
         input_dir="data_pipeline/output",
         output_dir="data_pipeline/enriched_metadata",
-        dynamodb_table=os.getenv("DYNAMODB_TABLE"),  # optional
     )
     enricher.process_all()

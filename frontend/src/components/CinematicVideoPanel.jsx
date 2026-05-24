@@ -6,49 +6,63 @@ const CinematicVideoPanel = ({ videoSummary, initialTitle, onClose }) => {
   const [details, setDetails] = useState(null);
   const [topics, setTopics] = useState([]);
   const [questions, setQuestions] = useState([]);
-  
+
   const [loadingDetails, setLoadingDetails] = useState(true);
   const [loadingTopics, setLoadingTopics] = useState(true);
   const [loadingQuestions, setLoadingQuestions] = useState(true);
 
   const videoId = videoSummary.video_id;
 
+  const [showAllTopics, setShowAllTopics] = useState(false);
+  const [showAllQuestions, setShowAllQuestions] = useState(false);
+  const [showAllStories, setShowAllStories] = useState(false);
+
   useEffect(() => {
-    // Progressive Data Loading
-    
-    // 1. Fetch Details (Stories)
+    // Progressive Data Loading changed to single fetch
+    // Since the deployed backend returns all data in /videos/{videoId}
+
+    setLoadingDetails(true);
+    setLoadingTopics(true);
+    setLoadingQuestions(true);
+
     api.getVideoDetails(videoId)
-      .then(res => setDetails(res))
-      .catch(err => console.error("Failed to load video details:", err))
-      .finally(() => setLoadingDetails(false));
-      
-    // 2. Fetch Topics
-    api.getVideoTopics(videoId)
-      .then(res => setTopics(res.topics || []))
-      .catch(err => console.error("Failed to load topics:", err))
-      .finally(() => setLoadingTopics(false));
-      
-    // 3. Fetch Questions
-    api.getVideoQuestions(videoId)
-      .then(res => setQuestions(res.questions || []))
-      .catch(err => console.error("Failed to load questions:", err))
-      .finally(() => setLoadingQuestions(false));
-      
+      .then(res => {
+        setDetails(res);
+        setLoadingDetails(false);
+
+        // Extract topics and questions from the same response
+        setTopics(res.topics || []);
+        setLoadingTopics(false);
+
+        setQuestions(res.queries || []);
+        setLoadingQuestions(false);
+      })
+      .catch(err => {
+        console.error("Failed to load video details:", err);
+        setLoadingDetails(false);
+        setLoadingTopics(false);
+        setLoadingQuestions(false);
+      });
+
   }, [videoId]);
 
   const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&modestbranding=1&rel=0`;
 
+  const displayedTopics = showAllTopics ? topics : topics.slice(0, 5);
+  const displayedQuestions = showAllQuestions ? questions : questions.slice(0, 5);
+  const displayedStories = details?.stories ? (showAllStories ? details.stories : details.stories.slice(0, 5)) : [];
+
   return (
     <div className="cinematic-overlay" onClick={onClose}>
       <div className="cinematic-panel-container" onClick={e => e.stopPropagation()}>
-        
+
         <button className="cinematic-close-btn" onClick={onClose}>×</button>
 
         <div className="cinematic-layout">
           {/* LEFT: Immersive Player */}
           <div className="cinematic-player-section">
             <div className="cinematic-player-wrapper">
-              <iframe 
+              <iframe
                 src={embedUrl}
                 title="YouTube Video Player"
                 frameBorder="0"
@@ -57,7 +71,7 @@ const CinematicVideoPanel = ({ videoSummary, initialTitle, onClose }) => {
                 className="cinematic-iframe"
               ></iframe>
             </div>
-            
+
             <div className="cinematic-player-info">
               <h1 className="cinematic-title">{initialTitle || `Discourse ${videoId}`}</h1>
               <p className="cinematic-meta-sub">
@@ -69,16 +83,24 @@ const CinematicVideoPanel = ({ videoSummary, initialTitle, onClose }) => {
           {/* RIGHT: Scrollable Knowledge Panel */}
           <div className="cinematic-knowledge-panel">
             <div className="knowledge-panel-content">
-              
+
               <section className="knowledge-section">
                 <h2>Key Topics</h2>
                 {loadingTopics ? (
                   <div className="knowledge-loading">Loading topics...</div>
                 ) : (
                   <div className="knowledge-tags">
-                    {topics.map((t, i) => (
+                    {displayedTopics.map((t, i) => (
                       <span key={i} className="knowledge-tag topic-tag">{t}</span>
                     ))}
+                    {topics.length > 5 && (
+                      <button
+                        className="view-more-btn"
+                        onClick={() => setShowAllTopics(!showAllTopics)}
+                      >
+                        {showAllTopics ? "View Less" : "View More"}
+                      </button>
+                    )}
                     {topics.length === 0 && <span className="knowledge-empty">No topics found.</span>}
                   </div>
                 )}
@@ -90,9 +112,18 @@ const CinematicVideoPanel = ({ videoSummary, initialTitle, onClose }) => {
                   <div className="knowledge-loading">Loading questions...</div>
                 ) : (
                   <ul className="knowledge-query-list">
-                    {questions.map((q, i) => (
+                    {displayedQuestions.map((q, i) => (
                       <li key={i} className="knowledge-query-item">{q}</li>
                     ))}
+                    {questions.length > 5 && (
+                      <button
+                        className="view-more-btn"
+                        onClick={() => setShowAllQuestions(!showAllQuestions)}
+                        style={{ marginTop: '10px' }}
+                      >
+                        {showAllQuestions ? "View Less" : "View More"}
+                      </button>
+                    )}
                     {questions.length === 0 && <span className="knowledge-empty">No queries found.</span>}
                   </ul>
                 )}
@@ -104,13 +135,24 @@ const CinematicVideoPanel = ({ videoSummary, initialTitle, onClose }) => {
                   <div className="knowledge-loading">Loading stories...</div>
                 ) : (
                   <div className="knowledge-story-list">
-                    {details && details.stories && details.stories.length > 0 ? (
-                      details.stories.map((story, i) => (
-                        <div key={i} className="knowledge-story-card">
-                          <h3>{story.title}</h3>
-                          {story.moral && <p className="story-moral">"{story.moral}"</p>}
-                        </div>
-                      ))
+                    {displayedStories.length > 0 ? (
+                      <>
+                        {displayedStories.map((story, i) => (
+                          <div key={i} className="knowledge-story-card">
+                            <h3>{story.title}</h3>
+                            {story.moral && <p className="story-moral">"{story.moral}"</p>}
+                          </div>
+                        ))}
+                        {details.stories.length > 5 && (
+                          <button
+                            className="view-more-btn"
+                            onClick={() => setShowAllStories(!showAllStories)}
+                            style={{ alignSelf: 'flex-start' }}
+                          >
+                            {showAllStories ? "View Less" : "View More"}
+                          </button>
+                        )}
+                      </>
                     ) : (
                       <span className="knowledge-empty">No stories available.</span>
                     )}

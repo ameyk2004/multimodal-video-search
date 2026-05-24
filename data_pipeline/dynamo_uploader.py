@@ -55,8 +55,10 @@ def upload_metadata(input_dir: str, table_name: str = "guru-video-metadata"):
                 final_video_id = data.get("video_id", extracted_video_id)
                 
                 topics = data.get("topics", data.get("primary_topics", []))
-                queries = data.get("suggested_queries", [])
-                stories = data.get("stories_found", [])
+                queries = data.get("queries", data.get("suggested_queries", []))
+                stories = data.get("stories", data.get("stories_found", []))
+                actionable_practices = data.get("actionable_practices", [])
+                quoted_verses = data.get("quoted_verses", [])
                 
                 logging.info(f"File: {filepath} | ID: {final_video_id} | Topics: {len(topics)} | Queries: {len(queries)} | Stories: {len(stories)}")
                 
@@ -64,8 +66,10 @@ def upload_metadata(input_dir: str, table_name: str = "guru-video-metadata"):
                 item = {
                     "video_id": final_video_id,
                     "topics": topics,
-                    "suggested_queries": queries,
-                    "stories": stories
+                    "queries": queries,
+                    "stories": stories,
+                    "actionable_practices": actionable_practices,
+                    "quoted_verses": quoted_verses
                 }
                 
                 batch.put_item(Item=item)

@@ -53,7 +53,5 @@ export const api = {
   getStories: () => apiClient(`/stories`),
   getVideos: () => apiClient(`/videos`),
   getVideoDetails: (videoId) => apiClient(`/videos/${videoId}`),
-  getVideoTopics: (videoId) => apiClient(`/videos/${videoId}/topics`),
-  getVideoQuestions: (videoId) => apiClient(`/videos/${videoId}/questions`),
   getConfig: fetchConfig
 };

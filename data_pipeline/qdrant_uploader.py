@@ -68,6 +68,7 @@ class QdrantManager:
                 # Package the payload (metadata)
                 payload = {
                     "video_id": video_id,
+                    "type": row.get('type', 'video'),
                     "marathi_raw": row.get('marathi_raw', ''),
                     "start_time": start_time,
                     "duration": row.get('duration', 0)

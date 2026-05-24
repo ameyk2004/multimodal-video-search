@@ -284,3 +284,21 @@
     font-size: 24px;
   }
 }
+
+.view-more-btn {
+  background: transparent;
+  color: #E65100;
+  border: 1px solid #E65100;
+  padding: 6px 14px;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  align-self: flex-start;
+}
+
+.view-more-btn:hover {
+  background: rgba(230, 81, 0, 0.1);
+  transform: translateY(-1px);
+}
