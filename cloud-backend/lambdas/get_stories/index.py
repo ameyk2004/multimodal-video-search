@@ -3,6 +3,7 @@ import os
 import logging
 import boto3
 import decimal
+import random
 from typing import List, Optional
 from pydantic import BaseModel
 
@@ -97,6 +98,8 @@ def lambda_handler(event, context):
                     youtube_url=f"https://www.youtube.com/watch?v={video_id}&t={start_time}s",
                     searchable_text=searchable_text
                 ))
+        # Shuffle the stories to provide a Discovery-style feed
+        random.shuffle(all_stories)
         
         response_model = StoriesResponse(stories=all_stories)
         return _build_response(200, response_model)

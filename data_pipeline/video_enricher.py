@@ -17,6 +17,8 @@ import json
 import logging
 import time
 import bisect
+import re
+import string
 from typing import Optional
 from google import genai
 from google.genai import types
@@ -166,12 +168,21 @@ class VideoEnricher:
                 
             start_index = full_text.find(start_text)
             if start_index == -1:
-                # Progressive fallback: Try progressively smaller chunks to avoid false positives 
-                # (since a very small snippet like 25 chars might appear multiple times).
-                for length in [150, 100, 50, 30]:
-                    if len(start_text) > length:
-                        snippet = start_text.strip()[:length]
-                        start_index = full_text.find(snippet)
+                # Fallback: Progressive regex word matching to handle punctuation differences & minor hallucinations
+                words = start_text.split()
+                clean_words = [w.strip(string.punctuation) for w in words if w.strip(string.punctuation)]
+                
+                if clean_words:
+                    for length in [15, 10, 7, 5, 3]:
+                        for offset in [0, 1, 2]:
+                            if offset + length <= len(clean_words):
+                                pattern_words = clean_words[offset : offset + length]
+                                # Match sequence allowing for whitespace and punctuation gaps
+                                pattern = r'[\s,.\?!;:\"\'\-]+'.join(re.escape(w) for w in pattern_words)
+                                match = re.search(pattern, full_text)
+                                if match:
+                                    start_index = match.start()
+                                    break
                         if start_index != -1:
                             break
                 

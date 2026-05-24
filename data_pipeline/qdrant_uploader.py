@@ -15,7 +15,7 @@ from qdrant_client import QdrantClient
 from qdrant_client.http.models import Distance, VectorParams, PointStruct
 
 class QdrantManager:
-    def __init__(self, collection_name="guru-videos"):
+    def __init__(self, collection_name="guru-videos", recreate_collection: bool = True):
         load_dotenv()
         url = os.getenv("QDRANT_URL")
         api_key = os.getenv("QDRANT_API_KEY")
@@ -27,17 +27,28 @@ class QdrantManager:
         self.client = QdrantClient(url=url, api_key=api_key)
         self.collection_name = collection_name
 
-        # Clean the Database: Delete if exists, then recreate
-        if self.client.collection_exists(collection_name=self.collection_name):
-            print(f"Collection {self.collection_name} already exists. Deleting it to clean the DB...")
-            self.client.delete_collection(collection_name=self.collection_name)
-            
-        print(f"Creating fresh collection: {self.collection_name}...")
-        self.client.create_collection(
-            collection_name=self.collection_name,
-            vectors_config=VectorParams(size=1024, distance=Distance.COSINE),
-        )
-        print("Collection configured successfully!")
+        if recreate_collection:
+            # Clean the Database: Delete if exists, then recreate
+            if self.client.collection_exists(collection_name=self.collection_name):
+                print(f"Collection {self.collection_name} already exists. Deleting it to clean the DB...")
+                self.client.delete_collection(collection_name=self.collection_name)
+                
+            print(f"Creating fresh collection: {self.collection_name}...")
+            self.client.create_collection(
+                collection_name=self.collection_name,
+                vectors_config=VectorParams(size=1024, distance=Distance.COSINE),
+            )
+            print("Collection configured successfully!")
+        else:
+            if not self.client.collection_exists(collection_name=self.collection_name):
+                print(f"Collection {self.collection_name} does not exist. Creating fresh collection...")
+                self.client.create_collection(
+                    collection_name=self.collection_name,
+                    vectors_config=VectorParams(size=1024, distance=Distance.COSINE),
+                )
+                print("Collection configured successfully!")
+            else:
+                print(f"Collection {self.collection_name} already exists. Appending to existing data (no deletion).")
 
     def upload_data(self, input_directory: str, batch_size: int = 100):
         json_files = glob.glob(f"{input_directory}/*_enriched.json")

@@ -10,7 +10,7 @@ import { api } from './utils/api';
 
 const CONTENT = {
   mr: {
-    title: 'साधना नंदादीप',
+    title: 'साधननंदादीप',
     subtitle: 'डॉ. सुहास पेठे (श्री पेठेकाका) यांच्या शिकवणींचा आणि साहित्याचा AI-आधारित शोध. अभंग, आरत्या, श्लोक आणि चिंतने येथे शोधा.',
     bio: 'डॉ. सुहास पेठे तथा श्री पेठेकाका हे महाराष्ट्रातील सातारा येथे वास्तव्यास असणारे एक तत्त्वज्ञ संत आहेत. माणूस, सृष्टी यांची दु:खे व त्यांचा निरास - हे श्री काकांच्या कार्याचे केंद्रबिंदू असून, आपल्या विविधांगी व्यासंगाचा त्यांनी अगणित व्यक्तींना विनामूल्य लाभ आजन्म करून दिला आहे. या ॲपमध्ये श्री काकांनी संकलित केलेले विविध संतांचे अभंग आणि श्री काकांनी स्वतः लिहिलेले अभंग, आरत्या, श्लोक, विविध नित्यपाठ, चिंतने, ७५ पुस्तके व इतर प्रासंगिक रचनांचा समावेश आहे. या सर्व रचनांना श्री काकांनी अतिशय भावपूर्ण चाली दिल्या असून गेली सुमारे पस्तीस वर्षे जिज्ञासू साधक त्यांचा वैयक्तिक उपासनेसाठी व साधनेकरिता अभ्यासासाठी म्हणून उपयोग करीत आहेत. श्री काकांचे हे नि:स्वार्थकार्य शांतपणे तेवणाऱ्या "नंदादीपा"प्रमाणे अविरत चालू असून त्या प्रकाशात आजवर अनेक साधकांचे जीवनपथ उजळून निघाले आहेत.',
     placeholder: 'मराठी किंवा इंग्रजीत प्रश्न विचारा...',
@@ -33,7 +33,7 @@ const CONTENT = {
     queriesLabel: 'साधकांचे संभाव्य प्रश्न:',
   },
   en: {
-    title: 'Sadhana Nandadeep',
+    title: 'Sadhananandadeep',
     subtitle: 'AI-powered search through the teachings, abhangs, and spiritual literature of Dr. Suhas Pethe (Shree Pethe Kaka).',
     bio: 'Dr. Suhas Pethe, also known as Shree Pethe Kaka, is a philosopher saint residing in Satara, Maharashtra. The sorrows of human beings and nature, and their eradication, are the focal points of Shree Kaka\'s work. Through his multifaceted studies, he has provided invaluable benefits to countless individuals for free throughout his life. This app includes various Abhangs of saints compiled by Shree Kaka, as well as Abhangs, Aartis, Shlokas, daily prayers, meditations, 75 books, and other occasional compositions written by Shree Kaka himself. Shree Kaka has composed extremely soulful tunes for all these works, and for the last 35 years, curious seekers have been using them for personal worship and spiritual practice. This selfless work of Shree Kaka continues uninterrupted like a quietly burning "Nandadeep" (lamp), and its light has illuminated the life paths of many seekers to date.',
     placeholder: 'Ask your question in English or Marathi...',
@@ -62,6 +62,7 @@ export default function App() {
   const [query, setQuery] = useState('');
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
   
   const [allStories, setAllStories] = useState([]);
   const [allVideos, setAllVideos] = useState([]);
@@ -90,7 +91,7 @@ export default function App() {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [selectedVideoTitle, setSelectedVideoTitle] = useState('');
 
-  const startVoiceSearch = () => {
+  const startVoiceSearch = (setQueryState) => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
       alert('Your browser does not support voice search.');
@@ -101,14 +102,25 @@ export default function App() {
     recognition.onstart = () => setIsListening(true);
     recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
-      setStorySearchQuery(transcript);
+      setQueryState(transcript);
     };
-    recognition.onerror = (e) => console.error("Speech error", e);
+    recognition.onerror = (e) => {
+      console.error("Speech error", e);
+      if (e.error === 'not-allowed') {
+        alert('Microphone permission denied. Please allow microphone access in your browser settings.');
+      } else if (e.error === 'aborted') {
+        console.warn('Voice search aborted by user or browser.');
+      } else {
+        alert(`Voice search error: ${e.error}. Note: Voice search requires a secure HTTPS connection (CloudFront) on mobile.`);
+      }
+      setIsListening(false);
+    };
     recognition.onend = () => setIsListening(false);
     recognition.start();
   };
   
   const bottomRef = useRef(null);
+  const latestSessionRef = useRef(null);
   const inputRef = useRef(null);
   
   const navigate = useNavigate();
@@ -122,7 +134,11 @@ export default function App() {
 
   useEffect(() => {
     if (location.pathname === '/') {
-      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+      if (latestSessionRef.current) {
+        latestSessionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   }, [sessions, loading, location.pathname]);
 
@@ -195,7 +211,7 @@ export default function App() {
           <div className="logo-nav-group">
             <NavLink to="/" className="logo">
               <span className="logo-icon">🪔</span>
-              <span className="logo-text">{lang === 'mr' ? 'साधना नंदादीप' : 'Sadhana Nandadeep'}</span>
+              <span className="logo-text">{lang === 'mr' ? 'साधननंदादीप' : 'Sadhananandadeep'}</span>
             </NavLink>
             <nav className="desktop-nav">
               <NavLink to="/" className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>
@@ -235,18 +251,28 @@ export default function App() {
                       onChange={(e) => setStorySearchQuery(e.target.value)}
                     />
                     <button 
-                      onClick={startVoiceSearch} 
-                      className={`voice-search-btn ${isListening ? 'listening' : ''}`}
+                      onClick={() => startVoiceSearch(setStorySearchQuery)} 
+                      className={`icon-btn ${isListening ? 'listening' : ''}`}
                       title="Voice Search"
                     >
                       🎤
                     </button>
+                    <button 
+                      className="icon-btn mobile-filter-toggle"
+                      onClick={() => setShowMobileFilters(!showMobileFilters)}
+                      title="Filters"
+                    >
+                      ⚙️
+                    </button>
                   </div>
-                  <div className="premium-filters">
+                  <div className={`premium-filters ${showMobileFilters ? 'show-mobile' : ''}`}>
                     {uniqueTopics.map(filter => (
                       <button 
                         key={filter} 
-                        onClick={() => setActiveFilter(filter)}
+                        onClick={() => {
+                          setActiveFilter(filter);
+                          setShowMobileFilters(false);
+                        }}
                         className={`premium-filter-pill ${activeFilter === filter ? 'active' : ''}`}
                       >
                         {filter}
@@ -411,6 +437,7 @@ export default function App() {
                 )}
 
                 {sessions.map((session, si) => {
+                  const isLatest = si === sessions.length - 1;
                   const allSuggestions = new Set();
                   Object.values(session.metadata || {}).forEach(m => {
                     if (m.suggested_queries) m.suggested_queries.forEach(sq => allSuggestions.add(sq));
@@ -418,7 +445,7 @@ export default function App() {
                   const topSuggestions = Array.from(allSuggestions).slice(0, 5);
 
                   return (
-                    <div key={si} className="chat-thread">
+                    <div key={si} className="chat-thread" ref={isLatest ? latestSessionRef : null}>
                       <div className="user-bubble-row">
                         <div className="user-bubble">{session.query}</div>
                       </div>
@@ -495,6 +522,13 @@ export default function App() {
                 autoComplete="off"
                 disabled={loading}
               />
+              <button 
+                onClick={() => startVoiceSearch(setQuery)} 
+                className={`icon-btn ${isListening ? 'listening' : ''}`}
+                title="Voice Search"
+              >
+                🎤
+              </button>
               <button
                 className="search-btn"
                 onClick={() => handleSearch()}

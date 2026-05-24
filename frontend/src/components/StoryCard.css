@@ -276,12 +276,14 @@
 }
 
 .story-modal-video {
-  flex: 1;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
   background: #000;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 24px 80px rgba(0,0,0,0.8);
   position: relative;
+  flex-shrink: 0;
 }
 
 .story-modal-video iframe {
@@ -293,10 +295,12 @@
 
 .story-modal-info {
   margin-top: 24px;
-  padding: 0 16px;
+  padding: 0 16px 24px 16px;
   display: flex;
   gap: 32px;
   align-items: flex-start;
+  overflow-y: auto;
+  flex: 1;
 }
 
 .story-modal-info-left {

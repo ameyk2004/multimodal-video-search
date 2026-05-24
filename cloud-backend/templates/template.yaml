@@ -34,7 +34,7 @@ Parameters:
 
 Resources:
   # ── DynamoDB: Video-level metadata (topics, queries, stories) ──────────────
-  VideoMetadataTable:
+  SadhanaNandadeepMetadataTable:
     Type: AWS::DynamoDB::Table
     Properties:
       TableName: !Ref DynamoDbTableName
@@ -48,7 +48,7 @@ Resources:
       Tags:
         - Key: Project
           Value: PetheKaka
-  SearchGuruFunction:
+  SadhanaNandadeepSearchFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: ../lambdas/similarity_search/
@@ -65,14 +65,14 @@ Resources:
         - DynamoDBReadPolicy:
             TableName: !Ref DynamoDbTableName
       Events:
-        SearchApi:
+        SearchApiEvent:
           Type: Api
           Properties:
             Path: /search
             Method: get
-            RestApiId: !Ref SearchApi
+            RestApiId: !Ref SadhanaNandadeepApi
 
-  GetStoriesFunction:
+  SadhanaNandadeepStoriesFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: ../lambdas/get_stories/
@@ -90,9 +90,9 @@ Resources:
           Properties:
             Path: /stories
             Method: get
-            RestApiId: !Ref SearchApi
+            RestApiId: !Ref SadhanaNandadeepApi
 
-  LibraryApiFunction:
+  SadhanaNandadeepLibraryFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: ../lambdas/library_api/
@@ -110,27 +110,27 @@ Resources:
           Properties:
             Path: /videos
             Method: get
-            RestApiId: !Ref SearchApi
+            RestApiId: !Ref SadhanaNandadeepApi
         GetVideoDetailsApi:
           Type: Api
           Properties:
             Path: /videos/{videoId}
             Method: get
-            RestApiId: !Ref SearchApi
+            RestApiId: !Ref SadhanaNandadeepApi
         GetVideoTopicsApi:
           Type: Api
           Properties:
             Path: /videos/{videoId}/topics
             Method: get
-            RestApiId: !Ref SearchApi
+            RestApiId: !Ref SadhanaNandadeepApi
         GetVideoQuestionsApi:
           Type: Api
           Properties:
             Path: /videos/{videoId}/questions
             Method: get
-            RestApiId: !Ref SearchApi
+            RestApiId: !Ref SadhanaNandadeepApi
 
-  SearchApi:
+  SadhanaNandadeepApi:
     Type: AWS::Serverless::Api
     Properties:
       StageName: prod
@@ -140,9 +140,10 @@ Resources:
         AllowOrigin: "'*'"
 
   # ── Static Website Bucket for Frontend ─────────────────────────────────────
-  UiBucket:
+  SadhanaNandadeepUiBucket:
     Type: AWS::S3::Bucket
     Properties:
+      BucketName: !Sub "sadhananandadeep-ui-${AWS::AccountId}"
       WebsiteConfiguration:
         IndexDocument: index.html
         ErrorDocument: index.html
@@ -152,10 +153,10 @@ Resources:
         IgnorePublicAcls: false
         RestrictPublicBuckets: false
 
-  UiBucketPolicy:
+  SadhanaNandadeepUiBucketPolicy:
     Type: AWS::S3::BucketPolicy
     Properties:
-      Bucket: !Ref UiBucket
+      Bucket: !Ref SadhanaNandadeepUiBucket
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -163,10 +164,48 @@ Resources:
             Effect: Allow
             Principal: '*'
             Action: 's3:GetObject'
-            Resource: !Sub "${UiBucket.Arn}/*"
+            Resource: !Sub "${SadhanaNandadeepUiBucket.Arn}/*"
+
+  # ── CloudFront Distribution for UI ─────────────────────────────────────────
+  SadhanaNandadeepCloudFront:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        HttpVersion: http2
+        Origins:
+          - Id: S3WebsiteOrigin
+            DomainName: !Select [2, !Split ["/", !GetAtt SadhanaNandadeepUiBucket.WebsiteURL]]
+            CustomOriginConfig:
+              OriginProtocolPolicy: http-only
+              HTTPPort: 80
+              HTTPSPort: 443
+        DefaultCacheBehavior:
+          TargetOriginId: S3WebsiteOrigin
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          CachedMethods:
+            - GET
+            - HEAD
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: none
+        CustomErrorResponses:
+          - ErrorCode: 404
+            ResponseCode: 200
+            ResponsePagePath: /index.html
+            ErrorCachingMinTTL: 300
+          - ErrorCode: 403
+            ResponseCode: 200
+            ResponsePagePath: /index.html
+            ErrorCachingMinTTL: 300
 
   # ── Custom Resource to Write config.json ──────────────────────────────────
-  DashboardInitiatorFunction:
+  SadhanaNandadeepConfigWriterFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: ../lambdas/dashboard_initiator/
@@ -174,34 +213,40 @@ Resources:
       Description: Custom resource to write config.json to UI S3 bucket
       Policies:
         - S3CrudPolicy:
-            BucketName: !Ref UiBucket
+            BucketName: !Ref SadhanaNandadeepUiBucket
         - S3ReadPolicy:
             BucketName: !Ref UiArtifactsBucket
 
-  WriteConfigResource:
+  SadhanaNandadeepConfigWriterResource:
     Type: Custom::ConfigWriter
     Properties:
-      ServiceToken: !GetAtt DashboardInitiatorFunction.Arn
-      BucketName: !Ref UiBucket
+      ServiceToken: !GetAtt SadhanaNandadeepConfigWriterFunction.Arn
+      BucketName: !Ref SadhanaNandadeepUiBucket
       ArtifactsBucket: !Ref UiArtifactsBucket
-      ApiUrl: !Sub "https://${SearchApi}.execute-api.${AWS::Region}.amazonaws.com/prod"
+      ApiUrl: !Sub "https://${SadhanaNandadeepApi}.execute-api.${AWS::Region}.amazonaws.com/prod"
 
 Outputs:
   ApiUrl:
     Description: The Base URL of the API Gateway
-    Value: !Sub "https://${SearchApi}.execute-api.${AWS::Region}.amazonaws.com/prod"
+    Value: !Sub "https://${SadhanaNandadeepApi}.execute-api.${AWS::Region}.amazonaws.com/prod"
+  CloudFrontURL:
+    Description: The HTTPS URL of the CloudFront Distribution
+    Value: !Sub "https://${SadhanaNandadeepCloudFront.DomainName}"
+  CloudFrontDistributionId:
+    Description: The ID of the CloudFront Distribution
+    Value: !Ref SadhanaNandadeepCloudFront
   SearchGuruFunctionArn:
     Description: ARN of the Search Lambda function
-    Value: !GetAtt SearchGuruFunction.Arn
+    Value: !GetAtt SadhanaNandadeepSearchFunction.Arn
   VideoMetadataTableName:
     Description: Name of the DynamoDB video metadata table
-    Value: !Ref VideoMetadataTable
+    Value: !Ref SadhanaNandadeepMetadataTable
   VideoMetadataTableArn:
     Description: ARN of the DynamoDB video metadata table
-    Value: !GetAtt VideoMetadataTable.Arn
+    Value: !GetAtt SadhanaNandadeepMetadataTable.Arn
   UiBucketName:
     Description: Name of the S3 bucket hosting the UI
-    Value: !Ref UiBucket
+    Value: !Ref SadhanaNandadeepUiBucket
   WebsiteURL:
     Description: URL of the frontend static website
-    Value: !Sub "http://${UiBucket}.s3-website-${AWS::Region}.amazonaws.com"
+    Value: !Sub "http://${SadhanaNandadeepUiBucket}.s3-website-${AWS::Region}.amazonaws.com"

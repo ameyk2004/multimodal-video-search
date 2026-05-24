@@ -30,11 +30,12 @@ def upload_directory_to_s3(bucket_name, source_dir):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--action', required=True, choices=['get_account', 'create_bucket', 'upload', 'empty_bucket', 'delete_bucket', 'get_stack_bucket', 'list_buckets', 'get_stack_output'])
+    parser.add_argument('--action', required=True, choices=['get_account', 'create_bucket', 'upload', 'empty_bucket', 'delete_bucket', 'get_stack_bucket', 'list_buckets', 'get_stack_output', 'invalidate'])
     parser.add_argument('--bucket', required=False)
     parser.add_argument('--source', required=False)
     parser.add_argument('--stack', required=False)
     parser.add_argument('--logical_id', required=False)
+    parser.add_argument('--distribution_id', required=False)
     args = parser.parse_args()
 
     if args.action == 'get_account':
@@ -114,6 +115,41 @@ def main():
         s3 = boto3.client('s3')
         for bucket in s3.list_buckets().get('Buckets', []):
             print(bucket['Name'])
+            
+    elif args.action == 'invalidate':
+        if not args.distribution_id:
+            print("Missing --distribution_id")
+            sys.exit(1)
+        cf = boto3.client('cloudfront')
+        import time
+        try:
+            res = cf.create_invalidation(
+                DistributionId=args.distribution_id,
+                InvalidationBatch={
+                    'Paths': {
+                        'Quantity': 1,
+                        'Items': ['/*']
+                    },
+                    'CallerReference': str(time.time())
+                }
+            )
+            invalidation_id = res['Invalidation']['Id']
+            print(f"🚀 Started invalidation {invalidation_id} for CloudFront {args.distribution_id}")
+            print("⏳ Waiting for CloudFront edge caches to clear globally (this usually takes 1-3 minutes)...")
+            
+            waiter = cf.get_waiter('invalidation_completed')
+            waiter.wait(
+                DistributionId=args.distribution_id,
+                Id=invalidation_id,
+                WaiterConfig={
+                    'Delay': 15,
+                    'MaxAttempts': 60
+                }
+            )
+            print(f"✅ CloudFront invalidation completed 100%! New UI is fully live globally.")
+        except Exception as e:
+            print(f"Failed to invalidate: {e}")
+            sys.exit(1)
 
 if __name__ == "__main__":
     main()
