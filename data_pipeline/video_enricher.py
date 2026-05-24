@@ -166,8 +166,25 @@ class VideoEnricher:
                 
             start_index = full_text.find(start_text)
             if start_index == -1:
-                logger.warning(f"Hallucination detected: Could not find exact_start_text '{start_text}' in transcript.")
-                continue
+                # Progressive fallback: Try progressively smaller chunks to avoid false positives 
+                # (since a very small snippet like 25 chars might appear multiple times).
+                for length in [150, 100, 50, 30]:
+                    if len(start_text) > length:
+                        snippet = start_text.strip()[:length]
+                        start_index = full_text.find(snippet)
+                        if start_index != -1:
+                            break
+                
+                if start_index == -1:
+                    story_title = story.get("title", "Unknown Story")
+                    logger.warning(
+                        f"🚨 TIMESTAMP FAILURE | Story: '{story_title}'\n"
+                        f"   Could not match LLM exact_start_text against transcript.\n"
+                        f"   Snippet attempted: '{start_text[:100]}...'\n"
+                        f"   Action: Defaulting start_time_seconds to 0.0s"
+                    )
+                    story["start_time_seconds"] = 0.0
+                    continue
 
             # Find the largest character index that is less than or equal to start_index
             idx = bisect.bisect_right(char_indices, start_index) - 1

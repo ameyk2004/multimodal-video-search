@@ -25,6 +25,8 @@ class StoryModel(BaseModel):
     video_id: str
     title: str
     character_or_saint: Optional[str] = ""
+    normalized_saint_name: Optional[str] = ""
+    associated_topics: List[str] = []
     moral: Optional[str] = ""
     exact_start_text: Optional[str] = ""
     exact_end_text: Optional[str] = ""
@@ -67,10 +69,12 @@ def lambda_handler(event, context):
             for story in stories:
                 title = story.get("title", "")
                 moral = story.get("moral", "")
-                saint = story.get("character_or_saint", "")
+                saint = story.get("character_or_saint", story.get("normalized_saint_name", ""))
+                norm_saint = story.get("normalized_saint_name", saint)
+                assoc_topics = story.get("associated_topics", [])
                 start_text = story.get("exact_start_text", "")
                 
-                searchable_text = f"{title} {moral} {saint} {start_text}".lower()
+                searchable_text = f"{title} {moral} {norm_saint} {start_text} {' '.join(assoc_topics)}".lower()
                 
                 # Handle possible float/decimal values safely
                 raw_start = story.get("start_time_seconds", 0)
@@ -83,6 +87,8 @@ def lambda_handler(event, context):
                     video_id=video_id,
                     title=title,
                     character_or_saint=saint,
+                    normalized_saint_name=norm_saint,
+                    associated_topics=assoc_topics,
                     moral=moral,
                     exact_start_text=start_text,
                     exact_end_text=story.get("exact_end_text", ""),

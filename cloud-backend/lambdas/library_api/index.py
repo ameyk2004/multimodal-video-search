@@ -24,6 +24,7 @@ class VideoSummaryModel(BaseModel):
     video_id: str
     topic_count: int = Field(default=0)
     query_count: int = Field(default=0)
+    topics: List[str] = Field(default_factory=list)
 
 class VideoListResponse(BaseModel):
     videos: List[VideoSummaryModel]
@@ -32,14 +33,24 @@ class StoryModel(BaseModel):
     video_id: str
     title: str
     character_or_saint: Optional[str] = ""
+    normalized_saint_name: Optional[str] = ""
+    associated_topics: List[str] = Field(default_factory=list)
     moral: Optional[str] = ""
     exact_start_text: Optional[str] = ""
     exact_end_text: Optional[str] = ""
     start_time_seconds: int = 0
 
+class VerseModel(BaseModel):
+    verse_text: str
+    source_or_author: Optional[str] = ""
+
 class VideoDetailModel(BaseModel):
     video_id: str
     stories: List[StoryModel] = Field(default_factory=list)
+    topics: List[str] = Field(default_factory=list)
+    queries: List[str] = Field(default_factory=list)
+    practices: List[str] = Field(default_factory=list)
+    verses: List[VerseModel] = Field(default_factory=list)
 
 class TopicListModel(BaseModel):
     video_id: str
@@ -93,19 +104,36 @@ def lambda_handler(event, context):
                 for story in raw_stories:
                     raw_start = story.get("start_time_seconds", 0)
                     start_time = int(raw_start) if raw_start else 0
+                    saint = story.get("character_or_saint", story.get("normalized_saint_name", ""))
+                    norm_saint = story.get("normalized_saint_name", saint)
+                    
                     stories.append(StoryModel(
                         video_id=video_id,
                         title=story.get("title", ""),
-                        character_or_saint=story.get("character_or_saint", ""),
+                        character_or_saint=saint,
+                        normalized_saint_name=norm_saint,
+                        associated_topics=story.get("associated_topics", []),
                         moral=story.get("moral", ""),
                         exact_start_text=story.get("exact_start_text", ""),
                         exact_end_text=story.get("exact_end_text", ""),
                         start_time_seconds=start_time
                     ))
                 
+                raw_verses = item.get("quoted_verses", [])
+                verses = []
+                for v in raw_verses:
+                    verses.append(VerseModel(
+                        verse_text=v.get("verse_text", ""),
+                        source_or_author=v.get("source_or_author", "")
+                    ))
+                
                 detail_model = VideoDetailModel(
                     video_id=video_id,
-                    stories=stories
+                    stories=stories,
+                    topics=item.get("topics", []),
+                    queries=item.get("queries", item.get("suggested_queries", [])),
+                    practices=item.get("actionable_practices", []),
+                    verses=verses
                 )
                 return _build_response(200, detail_model)
             
@@ -124,7 +152,8 @@ def lambda_handler(event, context):
                 video_summaries.append(VideoSummaryModel(
                     video_id=v_id,
                     topic_count=len(topics),
-                    query_count=len(queries)
+                    query_count=len(queries),
+                    topics=topics
                 ))
             
             list_response = VideoListResponse(videos=video_summaries)

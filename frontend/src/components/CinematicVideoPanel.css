@@ -127,10 +127,47 @@
 }
 
 .knowledge-panel-content {
-  padding: 40px 32px;
+  padding: 0 32px 40px;
   display: flex;
   flex-direction: column;
   gap: 40px;
+}
+
+/* Tabs */
+.knowledge-tabs {
+  display: flex;
+  position: sticky;
+  top: 0;
+  background: rgba(17, 14, 10, 0.95);
+  backdrop-filter: blur(12px);
+  z-index: 10;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 16px 32px 0;
+  margin-bottom: 24px;
+  gap: 16px;
+  overflow-x: auto;
+}
+
+.k-tab {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 12px 0;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.k-tab:hover {
+  color: #fff;
+}
+
+.k-tab.active {
+  color: #E65100;
+  border-bottom-color: #E65100;
 }
 
 /* Typography & Sections */
@@ -195,6 +232,16 @@
   padding-left: 20px;
   position: relative;
   line-height: 1.5;
+  transition: all 0.2s;
+}
+
+.knowledge-query-item.clickable {
+  cursor: pointer;
+}
+
+.knowledge-query-item.clickable:hover {
+  color: #E65100;
+  transform: translateX(4px);
 }
 
 .knowledge-query-item::before {
@@ -205,6 +252,57 @@
   font-size: 1.5rem;
   line-height: 1;
   top: -2px;
+}
+
+/* Practices List */
+.knowledge-practice-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.knowledge-practice-item {
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 3px solid #E65100;
+  padding: 16px 20px;
+  border-radius: 0 8px 8px 0;
+  color: rgba(255,255,255,0.9);
+  font-size: 1.05rem;
+  line-height: 1.5;
+  font-family: var(--font-dev);
+}
+
+/* Verses List */
+.knowledge-verse-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.knowledge-verse-card {
+  background: linear-gradient(145deg, rgba(230, 81, 0, 0.08), rgba(230, 81, 0, 0.02));
+  border: 1px solid rgba(230, 81, 0, 0.2);
+  padding: 24px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.verse-text {
+  color: #fff;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  font-family: var(--font-dev);
+  margin: 0 0 12px 0;
+  white-space: pre-wrap;
+}
+
+.verse-source {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.95rem;
+  font-style: italic;
 }
 
 /* Stories List */

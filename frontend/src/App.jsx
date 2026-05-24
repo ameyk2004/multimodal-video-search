@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { Routes, Route, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import ParticleCanvas from './components/ParticleCanvas';
 import ResultCard from './components/ResultCard';
@@ -68,8 +68,24 @@ export default function App() {
   const [dataLoading, setDataLoading] = useState(false);
   const [hasFetchedData, setHasFetchedData] = useState(false);
   const [storySearchQuery, setStorySearchQuery] = useState('');
+  const _MASTER_TOPICS = useMemo(() => {
+    const topics = new Set();
+    allStories.forEach(s => {
+      if (s.associated_topics) s.associated_topics.forEach(t => topics.add(t));
+      if (s.normalized_saint_name) topics.add(s.normalized_saint_name);
+      else if (s.character_or_saint) topics.add(s.character_or_saint);
+    });
+    allVideos.forEach(v => {
+      if (v.key_topics) v.key_topics.forEach(t => topics.add(t));
+      if (v.topics) v.topics.forEach(t => topics.add(t));
+    });
+    return Array.from(topics).sort();
+  }, [allStories, allVideos]);
+
+  const uniqueTopics = useMemo(() => ['सर्व', ..._MASTER_TOPICS], [_MASTER_TOPICS]);
+
   const [activeFilter, setActiveFilter] = useState('सर्व');
-  const STORY_FILTERS = ['सर्व', 'प्रेरणा', 'जीवन धडे', 'भक्ती', 'शिस्त', 'ध्यान'];
+  const [libraryActiveFilter, setLibraryActiveFilter] = useState('सर्व');
   const [isListening, setIsListening] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [selectedVideoTitle, setSelectedVideoTitle] = useState('');
@@ -153,9 +169,20 @@ export default function App() {
   };
 
   const filteredStories = allStories.filter(s => {
-    const textToSearch = (s.searchable_text || s.title || '').toLowerCase();
+    const textToSearch = (
+      s.title + ' ' + 
+      (s.moral || '') + ' ' + 
+      (s.character_or_saint || '') + ' ' + 
+      (s.normalized_saint_name || '') + ' ' + 
+      (s.associated_topics?.join(' ') || '')
+    ).toLowerCase();
+    
     const queryMatch = textToSearch.includes(storySearchQuery.toLowerCase());
-    const filterMatch = activeFilter === 'सर्व' ? true : textToSearch.includes(activeFilter.toLowerCase());
+    const filterMatch = activeFilter === 'सर्व' ? true : (
+      (s.associated_topics && s.associated_topics.includes(activeFilter)) ||
+      s.normalized_saint_name === activeFilter ||
+      s.character_or_saint === activeFilter
+    );
     return queryMatch && filterMatch;
   });
 
@@ -216,7 +243,7 @@ export default function App() {
                     </button>
                   </div>
                   <div className="premium-filters">
-                    {STORY_FILTERS.map(filter => (
+                    {uniqueTopics.map(filter => (
                       <button 
                         key={filter} 
                         onClick={() => setActiveFilter(filter)}
@@ -263,8 +290,14 @@ export default function App() {
                   </div>
                   
                   <div className="library-category-pills">
-                    {['भक्ती', 'मन', 'साधना', 'जीवन', 'वैराग्य', 'गुरु', 'आत्मज्ञान'].map(cat => (
-                      <button key={cat} className="library-pill-premium">{cat}</button>
+                    {uniqueTopics.map(cat => (
+                      <button 
+                        key={cat} 
+                        className={`library-pill-premium ${libraryActiveFilter === cat ? 'active' : ''}`}
+                        onClick={() => setLibraryActiveFilter(cat)}
+                      >
+                        {cat}
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -303,21 +336,29 @@ export default function App() {
                       </div>
                     )}
 
-                    {/* Shelf */}
-                    <div className="library-shelf">
-                      <h3 className="library-shelf-title">Popular Teachings</h3>
-                      <div className="library-shelf-scroll">
-                        {allVideos.map((video, i) => (
-                          <VideoLibraryCard 
-                            key={i} 
-                            video={video} 
-                            onClick={(title) => {
-                              setSelectedVideo(video);
-                              setSelectedVideoTitle(title);
-                            }}
-                          />
-                        ))}
-                      </div>
+                    {/* Shelves */}
+                    <div className="library-shelves-container">
+                      {(libraryActiveFilter === 'सर्व' ? _MASTER_TOPICS : [libraryActiveFilter]).map(topic => {
+                        const topicVideos = allVideos.filter(v => v.topics && v.topics.includes(topic));
+                        if (topicVideos.length === 0) return null;
+                        return (
+                          <div key={topic} className="library-shelf">
+                            <h3 className="library-shelf-title">{topic}</h3>
+                            <div className="library-shelf-scroll">
+                              {topicVideos.map((video, i) => (
+                                <VideoLibraryCard 
+                                  key={`${video.video_id}-${i}`} 
+                                  video={video} 
+                                  onClick={(title) => {
+                                    setSelectedVideo(video);
+                                    setSelectedVideoTitle(title);
+                                  }}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
                   </>
                 )}
@@ -327,6 +368,10 @@ export default function App() {
                     videoSummary={selectedVideo} 
                     initialTitle={selectedVideoTitle}
                     onClose={() => setSelectedVideo(null)} 
+                    onSearch={(q) => {
+                      setSelectedVideo(null);
+                      handleSearch(q);
+                    }}
                   />
                 )}
               </div>

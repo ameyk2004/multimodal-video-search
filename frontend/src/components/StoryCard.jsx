@@ -3,7 +3,7 @@ import './StoryCard.css';
 
 const StoryModal = ({ story, onClose }) => {
   const [iframeLoaded, setIframeLoaded] = useState(false);
-  const { video_id, start_time_seconds, title, moral, character_or_saint, exact_start_text } = story;
+  const { video_id, start_time_seconds, title, moral, character_or_saint, normalized_saint_name, associated_topics, exact_start_text } = story;
 
   // Prevent background scrolling when modal is open
   useEffect(() => {
@@ -48,7 +48,14 @@ const StoryModal = ({ story, onClose }) => {
         <div className="story-modal-info">
           <div className="story-modal-info-left">
             <h2 className="story-card-title" style={{ fontSize: '32px', marginBottom: '12px' }}>{title}</h2>
-            {character_or_saint && <span className="saint-tag">{character_or_saint}</span>}
+            {normalized_saint_name && <span className="saint-tag">{normalized_saint_name}</span>}
+            {!normalized_saint_name && character_or_saint && <span className="saint-tag">{character_or_saint}</span>}
+            
+            {associated_topics && associated_topics.length > 0 && (
+              <div className="story-card-topics" style={{ marginTop: '12px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                {associated_topics.map((t, i) => <span key={i} className="story-topic-tag">{t}</span>)}
+              </div>
+            )}
             
             {moral && (
               <div style={{ marginTop: '24px' }}>
@@ -76,10 +83,13 @@ const StoryModal = ({ story, onClose }) => {
 
 const StoryCard = ({ story }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const { 
     title, 
     moral, 
     character_or_saint, 
+    normalized_saint_name,
+    associated_topics,
     exact_start_text,
     video_id, 
     start_time_seconds,
@@ -115,11 +125,18 @@ const StoryCard = ({ story }) => {
         <div className="story-card-center">
           <div className="story-card-top-row">
             <div className="story-card-meta">
-              {character_or_saint && <span className="saint-tag">{character_or_saint}</span>}
+              {normalized_saint_name && <span className="saint-tag">{normalized_saint_name}</span>}
+              {!normalized_saint_name && character_or_saint && <span className="saint-tag">{character_or_saint}</span>}
               {start_time_seconds > 0 && (
                 <span className="time-tag">Starts at {formatTime(start_time_seconds)}</span>
               )}
             </div>
+            
+            {associated_topics && associated_topics.length > 0 && (
+              <div className="story-card-topics" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '4px' }}>
+                {associated_topics.map((t, i) => <span key={i} className="story-topic-tag">{t}</span>)}
+              </div>
+            )}
             
             <div className="story-card-actions" onClick={(e) => e.stopPropagation()}>
               <button className="btn-inline-play" onClick={() => setIsModalOpen(true)}>
@@ -132,7 +149,16 @@ const StoryCard = ({ story }) => {
           
           {moral && (
             <div className="story-card-moral">
-              {moral}
+              <div className={isExpanded ? "" : "clamped-text-2"}>
+                {moral}
+              </div>
+              <button 
+                className="view-more-btn-text" 
+                onClick={(e) => { e.stopPropagation(); setIsExpanded(!isExpanded); }}
+                style={{ background: 'none', border: 'none', color: 'var(--saffron)', fontSize: '14px', cursor: 'pointer', padding: '4px 0 0', fontWeight: '500' }}
+              >
+                {isExpanded ? "View Less" : "Read More"}
+              </button>
             </div>
           )}
           
