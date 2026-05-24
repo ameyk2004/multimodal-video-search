@@ -69,23 +69,36 @@ export default function App() {
   const [dataLoading, setDataLoading] = useState(false);
   const [hasFetchedData, setHasFetchedData] = useState(false);
   const [storySearchQuery, setStorySearchQuery] = useState('');
-  const _MASTER_TOPICS = useMemo(() => {
+
+  const _STORY_TOPICS = useMemo(() => {
     const topics = new Set();
     allStories.forEach(s => {
       if (s.associated_topics) s.associated_topics.forEach(t => topics.add(t));
-      if (s.normalized_saint_name) topics.add(s.normalized_saint_name);
-      else if (s.character_or_saint) topics.add(s.character_or_saint);
     });
+    return Array.from(topics).sort();
+  }, [allStories]);
+
+  const _STORY_SAINTS = useMemo(() => {
+    const saints = new Set();
+    allStories.forEach(s => {
+      if (s.normalized_saint_name) saints.add(s.normalized_saint_name);
+      else if (s.character_or_saint) saints.add(s.character_or_saint);
+    });
+    return Array.from(saints).sort();
+  }, [allStories]);
+
+  const _LIBRARY_TOPICS = useMemo(() => {
+    const topics = new Set();
     allVideos.forEach(v => {
       if (v.key_topics) v.key_topics.forEach(t => topics.add(t));
       if (v.topics) v.topics.forEach(t => topics.add(t));
     });
     return Array.from(topics).sort();
-  }, [allStories, allVideos]);
+  }, [allVideos]);
+  const uniqueLibraryTopics = useMemo(() => ['सर्व', ..._LIBRARY_TOPICS], [_LIBRARY_TOPICS]);
 
-  const uniqueTopics = useMemo(() => ['सर्व', ..._MASTER_TOPICS], [_MASTER_TOPICS]);
-
-  const [activeFilter, setActiveFilter] = useState('सर्व');
+  const [topicFilter, setTopicFilter] = useState('सर्व');
+  const [saintFilter, setSaintFilter] = useState('सर्व');
   const [libraryActiveFilter, setLibraryActiveFilter] = useState('सर्व');
   const [isListening, setIsListening] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -194,12 +207,11 @@ export default function App() {
     ).toLowerCase();
     
     const queryMatch = textToSearch.includes(storySearchQuery.toLowerCase());
-    const filterMatch = activeFilter === 'सर्व' ? true : (
-      (s.associated_topics && s.associated_topics.includes(activeFilter)) ||
-      s.normalized_saint_name === activeFilter ||
-      s.character_or_saint === activeFilter
-    );
-    return queryMatch && filterMatch;
+    
+    const topicMatch = topicFilter === 'सर्व' ? true : (s.associated_topics && s.associated_topics.includes(topicFilter));
+    const saintMatch = saintFilter === 'सर्व' ? true : (s.normalized_saint_name === saintFilter || s.character_or_saint === saintFilter);
+    
+    return queryMatch && topicMatch && saintMatch;
   });
 
   return (
@@ -236,8 +248,15 @@ export default function App() {
           <Routes>
             <Route path="/stories" element={
               <div className="stories-page">
-                <div className="stories-header" style={{ marginBottom: '16px', borderBottom: 'none' }}>
-                  <h2 style={{ fontSize: '36px' }}>{t.storiesTitle}</h2>
+                <div className="stories-header" style={{ marginBottom: '16px', borderBottom: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+                  <h2 style={{ fontSize: '36px', margin: 0 }}>{t.storiesTitle}</h2>
+                  {!dataLoading && (
+                    <span className="story-count-badge">
+                      {filteredStories.length === allStories.length 
+                        ? `Total Stories: ${allStories.length}` 
+                        : `Showing ${filteredStories.length} of ${allStories.length} Stories`}
+                    </span>
+                  )}
                 </div>
                 
                 <div className="premium-search-container">
@@ -258,28 +277,80 @@ export default function App() {
                       🎤
                     </button>
                     <button 
-                      className="icon-btn mobile-filter-toggle"
-                      onClick={() => setShowMobileFilters(!showMobileFilters)}
-                      title="Filters"
+                      className="icon-btn"
+                      onClick={() => setShowMobileFilters(true)}
+                      title="Open Filters"
                     >
-                      ⚙️
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="4" y1="21" x2="4" y2="14"></line>
+                        <line x1="4" y1="10" x2="4" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12" y2="3"></line>
+                        <line x1="20" y1="21" x2="20" y2="16"></line>
+                        <line x1="20" y1="12" x2="20" y2="3"></line>
+                        <line x1="1" y1="14" x2="7" y2="14"></line>
+                        <line x1="9" y1="8" x2="15" y2="8"></line>
+                        <line x1="17" y1="16" x2="23" y2="16"></line>
+                      </svg>
                     </button>
                   </div>
-                  <div className={`premium-filters ${showMobileFilters ? 'show-mobile' : ''}`}>
-                    {uniqueTopics.map(filter => (
-                      <button 
-                        key={filter} 
-                        onClick={() => {
-                          setActiveFilter(filter);
-                          setShowMobileFilters(false);
-                        }}
-                        className={`premium-filter-pill ${activeFilter === filter ? 'active' : ''}`}
-                      >
-                        {filter}
-                      </button>
-                    ))}
-                  </div>
                 </div>
+
+                {/* Filter Drawer */}
+                {showMobileFilters && (
+                  <div className="filter-drawer-overlay" onClick={() => setShowMobileFilters(false)}>
+                    <div className="filter-drawer open" onClick={e => e.stopPropagation()}>
+                      <div className="filter-drawer-header">
+                        <h3>Filters</h3>
+                        <button className="close-drawer-btn" onClick={() => setShowMobileFilters(false)}>✕</button>
+                      </div>
+                      <div className="filter-drawer-content">
+                        <div className="filter-group">
+                          <label>Topic (विषय)</label>
+                          <select 
+                            className="premium-select"
+                            value={topicFilter} 
+                            onChange={(e) => setTopicFilter(e.target.value)}
+                          >
+                            <option value="सर्व">All Topics (सर्व)</option>
+                            {_STORY_TOPICS.map(topic => (
+                              <option key={topic} value={topic}>{topic}</option>
+                            ))}
+                          </select>
+                        </div>
+                        
+                        <div className="filter-group">
+                          <label>Saint / Character (संत)</label>
+                          <select 
+                            className="premium-select"
+                            value={saintFilter} 
+                            onChange={(e) => setSaintFilter(e.target.value)}
+                          >
+                            <option value="सर्व">All Saints (सर्व)</option>
+                            {_STORY_SAINTS.map(saint => (
+                              <option key={saint} value={saint}>{saint}</option>
+                            ))}
+                          </select>
+                        </div>
+                        
+                        <div className="filter-actions">
+                          <button 
+                            className="filter-reset-btn" 
+                            onClick={() => { setTopicFilter('सर्व'); setSaintFilter('सर्व'); setStorySearchQuery(''); }}
+                          >
+                            Reset All
+                          </button>
+                          <button 
+                            className="filter-apply-btn" 
+                            onClick={() => setShowMobileFilters(false)}
+                          >
+                            View {filteredStories.length} Results
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
                 
                 {dataLoading ? (
                   <div className="loading-wrapper">
@@ -316,7 +387,7 @@ export default function App() {
                   </div>
                   
                   <div className="library-category-pills">
-                    {uniqueTopics.map(cat => (
+                    {uniqueLibraryTopics.map(cat => (
                       <button 
                         key={cat} 
                         className={`library-pill-premium ${libraryActiveFilter === cat ? 'active' : ''}`}
@@ -364,7 +435,7 @@ export default function App() {
 
                     {/* Shelves */}
                     <div className="library-shelves-container">
-                      {(libraryActiveFilter === 'सर्व' ? _MASTER_TOPICS : [libraryActiveFilter]).map(topic => {
+                      {(libraryActiveFilter === 'सर्व' ? _LIBRARY_TOPICS : [libraryActiveFilter]).map(topic => {
                         const topicVideos = allVideos.filter(v => v.topics && v.topics.includes(topic));
                         if (topicVideos.length === 0) return null;
                         return (

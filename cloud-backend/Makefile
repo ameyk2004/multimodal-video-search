@@ -27,10 +27,10 @@ release: build
 		echo "☁️ Uploading Frontend to Artifacts Bucket..." ; \
 		python3.12 ../scripts/aws_helper.py --action upload --bucket $$ARTIFACTS_BUCKET --source ../frontend/dist ; \
 		echo "🔄 Updating SAM config with UiArtifactsBucket=$$ARTIFACTS_BUCKET..." ; \
-		python3 -c "import sys; sys.path.insert(0,'../scripts'); from packaging import load_env, update_samconfig; update_samconfig(load_env('../.env'), {'UiArtifactsBucket': '$$ARTIFACTS_BUCKET'})" ; \
+		python3 -c "import sys; sys.path.insert(0,'../scripts'); from package_release import load_env, update_samconfig; update_samconfig(load_env('../.env'), {'UiArtifactsBucket': '$$ARTIFACTS_BUCKET'})" ; \
 	else \
 		echo "⚠️ AWS CLI failed. Skipping frontend artifacts sync..." ; \
-		python3 -c "import sys; sys.path.insert(0,'../scripts'); from packaging import load_env, update_samconfig; update_samconfig(load_env('../.env'))" ; \
+		python3 -c "import sys; sys.path.insert(0,'../scripts'); from package_release import load_env, update_samconfig; update_samconfig(load_env('../.env'))" ; \
 	fi
 	@if sam deploy --no-confirm-changeset --no-fail-on-empty-changeset 2>/dev/null; then \
 		echo ""; \
@@ -43,7 +43,7 @@ release: build
 		sam list stack-outputs --stack-name $(STACK_NAME); \
 	else \
 		echo "Stack not found or credentials missing. Generating Quick Create link..."; \
-		python3 ../scripts/packaging.py; \
+		python3 ../scripts/package_release.py; \
 	fi
 
 teardown:
