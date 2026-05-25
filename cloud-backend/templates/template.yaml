@@ -64,7 +64,7 @@ Resources:
           QDRANT_API_KEY: !Ref QdrantApiKey
           HF_API_KEY: !Ref HfApiKey
           GEMINI_API_KEY: !Ref GeminiApiKey
-          COLLECTION_NAME: guru-videos
+          COLLECTION_NAME: guru-videos-hybrid
           DYNAMODB_TABLE: !Ref DynamoDbTableName
       Policies:
         - DynamoDBReadPolicy:
@@ -132,6 +132,12 @@ Resources:
           Type: Api
           Properties:
             Path: /videos/{videoId}/questions
+            Method: get
+            RestApiId: !Ref SadhanaNandadeepApi
+        GetMusicApi:
+          Type: Api
+          Properties:
+            Path: /music
             Method: get
             RestApiId: !Ref SadhanaNandadeepApi
 

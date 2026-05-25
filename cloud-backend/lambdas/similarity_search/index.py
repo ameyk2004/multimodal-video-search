@@ -31,7 +31,7 @@ QDRANT_URL = os.environ["QDRANT_URL"]
 QDRANT_API_KEY = os.environ["QDRANT_API_KEY"]
 HF_API_KEY = os.environ["HF_API_KEY"]
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
-COLLECTION_NAME = os.environ.get("COLLECTION_NAME", "guru-videos")
+COLLECTION_NAME = os.environ.get("COLLECTION_NAME", "guru-videos-hybrid")
 
 if GEMINI_API_KEY:
     genai.configure(api_key=GEMINI_API_KEY)
@@ -136,7 +136,7 @@ def lambda_handler(event: dict, context: Any) -> dict:
 
         # ── Step 2: Semantic search ──────────────────────────────────────
         searcher = _get_searcher()
-        results = searcher.search(vector, top_k=5)
+        results = searcher.search(vector, query_text=processed_query, top_k=5)
         logger.info("Found %d results", len(results))
 
         # ── Step 3: Fetch video metadata from DynamoDB ────────────────────

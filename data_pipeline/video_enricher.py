@@ -27,45 +27,58 @@ from dotenv import load_dotenv
 load_dotenv()
 logger = logging.getLogger(__name__)
 
-_MASTER_TOPICS = '["भक्ती", "कर्मयोग", "ध्यान/साधना", "चित्तशुद्धी", "अहंकार नाश", "सत्संग", "वैराग्य", "नामस्मरण", "ईश्वरप्राप्ती", "संसार आणि परमार्थ"]'
-
-_SYSTEM_PROMPT = f"""तू एक अत्यंत ज्ञानी आध्यात्मिक विश्लेषक आहेस. तुझे ध्येय अशा साधकांना मदत करणे आहे ज्यांच्या मनात आध्यात्मिक शंका आहेत.
+_SYSTEM_PROMPT = """तू एक अत्यंत ज्ञानी आध्यात्मिक विश्लेषक आहेस. तुझे ध्येय अशा साधकांना मदत करणे आहे ज्यांच्या मनात आध्यात्मिक शंका आहेत.
 तुला संपूर्ण व्हिडिओची ट्रान्स्क्रिप्ट दिली जाईल. तुझे विचार आणि संपूर्ण आउटपुट फक्त आणि फक्त 'मराठी' भाषेत असावे.
 
 तुझे नियम (STRICT RULES):
-१. Topics (विषय): खालील दिलेल्या अधिकृत यादीमधूनच विषय निवडा. स्वतःचे नवीन विषय बनवू नका. 
-अधिकृत यादी: {_MASTER_TOPICS}
-२. Queries: शिष्यांच्या मनात येणाऱ्या खऱ्या शंका (उदा. 'माझे मन एकाग्र कसे करू?'). प्रत्येक प्रश्नाचे उत्तर या व्हिडिओत असलेच पाहिजे.
-३. Stories (कथा): व्हिडिओमधील कथा शोधा. 
-   - 'normalized_saint_name': संतांचे नाव नेहमी प्रमाणित असावे (उदा. 'तुकोबा' ऐवजी 'संत तुकाराम महाराज', 'माऊली' ऐवजी 'संत ज्ञानेश्वर महाराज'). नसल्यास 'सामान्य' लिहा.
-   - 'associated_topics': ही कथा कोणत्या विषयावर आहे, ते वरील अधिकृत यादीतून निवडून लिहा.
+१. Topics (विषय): व्हिडिओमध्ये खरोखर चर्चा केलेले विशिष्ट आणि अचूक विषय (Topics) काढा. अत्यंत सामान्य शब्द वापरू नका, व्हिडिओच्या मुख्य शिकवणीला अनुसरून ५-८ विषय लिहा.
+२. Queries: शिष्यांच्या मनात येणाऱ्या खऱ्या शंका आणि प्रश्न. हे प्रश्न काही छोटे आणि काही थोडे मोठे (सविस्तर) असावेत. प्रत्येक प्रश्नाचे उत्तर या व्हिडिओत असलेच पाहिजे.
+३. Stories (कथा): व्हिडिओमधील सर्व मूल्यवान कथा, दृष्टांत, किंवा उदाहरणे शोधा. कोणतीही कथा वगळू नका, जरी ती छोटी असली तरीही ती महत्त्वपूर्ण असल्यास नक्की समाविष्ट करा.
+   - 'normalized_saint_name': संतांचे नाव नेहमी प्रमाणित असावे (उदा. 'तुकोबा' ऐवजी 'संत तुकाराम महाराज'). कोणत्याही परिस्थितीत 'सामान्य' असा शब्द लिहू नका, जर संताचे नाव नसेल तर नेहमी 'श्री पेठे काका' असे लिहा.
+   - 'associated_topics': ही कथा कोणत्या विषयावर आहे, ते अचूक लिहा.
    - 'moral': कथेचे तात्पर्य अतिशय सविस्तर, किमान ३ ते ४ ओळींचे (lines) असावे.
    - 'exact_start_text' / 'exact_end_text': कथेचे पहिले आणि शेवटचे ५-१० शब्द जसेच्या तसे लिहा.
 ४. Actionable Practices (साधना/आचरण): गुरूजींनी शिष्यांना प्रत्यक्ष कृतीत आणण्यासाठी काय उपाय किंवा कृती सांगितली आहे (उदा. 'रोज १० मिनिटे नामस्मरण करा'), त्याची यादी करा.
 ५. Quoted Verses (श्लोक/अभंग): गुरूजींनी एखादा श्लोक, अभंग किंवा ओवी जशीच्या तशी म्हटली असेल, तर ती वेगळी काढा.
+६. Musical Segments (भजन/आरती/नामस्मरण): व्हिडिओमध्ये असलेली भजने, आरती, नामस्मरण किंवा कीर्तन ओळखा.
+   - 'type': "bhajan", "aarti", "namasmarana", "kirtan", किंवा "background_music" यापैकी एक इंग्रजी शब्द वापरा.
+   - 'name': भजनाचे, आरतीचे किंवा कीर्तनाचे नाव (उदा. "नसोडे विठ्ठला"). हे फक्त आणि फक्त 'मराठी' अक्षरांमध्ये असावे.
+   - 'saint': संबंधित संतांचे नाव (उदा. "संत तुकाराम महाराज"). हे सुद्धा 'मराठी' अक्षरांमध्येच असावे. जर संताचे नाव माहीत नसेल किंवा नसेल, तर कधीही 'सामान्य' लिहू नका, नेहमी 'श्री पेठे काका' असे लिहा.
+   - 'confidence': "high", "medium", किंवा "low" यापैकी एक इंग्रजी शब्द वापरा.
+   - 'exact_start_text' / 'exact_end_text': भजनाचे पहिले आणि शेवटचे ५-१० शब्द जसेच्या तसे मराठीत लिहा.
 
 तुझे उत्तर खालील JSON schema मध्ये दे. JSON च्या बाहेर काहीही लिहू नकोस:
-{{
-  "topics": ["MUST be from the Master List"],
+{
+  "topics": ["string"],
   "queries": ["string"],
   "stories": [
-    {{
+    {
       "title": "string",
       "normalized_saint_name": "string",
-      "associated_topics": ["MUST be from the Master List"],
-      "moral": "string (Detailed, 3 to 4 lines long)",
+      "associated_topics": ["string"],
+      "moral": "string",
       "exact_start_text": "string",
       "exact_end_text": "string"
-    }}
+    }
   ],
   "actionable_practices": ["string"],
   "quoted_verses": [
-    {{
+    {
       "verse_text": "string",
-      "source_or_author": "string (e.g., 'श्रीमद्भगवद्गीता', 'संत तुकाराम महाराज' or 'अज्ञात')"
-    }}
+      "source_or_author": "string"
+    }
+  ],
+  "musical_segments": [
+    {
+      "type": "string",
+      "name": "string",
+      "saint": "string",
+      "confidence": "string",
+      "exact_start_text": "string",
+      "exact_end_text": "string"
+    }
   ]
-}}"""
+}"""
 
 
 class VideoEnricher:
@@ -87,8 +100,11 @@ class VideoEnricher:
         api_key = os.getenv("GEMINI_API_KEY")
         if not api_key:
             raise ValueError("GEMINI_API_KEY not set in environment / .env file.")
-        self._genai_client = genai.Client(api_key=api_key)
-        self._model_name = "gemini-3.5-flash"
+        self._genai_client = genai.Client(
+            api_key=api_key,
+            http_options={'timeout': 600000}  # 600,000 ms = 10 minutes (Required for massive transcripts)
+        )
+        self._model_name = "gemini-2.5-flash"
         self._gen_config = types.GenerateContentConfig(
             system_instruction=_SYSTEM_PROMPT,
             response_mime_type="application/json",   # ask for raw JSON directly
@@ -98,7 +114,7 @@ class VideoEnricher:
 
     # ── Public API ────────────────────────────────────────────────────────────
 
-    def process_video(self, video_id: str) -> Optional[dict]:
+    def process_video(self, video_id: str, manual_json_path: Optional[str] = None) -> Optional[dict]:
         """
         Enrich a single video. Returns the metadata dict or None if skipped.
         Idempotent: skips if artefact file already exists.
@@ -122,11 +138,17 @@ class VideoEnricher:
             logger.warning("Empty transcript for %s. Skipping.", video_id)
             return None
 
-        metadata = self._call_llm(video_id, full_text)
+        if manual_json_path and os.path.exists(manual_json_path):
+            logger.info("Using manual LLM response from %s", manual_json_path)
+            with open(manual_json_path, 'r', encoding='utf-8') as mf:
+                metadata = json.load(mf)
+        else:
+            metadata = self._call_llm(video_id, full_text)
+            
         if not metadata:
             return None
 
-        self._resolve_story_timestamps(metadata, full_text, char_to_time_map)
+        self._resolve_timestamps(metadata, full_text, char_to_time_map)
 
         # Attach video_id and save
         metadata["video_id"] = video_id
@@ -166,17 +188,17 @@ class VideoEnricher:
 
     # ── Private helpers ───────────────────────────────────────────────────────
     
-    def _resolve_story_timestamps(self, metadata: dict, full_text: str, char_to_time_map: list):
+    def _resolve_timestamps(self, metadata: dict, full_text: str, char_to_time_map: list):
         """Find the start index of exact_start_text and map it to time."""
-        stories = metadata.get("stories", [])
-        if not stories:
+        items_to_resolve = metadata.get("stories", []) + metadata.get("musical_segments", [])
+        if not items_to_resolve:
             return
             
         # Extract just the char indices for bisect
         char_indices = [idx for idx, _ in char_to_time_map]
 
-        for story in stories:
-            start_text = story.get("exact_start_text", "")
+        for item in items_to_resolve:
+            start_text = item.get("exact_start_text", "")
             if not start_text:
                 continue
                 
@@ -201,22 +223,22 @@ class VideoEnricher:
                             break
                 
                 if start_index == -1:
-                    story_title = story.get("title", "Unknown Story")
+                    item_name = item.get("title", item.get("name", "Unknown Item"))
                     logger.warning(
-                        f"🚨 TIMESTAMP FAILURE | Story: '{story_title}'\n"
+                        f"🚨 TIMESTAMP FAILURE | Item: '{item_name}'\n"
                         f"   Could not match LLM exact_start_text against transcript.\n"
                         f"   Snippet attempted: '{start_text[:100]}...'\n"
                         f"   Action: Defaulting start_time_seconds to 0.0s"
                     )
-                    story["start_time_seconds"] = 0.0
+                    item["start_time_seconds"] = 0.0
                     continue
 
             # Find the largest character index that is less than or equal to start_index
             idx = bisect.bisect_right(char_indices, start_index) - 1
             if idx >= 0:
-                story["start_time_seconds"] = char_to_time_map[idx][1]
+                item["start_time_seconds"] = char_to_time_map[idx][1]
             else:
-                story["start_time_seconds"] = 0.0
+                item["start_time_seconds"] = 0.0
 
     def _reconstruct_transcript(self, fragments: list) -> tuple[str, list]:
         """Concatenate all fragment texts and build a char index to timestamp map."""
@@ -254,12 +276,23 @@ class VideoEnricher:
                     config=self._gen_config,
                 )
                 raw_json = response.text.strip()
-                # Strip markdown code fences if the model adds them despite mime type
-                if raw_json.startswith("```"):
-                    raw_json = raw_json.split("```")[1]
-                    if raw_json.startswith("json"):
-                        raw_json = raw_json[4:]
-                return json.loads(raw_json.strip())
+                
+                # Robustly extract the first complete JSON object using brace counting
+                start_idx = raw_json.find('{')
+                if start_idx != -1:
+                    brace_count = 0
+                    for i in range(start_idx, len(raw_json)):
+                        if raw_json[i] == '{':
+                            brace_count += 1
+                        elif raw_json[i] == '}':
+                            brace_count -= 1
+                        
+                        if brace_count == 0:
+                            # Found the exact end of the first JSON object
+                            raw_json = raw_json[start_idx:i + 1]
+                            break
+                            
+                return json.loads(raw_json)
             except json.JSONDecodeError as e:
                 logger.error("JSON parse error on attempt %d for %s: %s", attempt, video_id, e)
             except Exception as e:
@@ -274,12 +307,28 @@ class VideoEnricher:
 
 # ── Standalone entry-point ────────────────────────────────────────────────────
 if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description="Enrich video transcripts.")
+    parser.add_argument("--manual", type=str, help="Path to a manually generated JSON response from Gemini web app")
+    parser.add_argument("--video_id", type=str, help="The video ID for the manual JSON response")
+    args = parser.parse_args()
+
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
+    
     enricher = VideoEnricher(
         input_dir="data_pipeline/output",
         output_dir="data_pipeline/enriched_metadata",
     )
-    enricher.process_all()
+    
+    if args.manual and args.video_id:
+        print(f"🚀 Running in MANUAL mode for video {args.video_id}")
+        result = enricher.process_video(args.video_id, manual_json_path=args.manual)
+        if result:
+            print(f"✅ Successfully processed and saved manual metadata for {args.video_id}")
+        else:
+            print(f"❌ Failed to process manual metadata for {args.video_id}")
+    else:
+        enricher.process_all()

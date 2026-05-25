@@ -53,5 +53,6 @@ export const api = {
   getStories: () => apiClient(`/stories`),
   getVideos: () => apiClient(`/videos`),
   getVideoDetails: (videoId) => apiClient(`/videos/${videoId}`),
+  getMusic: () => apiClient(`/music`),
   getConfig: fetchConfig
 };

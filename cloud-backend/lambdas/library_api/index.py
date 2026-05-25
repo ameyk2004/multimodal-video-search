@@ -41,6 +41,19 @@ class VerseModel(BaseModel):
     verse_text: str
     source_or_author: Optional[str] = ""
 
+class MusicalSegmentModel(BaseModel):
+    type: str
+    name: str
+    saint: Optional[str] = ""
+    confidence: Optional[str] = ""
+    exact_start_text: Optional[str] = ""
+    exact_end_text: Optional[str] = ""
+    start_time_seconds: int = 0
+    video_id: Optional[str] = ""
+
+class MusicListResponse(BaseModel):
+    segments: List[MusicalSegmentModel]
+
 class VideoDetailModel(BaseModel):
     video_id: str
     topics: List[str] = Field(default_factory=list)
@@ -48,6 +61,7 @@ class VideoDetailModel(BaseModel):
     practices: List[str] = Field(default_factory=list)
     verses: List[VerseModel] = Field(default_factory=list)
     stories: List[StoryModel] = Field(default_factory=list)
+    musical_segments: List[MusicalSegmentModel] = Field(default_factory=list)
 
 class TopicListModel(BaseModel):
     video_id: str
@@ -80,7 +94,36 @@ def lambda_handler(event, context):
         path_parameters = event.get('pathParameters') or {}
         video_id = path_parameters.get('videoId')
 
-        if video_id:
+        if path == '/music':
+            # Handle GET /music
+            # Scan DB and extract all musical segments globally
+            response = table.scan()
+            items = response.get('Items', [])
+            while 'LastEvaluatedKey' in response:
+                response = table.scan(ExclusiveStartKey=response['LastEvaluatedKey'])
+                items.extend(response.get('Items', []))
+            
+            all_segments = []
+            for item in items:
+                v_id = item.get("video_id")
+                raw_segments = item.get("musical_segments", [])
+                for seg in raw_segments:
+                    raw_start = seg.get("start_time_seconds", 0)
+                    start_time = int(raw_start) if raw_start else 0
+                    all_segments.append(MusicalSegmentModel(
+                        type=seg.get("type", "bhajan"),
+                        name=seg.get("name", "Unknown"),
+                        saint=seg.get("saint", ""),
+                        confidence=seg.get("confidence", ""),
+                        exact_start_text=seg.get("exact_start_text", ""),
+                        exact_end_text=seg.get("exact_end_text", ""),
+                        start_time_seconds=start_time,
+                        video_id=v_id
+                    ))
+            
+            return _build_response(200, MusicListResponse(segments=all_segments))
+
+        elif video_id:
             # Handle GET /videos/{video_id} and sub-routes
             response = table.get_item(Key={'video_id': video_id})
             item = response.get('Item')
@@ -111,6 +154,22 @@ def lambda_handler(event, context):
                         start_time_seconds=start_time
                     ))
                 
+                raw_segments = item.get("musical_segments", [])
+                musical_segments = []
+                for seg in raw_segments:
+                    raw_start = seg.get("start_time_seconds", 0)
+                    start_time = int(raw_start) if raw_start else 0
+                    musical_segments.append(MusicalSegmentModel(
+                        type=seg.get("type", "bhajan"),
+                        name=seg.get("name", "Unknown"),
+                        saint=seg.get("saint", ""),
+                        confidence=seg.get("confidence", ""),
+                        exact_start_text=seg.get("exact_start_text", ""),
+                        exact_end_text=seg.get("exact_end_text", ""),
+                        start_time_seconds=start_time,
+                        video_id=video_id
+                    ))
+                
                 detail_model = VideoDetailModel(
                     video_id=video_id,
                     topics=item.get("topics", []),
@@ -122,7 +181,8 @@ def lambda_handler(event, context):
                             source_or_author=v.get("source_or_author", "")
                         ) for v in item.get("quoted_verses", [])
                     ],
-                    stories=stories
+                    stories=stories,
+                    musical_segments=musical_segments
                 )
                 return _build_response(200, detail_model)
             

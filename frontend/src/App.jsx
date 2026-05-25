@@ -8,6 +8,7 @@ import CinematicVideoPanel from './components/CinematicVideoPanel';
 import HomePage from './components/HomePage';
 import SearchPage from './components/SearchPage';
 import StoriesBanner from './components/StoriesBanner';
+import MusicPage from './components/MusicPage';
 import { api } from './utils/api';
 
 const CONTENT = {
@@ -24,6 +25,7 @@ const CONTENT = {
     searchTab: 'ज्ञानकोश',
     storiesTab: 'कथा व गोष्टी',
     libraryTab: 'अध्यात्मिक संग्रह',
+    musicTab: 'अभंग व आरत्या',
     storiesTitle: 'अध्यात्मिक गोष्टी व कथा',
     searchStories: 'कथा शोधा...',
     loadingStories: 'कथा व संग्रह लोड होत आहेत...',
@@ -47,6 +49,7 @@ const CONTENT = {
     searchTab: 'Search',
     storiesTab: 'Stories',
     libraryTab: 'Spiritual Library',
+    musicTab: 'Music & Aartis',
     storiesTitle: 'Spiritual Stories & Tales',
     searchStories: 'Search stories...',
     loadingStories: 'Loading stories & library...',
@@ -251,6 +254,9 @@ export default function App() {
               </NavLink>
               <NavLink to="/stories" className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>
                 {t.storiesTab}
+              </NavLink>
+              <NavLink to="/music" className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>
+                {t.musicTab}
               </NavLink>
               <NavLink to="/library" className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>
                 {t.libraryTab}
@@ -463,6 +469,8 @@ export default function App() {
                 )}
               </div>
             } />
+
+            <Route path="/music" element={<MusicPage lang={lang} />} />
 
             <Route path="/" element={<HomePage t={t} lang={lang} allVideos={allVideos} onSearch={handleSearch} />} />
             

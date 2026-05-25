@@ -59,8 +59,9 @@ def upload_metadata(input_dir: str, table_name: str = "guru-video-metadata"):
                 stories = data.get("stories", data.get("stories_found", []))
                 actionable_practices = data.get("actionable_practices", [])
                 quoted_verses = data.get("quoted_verses", [])
+                musical_segments = data.get("musical_segments", [])
                 
-                logging.info(f"File: {filepath} | ID: {final_video_id} | Topics: {len(topics)} | Queries: {len(queries)} | Stories: {len(stories)}")
+                logging.info(f"File: {filepath} | ID: {final_video_id} | Topics: {len(topics)} | Queries: {len(queries)} | Stories: {len(stories)} | Bhajans: {len(musical_segments)}")
                 
                 # DynamoDB Item structure
                 item = {
@@ -69,7 +70,8 @@ def upload_metadata(input_dir: str, table_name: str = "guru-video-metadata"):
                     "queries": queries,
                     "stories": stories,
                     "actionable_practices": actionable_practices,
-                    "quoted_verses": quoted_verses
+                    "quoted_verses": quoted_verses,
+                    "musical_segments": musical_segments
                 }
                 
                 batch.put_item(Item=item)
