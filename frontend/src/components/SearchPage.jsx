@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ResultCard from './ResultCard';
+import RelatedQuestions from './RelatedQuestions';
+import SearchGreeting from './SearchGreeting';
 import { api } from '../utils/api';
 
 export default function SearchPage({ 
@@ -17,10 +19,12 @@ export default function SearchPage({
   const [playingVideoId, setPlayingVideoId] = useState(null);
 
   useEffect(() => {
-    if (latestSessionRef.current) {
-      latestSessionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (loading) {
+      setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }), 50);
+    } else if (latestSessionRef.current) {
+      setTimeout(() => latestSessionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
     } else {
-      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }), 50);
     }
   }, [sessions, loading]);
 
@@ -29,30 +33,11 @@ export default function SearchPage({
   return (
     <div className="search-page" style={{ paddingBottom: '100px' }}>
       {sessions.length === 0 && !loading && (
-        <div className="search-empty-state" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '10vh' }}>
-          <h1 style={{ fontSize: '32px', marginBottom: '16px', fontFamily: 'var(--font-dev)', color: 'var(--gold-soft)' }}>
-            {t.searchTab}
-          </h1>
-          <div className="hero-search-prompt" style={{ width: '100%', maxWidth: '800px', padding: '30px', background: 'rgba(255, 255, 255, 0.02)', borderRadius: '24px', border: '1px dashed rgba(249, 115, 22, 0.3)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <p style={{ color: 'var(--gold-soft)', fontSize: '18px', marginBottom: '20px' }}>{t.placeholder}</p>
-            <div className="hero-suggestions" style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center' }}>
-              {t.suggestions.map(s => (
-                <button key={s} className="suggestion-chip" onClick={() => handleSearch(s)}>
-                  {s}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
+        <SearchGreeting onSearch={handleSearch} lang={lang} />
       )}
 
       {sessions.map((session, si) => {
         const isLatest = si === sessions.length - 1;
-        const allSuggestions = new Set();
-        Object.values(session.metadata || {}).forEach(m => {
-          if (m.suggested_queries) m.suggested_queries.forEach(sq => allSuggestions.add(sq));
-        });
-        const topSuggestions = Array.from(allSuggestions).slice(0, 5);
 
         return (
           <div key={si} className="chat-thread" ref={isLatest ? latestSessionRef : null}>
@@ -85,18 +70,11 @@ export default function SearchPage({
                   ))}
                 </div>
                 
-                {topSuggestions.length > 0 && (
-                  <div className="dynamic-suggestions">
-                    <div className="suggestions-label">{t.tryThese}</div>
-                    <div className="hero-suggestions" style={{justifyContent: 'flex-start', marginTop: '8px'}}>
-                      {topSuggestions.map(s => (
-                        <button key={s} className="suggestion-chip" onClick={() => handleSearch(s)}>
-                          {s}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                <RelatedQuestions 
+                  metadata={session.metadata} 
+                  onSearch={handleSearch} 
+                  lang={lang}
+                />
               </div>
             )}
           </div>
@@ -135,7 +113,9 @@ export default function SearchPage({
             className={`icon-btn ${isListening ? 'listening' : ''}`}
             title="Voice Search"
           >
-            🎤
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5-3c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
+            </svg>
           </button>
           <button 
             className="search-btn" 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { api } from '../utils/api';
 import './CinematicVideoPanel.css';
 
-const CinematicVideoPanel = ({ videoSummary, initialTitle, onClose, onSearch }) => {
+const CinematicVideoPanel = ({ videoSummary, initialTitle, onClose, onSearch, onStoryClick }) => {
   const [details, setDetails] = useState(null);
   const [topics, setTopics] = useState([]);
   const [questions, setQuestions] = useState([]);
@@ -169,8 +169,13 @@ const CinematicVideoPanel = ({ videoSummary, initialTitle, onClose, onSearch }) 
                         {displayedStories.length > 0 ? (
                           <>
                             {displayedStories.map((story, i) => (
-                              <div key={i} className="knowledge-story-card">
-                                <h3>{story.title}</h3>
+                              <div 
+                                key={i} 
+                                className="knowledge-story-card"
+                                onClick={() => { if (onStoryClick) onStoryClick(story); }}
+                                style={{ cursor: onStoryClick ? 'pointer' : 'default', transition: 'background 0.2s', '&:hover': { background: 'rgba(255,255,255,0.05)' } }}
+                              >
+                                <h3 style={{ color: onStoryClick ? 'var(--saffron)' : 'inherit' }}>{story.title}</h3>
                                 {story.moral && <p className="story-moral">"{story.moral}"</p>}
                               </div>
                             ))}

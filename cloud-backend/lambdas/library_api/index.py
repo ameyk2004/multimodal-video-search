@@ -37,8 +37,16 @@ class StoryModel(BaseModel):
     exact_end_text: Optional[str] = ""
     start_time_seconds: int = 0
 
+class VerseModel(BaseModel):
+    verse_text: str
+    source_or_author: Optional[str] = ""
+
 class VideoDetailModel(BaseModel):
     video_id: str
+    topics: List[str] = Field(default_factory=list)
+    queries: List[str] = Field(default_factory=list)
+    practices: List[str] = Field(default_factory=list)
+    verses: List[VerseModel] = Field(default_factory=list)
     stories: List[StoryModel] = Field(default_factory=list)
 
 class TopicListModel(BaseModel):
@@ -105,6 +113,15 @@ def lambda_handler(event, context):
                 
                 detail_model = VideoDetailModel(
                     video_id=video_id,
+                    topics=item.get("topics", []),
+                    queries=item.get("queries", []),
+                    practices=item.get("actionable_practices", []),
+                    verses=[
+                        VerseModel(
+                            verse_text=v.get("verse_text", ""),
+                            source_or_author=v.get("source_or_author", "")
+                        ) for v in item.get("quoted_verses", [])
+                    ],
                     stories=stories
                 )
                 return _build_response(200, detail_model)

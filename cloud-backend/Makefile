@@ -70,6 +70,8 @@ clean:
 
 refresh:
 	@echo "🔄 Refreshing Backend..."
+	@echo "🔄 Syncing .env to samconfig.toml..."
+	@python3 -c "import sys; sys.path.insert(0,'../scripts'); from package_release import load_env, update_samconfig; update_samconfig(load_env('../.env'))"
 	@echo "🔨 Building SAM Application..."; \
 	sam build -t $(TEMPLATE_FILE) && \
 	echo "☁️ Deploying SAM Application..."; \

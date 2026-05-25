@@ -5,7 +5,10 @@ import json
 import os
 import logging
 import decimal
+import re
 from typing import Any
+
+import google.generativeai as genai
 
 class DecimalEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -27,7 +30,11 @@ logger.setLevel(logging.INFO)
 QDRANT_URL = os.environ["QDRANT_URL"]
 QDRANT_API_KEY = os.environ["QDRANT_API_KEY"]
 HF_API_KEY = os.environ["HF_API_KEY"]
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 COLLECTION_NAME = os.environ.get("COLLECTION_NAME", "guru-videos")
+
+if GEMINI_API_KEY:
+    genai.configure(api_key=GEMINI_API_KEY)
 
 # CORS headers applied to every response
 CORS_HEADERS = {
@@ -62,6 +69,45 @@ def _build_response(status_code: int, body: dict[str, Any]) -> dict:
         "body": json.dumps(body, ensure_ascii=False, cls=DecimalEncoder),
     }
 
+def translate_to_marathi(query: str) -> tuple[str, str]:
+    """
+    Translates or transliterates a query to Devanagari Marathi using Gemini.
+    Returns (translated_query, error_string_if_any).
+    Skips API call if the text is already pure Devanagari (no English letters).
+    """
+    if not GEMINI_API_KEY:
+        return query, "Missing API Key"
+        
+    # If there are no English letters, assume it's already in native script
+    if not re.search(r'[a-zA-Z]', query):
+        logger.info("Skipping translation (pure Marathi detected).")
+        return query, ""
+        
+    try:
+        logger.info("Translating query via Gemini: %s", query)
+        model = genai.GenerativeModel("gemini-2.5-flash")
+        
+        prompt = (
+            f"You are an expert translator for a spiritual Marathi application about Sant Tukaram and Shri Pethekaka. "
+            f"If the following input is fully in Devanagari script, return it exactly as is. "
+            f"If it is in English or Romanized Marathi (Hinglish), translate/transliterate it into natural Devanagari Marathi. "
+            f"Output ONLY the resulting Devanagari text. Do not add quotes, explanations, or conversational text.\n\n"
+            f"Query: {query}"
+        )
+        
+        # We do NOT restrict max_output_tokens, per user request, to handle long queries gracefully.
+        response = model.generate_content(prompt)
+        translated = response.text.strip()
+        
+        if translated:
+            logger.info("Translated query: %s -> %s", query, translated)
+            return translated, ""
+    except Exception as e:
+        logger.error("Gemini translation failed: %s. Falling back to original query.", e)
+        return query, str(e)
+        
+    return query, "Unknown fallback"
+
 # ─── Lambda entry point ─────────────────────────────────────────────────────
 
 def lambda_handler(event: dict, context: Any) -> dict:
@@ -78,11 +124,14 @@ def lambda_handler(event: dict, context: Any) -> dict:
         return _build_response(400, {"error": "Missing required query parameter 'q'."})
 
     logger.info("Processing query: %s", query)
+    
+    # ── Step 0: Translate Query ──────────────────────────────────────────────
+    processed_query, translation_error = translate_to_marathi(query)
 
     try:
         # ── Step 1: Generate embedding ───────────────────────────────────
         embedder = _get_embedder()
-        vector = embedder.generate_embedding(query)
+        vector = embedder.generate_embedding(processed_query)
         logger.info("Embedding generated (%d dimensions)", len(vector))
 
         # ── Step 2: Semantic search ──────────────────────────────────────
@@ -117,6 +166,8 @@ def lambda_handler(event: dict, context: Any) -> dict:
 
         return _build_response(200, {
             "query": query, 
+            "translated_query": processed_query,
+            "translation_error": translation_error,
             "results": results,
             "metadata": video_metadata
         })

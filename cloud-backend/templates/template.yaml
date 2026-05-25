@@ -24,6 +24,10 @@ Parameters:
     Type: String
     Description: The HuggingFace Inference API key
     NoEcho: true
+  GeminiApiKey:
+    Type: String
+    Description: The Google Gemini API key
+    NoEcho: true
   DynamoDbTableName:
     Type: String
     Description: Name of the DynamoDB table for video metadata
@@ -59,6 +63,7 @@ Resources:
           QDRANT_URL: !Ref QdrantUrl
           QDRANT_API_KEY: !Ref QdrantApiKey
           HF_API_KEY: !Ref HfApiKey
+          GEMINI_API_KEY: !Ref GeminiApiKey
           COLLECTION_NAME: guru-videos
           DYNAMODB_TABLE: !Ref DynamoDbTableName
       Policies:

@@ -1,0 +1,203 @@
+.stories-banner-wrapper {
+  width: 100%;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(20,20,20,0.8) 0%, rgba(30,20,10,0.9) 100%);
+  border: 1px solid rgba(255, 153, 0, 0.15);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 20px rgba(255, 153, 0, 0.05);
+}
+
+.stories-banner-container {
+  width: 100%;
+  min-height: 200px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 1;
+}
+
+.stories-banner-bg-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(circle, rgba(255,165,0,0.15) 0%, rgba(0,0,0,0) 70%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+
+.stories-banner-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.banner-images-left,
+.banner-images-right {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  flex: 1;
+}
+
+.banner-images-left {
+  justify-content: flex-start;
+}
+
+.banner-images-right {
+  justify-content: flex-end;
+}
+
+.banner-img {
+  object-fit: contain;
+  filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
+  margin-bottom: -1.5rem; /* Make all images sit perfectly flush with the bottom */
+}
+
+.img-maharaj {
+  height: 150px;
+}
+
+.img-tukaram {
+  height: 140px;
+  opacity: 0.9;
+}
+
+.img-kaka {
+  height: 200px;
+  margin-right: -1rem; /* Slight offset to right edge */
+  transform: scaleX(-1); /* Flips image if needed for better composition facing inward */
+}
+
+.banner-center-text {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 1rem;
+}
+
+.banner-title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(255, 165, 0, 0.4);
+  margin: 0 0 0.5rem 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  letter-spacing: -0.5px;
+}
+
+.banner-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+  opacity: 0.7;
+}
+
+.banner-divider .line {
+  height: 1px;
+  width: 60px;
+  background: linear-gradient(90deg, transparent, var(--saffron), transparent);
+}
+
+.banner-divider .star {
+  color: var(--saffron);
+  font-size: 0.8rem;
+}
+
+.banner-stats {
+  font-size: 1rem;
+  color: var(--text-dim);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.4rem 1.2rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  margin: 0;
+}
+
+.banner-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: var(--saffron);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 900px) {
+  .banner-title {
+    font-size: 2.2rem;
+  }
+  
+  .img-maharaj { height: 120px; }
+  .img-tukaram { height: 110px; }
+  .img-kaka { height: 165px; }
+}
+
+@media (max-width: 768px) {
+  .stories-banner-container {
+    padding: 1rem 0.5rem;
+    min-height: 120px;
+  }
+
+  .stories-banner-content {
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+  
+  .banner-images-left,
+  .banner-images-right {
+    gap: 0.25rem;
+  }
+
+  .banner-center-text {
+    padding: 0;
+  }
+
+  .banner-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.2rem;
+  }
+  
+  .banner-title-desktop-only {
+    display: none;
+  }
+  
+  .banner-stats {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.6rem;
+  }
+  
+  .banner-divider {
+    margin-bottom: 0.4rem;
+  }
+  
+  .banner-divider .line {
+    width: 30px;
+  }
+  
+  .banner-img {
+    margin-bottom: -1rem; /* Matches new container padding */
+  }
+  
+  .img-maharaj { height: 75px; }
+  .img-tukaram { height: 65px; }
+  .img-kaka { height: 110px; margin-right: -0.5rem; }
+}

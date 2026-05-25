@@ -1,0 +1,173 @@
+.related-questions-container {
+  margin-top: 2rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(10, 10, 15, 0.8) 0%, rgba(5, 5, 10, 0.95) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 115, 0, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), inset 0 0 30px rgba(255, 115, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+  border-top: 2px solid rgba(255, 115, 0, 0.5);
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* Subtle grid background pattern */
+.related-questions-container::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-image: 
+    linear-gradient(rgba(255, 115, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 115, 0, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.rq-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.rq-header h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-family: 'Courier New', Courier, monospace; /* Tech vibe */
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 115, 0, 0.8);
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Pseudo Lottie Radar Animation */
+.rq-lottie-mock {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rq-radar-core {
+  width: 8px;
+  height: 8px;
+  background-color: var(--saffron);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--saffron), 0 0 20px var(--saffron);
+  z-index: 2;
+}
+
+.rq-radar-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid var(--saffron);
+  opacity: 0;
+  animation: radarPulse 1.5s cubic-bezier(0.21, 0.53, 0.56, 1) infinite;
+}
+
+@keyframes radarPulse {
+  0% { transform: scale(0.2); opacity: 1; border-width: 3px; }
+  80% { transform: scale(2); opacity: 0; border-width: 1px; box-shadow: 0 0 15px var(--saffron); }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+/* Techno-savvy Chips */
+.rq-chips-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.rq-chip {
+  position: relative;
+  background: rgba(15, 15, 20, 0.9);
+  border: none;
+  padding: 0.8rem 1.2rem;
+  border-radius: 6px; /* Sharper edges */
+  color: #aaa;
+  font-size: 0.95rem;
+  font-family: var(--font-body), sans-serif;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: slideUpFade 0.5s forwards;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+/* Animated moving border using conic-gradient */
+.rq-chip::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%; width: 200%; height: 200%;
+  background: conic-gradient(from 0deg, transparent 60%, rgba(255, 115, 0, 1) 80%, rgba(0, 255, 200, 1) 100%);
+  z-index: -2;
+  animation: rotateBorder 3s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Inner cutout to show the background */
+.rq-chip::after {
+  content: '';
+  position: absolute;
+  inset: 2px; /* Controls border thickness */
+  background: rgba(15, 15, 20, 0.95);
+  border-radius: 4px;
+  z-index: -1;
+  transition: background 0.3s ease;
+}
+
+.rq-chip:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+.rq-chip:hover::before {
+  opacity: 1; /* Reveal moving border on hover */
+}
+
+.rq-chip:hover::after {
+  background: rgba(25, 25, 30, 0.95);
+}
+
+.rq-chip-text {
+  position: relative;
+  z-index: 1;
+  letter-spacing: 0.3px;
+  transition: all 0.3s ease;
+}
+
+.rq-chip:hover .rq-chip-text {
+  color: #fff;
+  text-shadow: 0 0 8px rgba(0, 255, 200, 0.6);
+}
+
+@keyframes rotateBorder {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes slideUpFade {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -27,6 +27,7 @@ def update_samconfig(env_vars: dict, extra_overrides: dict = None):
     qdrant_url = env_vars.get("QDRANT_URL", "")
     qdrant_api_key = env_vars.get("QDRANT_API_KEY", "")
     hf_api_key = env_vars.get("HF_API_KEY", "")
+    gemini_api_key = env_vars.get("GEMINI_API_KEY", "")
 
     samconfig_path = "samconfig.toml"
     if not os.path.exists(samconfig_path):
@@ -39,7 +40,8 @@ def update_samconfig(env_vars: dict, extra_overrides: dict = None):
     overrides = [
         f'QdrantUrl=\\"{qdrant_url}\\"',
         f'QdrantApiKey=\\"{qdrant_api_key}\\"',
-        f'HfApiKey=\\"{hf_api_key}\\"'
+        f'HfApiKey=\\"{hf_api_key}\\"',
+        f'GeminiApiKey=\\"{gemini_api_key}\\"'
     ]
     for k, v in extra_overrides.items():
         overrides.append(f'{k}=\\"{v}\\"')
@@ -116,6 +118,7 @@ Resources:
     qdrant_url = env_vars.get("QDRANT_URL", "ENTER_QDRANT_URL")
     qdrant_api_key = env_vars.get("QDRANT_API_KEY", "ENTER_QDRANT_API_KEY")
     hf_api_key = env_vars.get("HF_API_KEY", "ENTER_HF_API_KEY")
+    gemini_api_key = env_vars.get("GEMINI_API_KEY", "ENTER_GEMINI_API_KEY")
 
     params = {
         "templateURL": template_url,
@@ -123,6 +126,7 @@ Resources:
         "param_QdrantUrl": qdrant_url,
         "param_QdrantApiKey": qdrant_api_key,
         "param_HfApiKey": hf_api_key,
+        "param_GeminiApiKey": gemini_api_key,
     }
 
     query_string = urllib.parse.urlencode(params)

@@ -7,6 +7,7 @@ import VideoLibraryCard from './components/VideoLibraryCard';
 import CinematicVideoPanel from './components/CinematicVideoPanel';
 import HomePage from './components/HomePage';
 import SearchPage from './components/SearchPage';
+import StoriesBanner from './components/StoriesBanner';
 import { api } from './utils/api';
 
 const CONTENT = {
@@ -105,12 +106,32 @@ export default function App() {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [selectedVideoTitle, setSelectedVideoTitle] = useState('');
 
-  const startVoiceSearch = (setQueryState) => {
+  const startVoiceSearch = async (setQueryState) => {
+    if (!window.isSecureContext) {
+      alert('Microphone access is blocked! Mobile browsers require a secure HTTPS connection for voice search. Since you are likely testing on your local network (HTTP), you must either use your live CloudFront URL, or use a tunneling tool (like ngrok) to get a temporary HTTPS URL for testing.');
+      return;
+    }
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
       alert('Your browser does not support voice search.');
       return;
     }
+
+    // iOS Safari Bug Fix: Manually request microphone permission first to force the OS prompt.
+    // If we just call recognition.start(), Safari sometimes silently blocks it with 'service-not-allowed'.
+    try {
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        // Stop the tracks immediately so we don't hold the mic unnecessarily. 
+        // SpeechRecognition will grab its own stream now that permission is granted.
+        stream.getTracks().forEach(track => track.stop());
+      }
+    } catch (err) {
+      console.error("Microphone permission denied manually:", err);
+      alert('Microphone permission is required for voice search. Please click "Allow" when the browser asks for microphone access, or check your browser settings.');
+      return;
+    }
+
     const recognition = new SpeechRecognition();
     recognition.lang = lang === 'mr' ? 'mr-IN' : 'en-US';
     recognition.onstart = () => setIsListening(true);
@@ -121,11 +142,17 @@ export default function App() {
     recognition.onerror = (e) => {
       console.error("Speech error", e);
       if (e.error === 'not-allowed') {
-        alert('Microphone permission denied. Please allow microphone access in your browser settings.');
+        alert('Microphone permission denied. Please allow microphone access in your browser or device settings.');
       } else if (e.error === 'aborted') {
         console.warn('Voice search aborted by user or browser.');
+      } else if (e.error === 'network') {
+        alert('Voice search error: network. Make sure you have a stable internet connection. On iOS, you may need to enable Dictation in your keyboard settings.');
+      } else if (e.error === 'no-speech') {
+        alert('No speech was detected. Please try again and speak closer to the microphone.');
+      } else if (e.error === 'service-not-allowed') {
+        alert('Voice search is blocked by your device settings. On Android, ensure the "Google" app is enabled. On iPhone, you must use Safari (not Chrome) and have Dictation enabled in Keyboard settings.');
       } else {
-        alert(`Voice search error: ${e.error}. Note: Voice search requires a secure HTTPS connection (CloudFront) on mobile.`);
+        alert(`Voice search error: ${e.error}.`);
       }
       setIsListening(false);
     };
@@ -146,15 +173,7 @@ export default function App() {
     api.getConfig().catch(console.error);
   }, []);
 
-  useEffect(() => {
-    if (location.pathname === '/search') {
-      if (latestSessionRef.current) {
-        latestSessionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } else {
-        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  }, [sessions, loading, location.pathname]);
+
 
   // Fetch stories and library data once
   useEffect(() => {
@@ -185,7 +204,7 @@ export default function App() {
       const data = await api.search(searchQuery);
       
       setSessions(prev => [...prev, { 
-        query: searchQuery, 
+        query: data.translated_query && data.translated_query !== searchQuery ? `${searchQuery} (${data.translated_query})` : searchQuery, 
         results: data.results || [], 
         metadata: data.metadata || {},
         error: null 
@@ -249,16 +268,11 @@ export default function App() {
           <Routes>
             <Route path="/stories" element={
               <div className="stories-page">
-                <div className="stories-header" style={{ marginBottom: '16px', borderBottom: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-                  <h2 style={{ fontSize: '36px', margin: 0 }}>{t.storiesTitle}</h2>
-                  {!dataLoading && (
-                    <span className="story-count-badge">
-                      {filteredStories.length === allStories.length 
-                        ? `Total Stories: ${allStories.length}` 
-                        : `Showing ${filteredStories.length} of ${allStories.length} Stories`}
-                    </span>
-                  )}
-                </div>
+                <StoriesBanner 
+                  isLoading={dataLoading} 
+                  totalStories={allStories.length} 
+                  filteredStories={filteredStories.length} 
+                />
                 
                 <div className="premium-search-container">
                   <div className="premium-search-box">
@@ -275,7 +289,9 @@ export default function App() {
                       className={`icon-btn ${isListening ? 'listening' : ''}`}
                       title="Voice Search"
                     >
-                      🎤
+                      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5-3c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
+                      </svg>
                     </button>
                     <button 
                       className="icon-btn"
@@ -366,7 +382,11 @@ export default function App() {
                       </p>
                     ) : (
                       filteredStories.map((story, i) => (
-                        <StoryCard key={`${story.video_id}-${i}`} story={story} />
+                        <StoryCard 
+                          key={`${story.video_id}-${i}`} 
+                          story={story} 
+                          autoOpen={location.state?.openStoryTitle === story.title}
+                        />
                       ))
                     )}
                   </div>
@@ -434,6 +454,10 @@ export default function App() {
                     onSearch={(q) => {
                       setSelectedVideo(null);
                       handleSearch(q);
+                    }}
+                    onStoryClick={(story) => {
+                      setSelectedVideo(null);
+                      navigate('/stories', { state: { openStoryTitle: story.title } });
                     }}
                   />
                 )}

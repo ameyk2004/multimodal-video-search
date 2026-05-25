@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './StoryCard.css';
 
 const StoryModal = ({ story, onClose }) => {
@@ -88,9 +88,21 @@ const StoryModal = ({ story, onClose }) => {
   );
 };
 
-const StoryCard = ({ story }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const StoryCard = ({ story, autoOpen }) => {
+  const [isModalOpen, setIsModalOpen] = useState(autoOpen || false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const cardRef = useRef(null);
+
+  useEffect(() => {
+    if (autoOpen) {
+      setIsModalOpen(true);
+      if (cardRef.current) {
+        setTimeout(() => {
+          cardRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 500); // Wait for page transition
+      }
+    }
+  }, [autoOpen]);
   const { 
     title, 
     moral, 
@@ -114,7 +126,7 @@ const StoryCard = ({ story }) => {
 
   return (
     <>
-      <div className="premium-story-card" onClick={() => setIsModalOpen(true)}>
+      <div className="premium-story-card" onClick={() => setIsModalOpen(true)} ref={cardRef}>
         <div className="story-card-left">
           <img 
             src={thumbSrc} 
