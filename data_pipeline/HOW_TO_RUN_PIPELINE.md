@@ -105,7 +105,7 @@ Follow this checklist to run the notebook cells top-to-bottom:
     *   *Note:* Running this on Colab is fast and fine. (Alternatively, if you also zipped and uploaded your local `enriched_metadata/` folder, you can skip this cell).
 6.  **Run Cell 5 (Load GPU Model):** Loads the `BAAI/bge-m3` embedding model onto the Colab T4 GPU.
 7.  **Run Cell 6 (Chunk & Embed):** Generates dense vector embeddings for all video chunks using the GPU and saves them to `enriched_json/`.
-8.  **Run Cell 7 (Upload to Qdrant Cloud):** Uploads the chunk vectors to your main `guru-videos` collection in Qdrant.
+8.  **Run Cell 7 (Upload to Qdrant Cloud — Hybrid):** Builds the BM25 vocabulary, recreates the `sadhananandadeep-videos` collection with both dense and sparse (BM25) vector configs, uploads all chunk vectors, and saves `vocab_idf.json` to the Lambda directory. **Do NOT use `qdrant_uploader.py` — that script is old and only uploads dense vectors. The Lambda searches against `sadhananandadeep-videos`.**
 9.  **⏭️ SKIP Cell 8 (Upload Metadata to DynamoDB):** You can skip this since you already uploaded your metadata to DynamoDB from your local Mac in Phase 1 (Step 3).
 
 🎉 **Finally Done!** Your video search database is now fully updated and live!

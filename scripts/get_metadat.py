@@ -4,7 +4,7 @@ import json
 def get_unique_metadata():
     # Make sure to set your correct AWS region
     dynamodb = boto3.resource('dynamodb', region_name='us-east-1') 
-    table = dynamodb.Table('guru-video-metadata')
+    table = dynamodb.Table('sadhananandadeep-content')
 
     unique_topics = set()
     unique_saints = set()

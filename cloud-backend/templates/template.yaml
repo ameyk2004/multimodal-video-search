@@ -64,7 +64,7 @@ Resources:
           QDRANT_API_KEY: !Ref QdrantApiKey
           HF_API_KEY: !Ref HfApiKey
           GEMINI_API_KEY: !Ref GeminiApiKey
-          COLLECTION_NAME: guru-videos-hybrid
+          COLLECTION_NAME: sadhananandadeep-videos
           DYNAMODB_TABLE: !Ref DynamoDbTableName
       Policies:
         - DynamoDBReadPolicy:

@@ -15,7 +15,7 @@ from qdrant_client import QdrantClient
 from qdrant_client.http.models import Distance, VectorParams, PointStruct
 
 class QdrantManager:
-    def __init__(self, collection_name="guru-videos", recreate_collection: bool = True):
+    def __init__(self, collection_name="sadhananandadeep-videos", recreate_collection: bool = True):
         load_dotenv()
         url = os.getenv("QDRANT_URL")
         api_key = os.getenv("QDRANT_API_KEY")

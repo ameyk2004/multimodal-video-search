@@ -10,8 +10,8 @@ from qdrant_client.http import models
 load_dotenv()
 QDRANT_URL = os.getenv("QDRANT_URL")
 QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")
-OLD_COLLECTION = os.getenv("COLLECTION_NAME", "guru-videos")
-NEW_COLLECTION = "guru-videos-hybrid"
+OLD_COLLECTION = os.getenv("COLLECTION_NAME", "sadhananandadeep-videos")
+NEW_COLLECTION = "sadhananandadeep-videos"
 
 K1 = 1.2
 B = 0.75
@@ -129,7 +129,7 @@ def main():
         client.upsert(collection_name=NEW_COLLECTION, points=new_points)
         print(f"Migrated {min(i+batch_size, N)} / {N} points...")
 
-    print("✅ Migration Complete! Update your .env / Lambda to use COLLECTION_NAME=guru-videos-hybrid")
+    print("✅ Migration Complete! Update your .env / Lambda to use COLLECTION_NAME=sadhananandadeep-videos")
 
 if __name__ == "__main__":
     main()

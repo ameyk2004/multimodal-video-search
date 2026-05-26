@@ -17,7 +17,7 @@ load_dotenv()
 QDRANT_URL = os.getenv("QDRANT_URL")
 QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")
 HF_API_KEY = os.getenv("HF_API_KEY")
-COLLECTION_NAME = "guru-videos-hybrid"
+COLLECTION_NAME = "sadhananandadeep-videos"
 
 def tokenize(text: str) -> list[str]:
     text = text.lower()

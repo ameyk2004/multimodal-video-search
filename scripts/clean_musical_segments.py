@@ -3,7 +3,7 @@ from decimal import Decimal
 
 def clean_segments():
     dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
-    table = dynamodb.Table('guru-video-metadata')
+    table = dynamodb.Table('sadhananandadeep-content')
     
     print("Scanning DynamoDB table for items with musical_segments...")
     response = table.scan()

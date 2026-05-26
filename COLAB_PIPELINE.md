@@ -319,20 +319,22 @@ print("🎉 All videos processed!")
 
 ---
 
-### 🟦 Cell 7 — Upload to Qdrant Cloud
-*Cleans the collection and re-uploads everything fresh.*
+### 🟦 Cell 7 — Upload to Qdrant Cloud (Hybrid: Dense + BM25)
+*Builds the BM25 vocabulary from all chunks, creates `sadhananandadeep-videos` with both dense and sparse vector configs, and uploads everything. This is what the Lambda searches against.*
+
+> ⚠️ **Do NOT use `qdrant_uploader.py` for this.** That is an old script that only uploads plain dense vectors. The Lambda reads from `sadhananandadeep-videos`.
+
 ```python
-import sys
+import os, sys
 sys.path.insert(0, "/content/repo")
 
-# Point the uploader to Colab's local enriched_json dir
-import data_pipeline.qdrant_uploader as uploader_module
+# Tell the script where to find the enriched json files
+os.environ["ENRICHED_JSON_DIR"] = "/content/repo/data_pipeline/enriched_json"
 
-from data_pipeline.qdrant_uploader import QdrantManager
+%cd /content/repo
+%run scripts/rebuild_qdrant_hybrid.py
 
-qdrant = QdrantManager()
-qdrant.upload_data(input_directory="/content/repo/data_pipeline/enriched_json")
-print("✅ Upload complete — Qdrant is live!")
+print("✅ Upload complete — Qdrant sadhananandadeep-videos is live with Dense + BM25 Hybrid Search!")
 ```
 
 ---

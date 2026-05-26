@@ -12,8 +12,8 @@ from qdrant_client.http import models
 load_dotenv()
 QDRANT_URL = os.getenv("QDRANT_URL")
 QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")
-COLLECTION_NAME = os.getenv("COLLECTION_NAME", "guru-videos")
-PROCESSED_JSON_DIR = "data_pipeline/enriched_json"
+COLLECTION_NAME = os.getenv("COLLECTION_NAME", "sadhananandadeep-videos")
+PROCESSED_JSON_DIR = os.getenv("ENRICHED_JSON_DIR", "data_pipeline/enriched_json")
 
 # BM25 Parameters
 K1 = 1.2

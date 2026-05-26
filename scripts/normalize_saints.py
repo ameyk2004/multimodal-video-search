@@ -3,7 +3,7 @@ import logging
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
-TABLE_NAME = "guru-video-metadata"
+TABLE_NAME = "sadhananandadeep-content"
 
 # ─── SAINT MAPPING ────────────────────────────────────────────────────────────
 SAINT_MAPPING = {

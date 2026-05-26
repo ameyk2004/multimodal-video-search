@@ -12,7 +12,7 @@ class QdrantSearcher:
     """
     Handles semantic search queries against a Qdrant collection.
     """
-    def __init__(self, url: str, api_key: str, collection_name: str = "guru-videos"):
+    def __init__(self, url: str, api_key: str, collection_name: str = "sadhananandadeep-videos"):
         self.collection_name = collection_name
         self.client = QdrantClient(url=url, api_key=api_key, timeout=20.0)
         logger.info("QdrantSearcher initialised for collection '%s'", self.collection_name)
