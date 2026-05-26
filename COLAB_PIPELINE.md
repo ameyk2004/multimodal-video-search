@@ -185,8 +185,14 @@ print("✅ Repo cloned, data restored, package installed, secrets loaded")
 > You can now skip Cell 3 completely!
 
 ```python
+# OPTION A: Run the main.py script directly from the repo (uses pre-configured URLs in main.py)
+# !python data_pipeline/main.py
+
+# OPTION B: Run dynamically inside this cell with custom URLs:
 from data_pipeline.manager import YouTubeTranscriptManager
+from data_pipeline.chunker import TranscriptChunker
 import json, os
+import urllib.parse as urlparse
 
 # Add or remove video URLs here as needed
 VIDEO_URLS = [
@@ -197,8 +203,6 @@ VIDEO_URLS = [
     "https://youtu.be/Y4D15z9Z9nU",
     "https://youtu.be/Q263c-YZJmA",
 ]
-
-import urllib.parse as urlparse
 
 def extract_video_id(url):
     parsed = urlparse.urlparse(url)
@@ -212,20 +216,37 @@ video_ids = [extract_video_id(u) for u in VIDEO_URLS]
 
 RAW_DIR = "/content/repo/data_pipeline/output"
 manager = YouTubeTranscriptManager(output_dir=RAW_DIR)
-transcripts = manager.process_videos(video_ids)
 
-# Save raw transcripts
+# process_videos returns a tuple: (results_dict, stats_dict)
+transcripts, stats = manager.process_videos(video_ids)
+
+print("Initializing chunking pipeline...")
+chunker = TranscriptChunker(min_chunk_duration=30.0, pause_threshold=1.0)
+
+# Save chunked transcripts
 os.makedirs(RAW_DIR, exist_ok=True)
-for video_id, data in transcripts.items():
+for video_id, raw_data in transcripts.items():
     path = os.path.join(RAW_DIR, f"{video_id}.json")
     if not os.path.exists(path):
+        chunked_data = chunker.process(raw_data)
         with open(path, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
-        print(f"  Saved: {video_id}.json ({len(data)} fragments)")
+            json.dump(chunked_data, f, ensure_ascii=False, indent=2)
+        print(f"  Saved: {video_id}.json ({len(chunked_data)} chunks)")
     else:
         print(f"  Skipped (exists): {video_id}.json")
 
-print(f"✅ {len(transcripts)} transcripts ready")
+print("\n" + "="*50)
+print("🎬 PIPELINE EXECUTION SUMMARY")
+print("="*50)
+print(f"Total Video URLs Given:           {stats['total_given']}")
+print(f"Total successfully processed:     {stats['success']}")
+print(f"Skipped (Already Processed):      {stats['skipped_already_exists']}")
+print(f"Skipped (Uploaded Before 2022):   {stats['skipped_pre2022']}")
+print(f"No Transcript Found / Disabled:   {stats['error_transcript_not_found']}")
+print(f"Transcript Exists (No Marathi):   {stats['error_no_native_marathi']}")
+print(f"Other Errors (IP Block/Rate Limit):{stats['error_other']}")
+print("="*50)
+print("\n✅ Transcripts ready and chunked!")
 ```
 
 ---

@@ -120,10 +120,8 @@ class YouTubeTranscriptManager:
                     print(f"[{video_id}] ❌ ERROR: No transcript found.")
                     stats["error_transcript_not_found"] += 1
                 elif isinstance(e, (RequestBlocked, IpBlocked)):
-                    print(f"[{video_id}] ❌ CRITICAL: YouTube rate limit or IP block hit! Taking a long pause...")
+                    print(f"[{video_id}] ❌ CRITICAL: YouTube rate limit or IP block hit! Skipping this video...")
                     stats["error_other"] += 1
-                    import time
-                    time.sleep(30) # Wait 30 seconds before trying the next to cool down
                     continue
                 else:
                     print(f"[{video_id}] ❌ ERROR: An unexpected error occurred: {str(e)}")
