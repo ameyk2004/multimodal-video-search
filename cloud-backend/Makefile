@@ -5,7 +5,7 @@ export DYLD_LIBRARY_PATH := /opt/homebrew/lib:$(DYLD_LIBRARY_PATH)
 
 # By default, use the template in the templates directory
 TEMPLATE_FILE ?= templates/template.yaml
-STACK_NAME    ?= multimodal-video-search
+STACK_NAME    ?= sadhananandadeep-backend
 
 build:
 	@echo "Building SAM application..."
@@ -60,7 +60,7 @@ teardown:
 		python3.12 ../scripts/aws_helper.py --action empty_bucket --bucket $$ARTIFACTS_BUCKET || true; \
 		python3.12 ../scripts/aws_helper.py --action delete_bucket --bucket $$ARTIFACTS_BUCKET || true; \
 	fi
-	sam delete --no-prompts
+	sam delete --stack-name $(STACK_NAME) --no-prompts
 	@$(MAKE) clean
 
 clean:

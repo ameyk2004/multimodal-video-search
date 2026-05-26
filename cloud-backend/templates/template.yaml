@@ -31,7 +31,7 @@ Parameters:
   DynamoDbTableName:
     Type: String
     Description: Name of the DynamoDB table for video metadata
-    Default: guru-video-metadata
+    Default: sadhananandadeep-content
   UiArtifactsBucket:
     Type: String
     Description: Name of the artifacts bucket where the UI is uploaded before deploy

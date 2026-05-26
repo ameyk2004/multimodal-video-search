@@ -145,6 +145,45 @@ print("✅ Repo cloned, data restored, package installed, secrets loaded")
 
 ### 🟦 Cell 3 — Fetch YouTube Transcripts
 *Runs YouTubeTranscriptManager directly in Colab. No Mac needed.*
+
+> 💡 **Have an existing `output.zip` from your local machine?**
+> You can skip fetching from YouTube entirely by uploading your zip file:
+> 1. In Colab, click the **📁 Folder icon** on the left sidebar.
+> 2. Drag and drop your `output.zip` file directly into the `/content` folder.
+> 3. Add a new code cell above Cell 4 and run this foolproof extraction code:
+>    ```python
+>    import zipfile
+>    import os
+>    import shutil
+> 
+>    zip_path = '/content/output.zip'
+>    dest_dir = '/content/repo/data_pipeline/output'
+> 
+>    if os.path.exists(zip_path):
+>        print(f"Found {zip_path}, extracting...")
+>        temp_dir = '/content/temp_extract'
+>        os.makedirs(temp_dir, exist_ok=True)
+>        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+>            zip_ref.extractall(temp_dir)
+>        
+>        # Recursively find all JSON files and copy them to dest_dir
+>        json_count = 0
+>        os.makedirs(dest_dir, exist_ok=True)
+>        for root, _, files in os.walk(temp_dir):
+>            for file in files:
+>                if file.endswith('.json'):
+>                    src = os.path.join(root, file)
+>                    dst = os.path.join(dest_dir, file)
+>                    shutil.copy2(src, dst)
+>                    json_count += 1
+>                    
+>        shutil.rmtree(temp_dir)
+>        print(f"✅ Successfully extracted and moved {json_count} transcript JSON files to {dest_dir}!")
+>    else:
+>        print(f"❌ Error: {zip_path} not found. Please drag and drop it into Colab's left sidebar.")
+>    ```
+> You can now skip Cell 3 completely!
+
 ```python
 from data_pipeline.manager import YouTubeTranscriptManager
 import json, os

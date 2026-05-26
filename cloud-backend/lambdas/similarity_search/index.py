@@ -139,38 +139,81 @@ def lambda_handler(event: dict, context: Any) -> dict:
         results = searcher.search(vector, query_text=processed_query, top_k=5)
         logger.info("Found %d results", len(results))
 
-        # ── Step 3: Fetch video metadata from DynamoDB ────────────────────
-        video_ids = list({r["video_id"] for r in results if r.get("video_id")})
-        video_metadata = {}
-        
-        if video_ids:
-            try:
-                import boto3
-                dynamodb = boto3.resource("dynamodb")
-                table_name = os.environ.get("DYNAMODB_TABLE", "guru-video-metadata")
-                table = dynamodb.Table(table_name)
+        # ── Step 3: Fetch Related Queries using Qdrant (3:1:1 Exploration Mix) ──
+        related_queries_structured = []
+        try:
+            # Fetch top 20 nearest neighbors
+            queries_response = searcher.client.query_points(
+                collection_name="sadhananandadeep-queries",
+                query=vector,
+                limit=20,
+                with_payload=True
+            ).points
+            
+            # Extract unique queries to avoid duplicates
+            seen_queries = set()
+            unique_queries = []
+            for hit in queries_response:
+                q = hit.payload.get("query")
+                if q and q not in seen_queries:
+                    seen_queries.add(q)
+                    unique_queries.append(q)
+            
+            # 1. Direct (Top 3)
+            direct_pool = unique_queries[:3]
+            for q in direct_pool:
+                related_queries_structured.append({"query": q, "type": "direct"})
                 
-                # Fetch metadata for unique video IDs
-                for vid in video_ids:
-                    resp = table.get_item(Key={"video_id": vid})
-                    if "Item" in resp:
-                        # Clean up Item for JSON serialization (convert Decimals if any)
-                        item = resp["Item"]
-                        video_metadata[vid] = {
-                            "topics": item.get("topics", []),
-                            "queries": item.get("queries", []),
-                            "stories": item.get("stories", [])
-                        }
-            except Exception as e:
-                logger.error("Failed to fetch DynamoDB metadata: %s", e)
+            # 2. Tangential (1 random from the rest)
+            tangential_pool = unique_queries[3:]
+            if tangential_pool:
+                import random
+                tangential_q = random.choice(tangential_pool)
+                related_queries_structured.append({"query": tangential_q, "type": "tangential"})
+                seen_queries.add(tangential_q)
+                
+            # 3. Wildcard (1 completely random)
+            # Generate random vector to jump out of the local cluster
+            import random
+            random_vector = [random.uniform(-1.0, 1.0) for _ in range(1024)]
+            wildcard_response = searcher.client.query_points(
+                collection_name="sadhananandadeep-queries",
+                query=random_vector,
+                limit=5, # Fetch a few in case top is a duplicate
+                with_payload=True
+            ).points
+            
+            for hit in wildcard_response:
+                q = hit.payload.get("query")
+                if q and q not in seen_queries:
+                    related_queries_structured.append({"query": q, "type": "wildcard"})
+                    break
+                    
+        except Exception as e:
+            logger.error("Failed to fetch related queries from Qdrant: %s", e)
 
-        return _build_response(200, {
-            "query": query, 
-            "translated_query": processed_query,
-            "translation_error": translation_error,
-            "results": results,
-            "metadata": video_metadata
-        })
+        # Build response via Pydantic model
+        from models.response import SearchResponse, SearchResultItem
+        
+        search_results = [
+            SearchResultItem(
+                video_id=r["video_id"],
+                marathi_raw=r.get("marathi_raw", ""),
+                start_time=r.get("start_time", 0.0),
+                score=r.get("score", 0.0)
+            ) for r in results if "video_id" in r
+        ]
+
+        # Use structured related queries
+        response_model = SearchResponse(
+            query=query,
+            translated_query=processed_query,
+            translation_error=translation_error,
+            results=search_results,
+            related_queries=related_queries_structured
+        )
+
+        return _build_response(200, response_model.model_dump())
 
     except ConnectionError as exc:
         logger.error("HuggingFace API connection error: %s", exc)

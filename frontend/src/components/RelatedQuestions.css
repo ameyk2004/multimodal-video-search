@@ -144,6 +144,35 @@
   opacity: 1; /* Reveal moving border on hover */
 }
 
+/* Distinctive styling for exploration queries */
+.rq-chip-tangential::before {
+  background: conic-gradient(from 0deg, transparent 60%, rgba(0, 255, 120, 1) 80%, rgba(0, 200, 255, 1) 100%);
+}
+
+.rq-chip-wildcard::before {
+  background: conic-gradient(from 0deg, transparent 60%, rgba(200, 0, 255, 1) 80%, rgba(255, 0, 100, 1) 100%);
+}
+
+/* Always show wildcard/tangential borders slightly to encourage clicks */
+.rq-chip-tangential::before,
+.rq-chip-wildcard::before {
+  opacity: 0.5;
+  animation: rotateBorder 4s linear infinite;
+}
+
+.rq-chip-tangential:hover::before,
+.rq-chip-wildcard:hover::before {
+  opacity: 1;
+}
+
+/* Icons */
+.rq-chip-icon {
+  margin-right: 8px;
+  font-size: 1.1rem;
+  z-index: 1;
+  filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
+}
+
 .rq-chip:hover::after {
   background: rgba(25, 25, 30, 0.95);
 }

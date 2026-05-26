@@ -61,7 +61,6 @@ export default function SearchPage({
                       result={r}
                       rank={i + 1}
                       isMarathi={lang === 'mr'}
-                      metadata={session.metadata?.[r.video_id]}
                       onSearch={handleSearch}
                       style={{ animationDelay: `${i * 0.08}s` }}
                       playingVideoId={playingVideoId}
@@ -71,7 +70,7 @@ export default function SearchPage({
                 </div>
                 
                 <RelatedQuestions 
-                  metadata={session.metadata} 
+                  relatedQueries={session.related_queries} 
                   onSearch={handleSearch} 
                   lang={lang}
                 />

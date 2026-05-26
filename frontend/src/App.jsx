@@ -210,10 +210,11 @@ export default function App() {
         query: data.translated_query && data.translated_query !== searchQuery ? `${searchQuery} (${data.translated_query})` : searchQuery, 
         results: data.results || [], 
         metadata: data.metadata || {},
+        related_queries: data.related_queries || [],
         error: null 
       }]);
     } catch (err) {
-      setSessions(prev => [...prev, { query: searchQuery, results: [], metadata: {}, error: err.message }]);
+      setSessions(prev => [...prev, { query: searchQuery, results: [], metadata: {}, related_queries: [], error: err.message }]);
     } finally {
       setLoading(false);
       setTimeout(() => inputRef.current?.focus(), 100);

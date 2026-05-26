@@ -8,7 +8,7 @@ from botocore.exceptions import ClientError
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
-def upload_metadata(input_dir: str, table_name: str = "guru-video-metadata"):
+def upload_metadata(input_dir: str, table_name: str = "sadhananandadeep-content"):
     """
     Reads all JSON files in the input_dir and uploads them to the specified DynamoDB table.
     """
@@ -97,6 +97,6 @@ if __name__ == "__main__":
     input_directory = os.path.join(base_dir, "enriched_metadata")
     
     # User can override table name via env var, defaults to what we deployed
-    target_table = os.environ.get("DYNAMODB_TABLE", "guru-video-metadata")
+    target_table = os.environ.get("DYNAMODB_TABLE", "sadhananandadeep-content")
     
     upload_metadata(input_directory, target_table)

@@ -28,26 +28,76 @@ class YouTubeTranscriptManager:
 
 
 
-    def process_videos(self, video_ids: List[str]) -> dict:
+    def _get_video_upload_date(self, video_id: str) -> str:
         """
-        Iterates over video IDs and fetches Marathi transcripts. Returns a dict mapping video_id to transcript data.
+        Extracts the upload date from the YouTube video page html.
+        """
+        import re
+        url = f"https://www.youtube.com/watch?v={video_id}"
+        headers = {"User-Agent": "Mozilla/5.0"}
+        try:
+            resp = requests.get(url, headers=headers, timeout=10)
+            match = re.search(r"\"uploadDate\":\"(.*?)\"", resp.text)
+            if match:
+                return match.group(1) # e.g. '2023-08-25T00:00:00-07:00'
+        except Exception as e:
+            logger.warning(f"[{video_id}] Failed to fetch upload date: {e}")
+        return ""
+
+    def process_videos(self, video_ids: List[str]) -> tuple[dict, dict]:
+        """
+        Iterates over video IDs and fetches Marathi transcripts. 
+        Returns a tuple of (results_dict, stats_dict).
         """
         print(f"\n[YouTubeTranscriptManager] Starting transcript fetching pipeline for {len(video_ids)} videos.")
         results = {}
+        stats = {
+            "total_given": len(video_ids),
+            "success": 0,
+            "skipped_already_exists": 0,
+            "skipped_pre2022": 0,
+            "error_transcript_not_found": 0,
+            "error_no_native_marathi": 0,
+            "error_other": 0
+        }
         
         for video_id in video_ids:
             # Idempotency check: Skip if already processed
             output_file = os.path.join(self.output_dir, f"{video_id}.json")
             if os.path.exists(output_file):
                 print(f"[{video_id}] ⏩ SKIPPED: Transcript already exists locally.")
+                stats["skipped_already_exists"] += 1
                 continue
                 
-            print(f"[{video_id}] Fetching transcript...")
+            upload_date = self._get_video_upload_date(video_id)
+            if upload_date:
+                try:
+                    # Parse the year from the date string (e.g. "2020-05-07...")
+                    year = int(upload_date.split("-")[0])
+                    if year < 2022:
+                        print(f"[{video_id}] ⏩ SKIPPED: Uploaded before 2022 (exact date: {upload_date}).")
+                        stats["skipped_pre2022"] += 1
+                        continue
+                except Exception:
+                    pass
+
+            print(f"[{video_id}] Fetching transcript (Upload Date: {upload_date or 'Unknown'})...")
             try:
-                # Fetch explicitly requesting Marathi
+                # Use api.list to see all available transcripts
                 api = YouTubeTranscriptApi()
-                raw_transcript_obj = api.fetch(video_id, languages=['mr'])
-                raw_transcript = raw_transcript_obj.fetch() if hasattr(raw_transcript_obj, 'fetch') else raw_transcript_obj
+                transcript_list = api.list(video_id)
+                
+                # First, try to find a native Marathi transcript
+                try:
+                    transcript = transcript_list.find_transcript(['mr'])
+                except NoTranscriptFound:
+                    # If not found, just print what languages exist and skip
+                    available_langs = [t.language_code for t in transcript_list]
+                    print(f"[{video_id}] ℹ️ Native Marathi not found. Available languages: {', '.join(available_langs)}")
+                    stats["error_no_native_marathi"] += 1
+                    continue
+                    
+                raw_transcript = transcript.fetch()
                 
                 # Format to match the required DRY schema
                 formatted_transcript = []
@@ -59,46 +109,31 @@ class YouTubeTranscriptManager:
                     })
                 
                 results[video_id] = formatted_transcript
-                print(f"[{video_id}] ✅ Successfully extracted transcript (Local API). Length: {len(formatted_transcript)} segments.")
+                stats["success"] += 1
+                print(f"[{video_id}] ✅ Successfully extracted transcript. Length: {len(formatted_transcript)} segments.")
                 
             except Exception as e:
-                # Fallback to TranscriptAPI.com
-                api_key = os.getenv("TRANSCRIPT_API_KEY")
-                if api_key:
-                    print(f"[{video_id}] ⚠️ Local fetch failed ({type(e).__name__}). Attempting TranscriptAPI fallback...")
-                    try:
-                        url = f"https://transcriptapi.com/api/v2/youtube/transcript?video_url=https://www.youtube.com/watch?v={video_id}&format=json"
-                        headers = {"Authorization": f"Bearer {api_key}"}
-                        response = requests.get(url, headers=headers)
-                        
-                        if response.status_code == 200:
-                            data = response.json()
-                            if 'segments' in data:
-                                formatted_transcript = []
-                                for entry in data['segments']:
-                                    formatted_transcript.append({
-                                        "text": entry.get('text'),
-                                        "start_time": entry.get('start'),
-                                        "duration": entry.get('duration', 0.0) # Might not be provided by fallback
-                                    })
-                                results[video_id] = formatted_transcript
-                                print(f"[{video_id}] ✅ Successfully extracted transcript (API Fallback). Length: {len(formatted_transcript)} segments.")
-                            else:
-                                print(f"[{video_id}] ❌ ERROR: Fallback API returned no segments.")
-                        else:
-                            print(f"[{video_id}] ❌ ERROR: Fallback API request failed with status {response.status_code}: {response.text}")
-                    except Exception as fallback_e:
-                        print(f"[{video_id}] ❌ ERROR: Fallback API exception: {str(fallback_e)}")
+                if isinstance(e, TranscriptsDisabled):
+                    print(f"[{video_id}] ❌ ERROR: Transcripts are completely disabled for this video.")
+                    stats["error_transcript_not_found"] += 1
+                elif isinstance(e, NoTranscriptFound):
+                    print(f"[{video_id}] ❌ ERROR: No transcript found.")
+                    stats["error_transcript_not_found"] += 1
+                elif isinstance(e, (RequestBlocked, IpBlocked)):
+                    print(f"[{video_id}] ❌ CRITICAL: YouTube rate limit or IP block hit! Taking a long pause...")
+                    stats["error_other"] += 1
+                    import time
+                    time.sleep(30) # Wait 30 seconds before trying the next to cool down
+                    continue
                 else:
-                    if isinstance(e, TranscriptsDisabled):
-                        print(f"[{video_id}] ❌ ERROR: Transcripts are disabled for this video. (No fallback API key provided)")
-                    elif isinstance(e, NoTranscriptFound):
-                        print(f"[{video_id}] ❌ ERROR: No Marathi transcript found. (No fallback API key provided)")
-                    elif isinstance(e, (RequestBlocked, IpBlocked)):
-                        print(f"[{video_id}] ❌ CRITICAL: YouTube rate limit or IP block hit! Stopping pipeline. (No fallback API key provided)")
-                        break
-                    else:
-                        print(f"[{video_id}] ❌ ERROR: An unexpected error occurred: {str(e)} (No fallback API key provided)")
+                    print(f"[{video_id}] ❌ ERROR: An unexpected error occurred: {str(e)}")
+                    stats["error_other"] += 1
+                    
+            # Add artificial delay to avoid hammering YouTube and getting IP blocked
+            import time
+            import random
+            sleep_duration = random.uniform(2.0, 5.0)
+            time.sleep(sleep_duration)
                 
         print("\n[YouTubeTranscriptManager] Transcript fetching pipeline completed.")
-        return results
+        return results, stats

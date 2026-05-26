@@ -22,22 +22,7 @@ class DecimalEncoder(json.JSONEncoder):
             return obj.model_dump()
         return super(DecimalEncoder, self).default(obj)
 
-class StoryModel(BaseModel):
-    video_id: str
-    title: str
-    character_or_saint: Optional[str] = ""
-    normalized_saint_name: Optional[str] = ""
-    associated_topics: List[str] = []
-    moral: Optional[str] = ""
-    exact_start_text: Optional[str] = ""
-    exact_end_text: Optional[str] = ""
-    start_time_seconds: int = 0
-    thumbnail_url: str
-    youtube_url: str
-    searchable_text: str
-
-class StoriesResponse(BaseModel):
-    stories: List[StoryModel]
+from models.response import StoryItem, StoriesResponse
 
 def _build_response(status_code, body):
     # Ensure body is a dict before json.dumps
@@ -56,7 +41,7 @@ def _build_response(status_code, body):
 def lambda_handler(event, context):
     try:
         dynamodb = boto3.resource("dynamodb")
-        table_name = os.environ.get("DYNAMODB_TABLE", "guru-video-metadata")
+        table_name = os.environ.get("DYNAMODB_TABLE", "sadhananandadeep-content")
         table = dynamodb.Table(table_name)
         
         # Scan the table
@@ -66,16 +51,15 @@ def lambda_handler(event, context):
         all_stories = []
         for item in items:
             video_id = item.get("video_id")
+            title = item.get("title", "प्रवचन") # Fallback to item title if story title missing
             stories = item.get("stories", [])
             for story in stories:
-                title = story.get("title", "")
+                story_title = story.get("title", title)
                 moral = story.get("moral", "")
                 saint = story.get("character_or_saint", story.get("normalized_saint_name", ""))
                 norm_saint = story.get("normalized_saint_name", saint)
                 assoc_topics = story.get("associated_topics", [])
                 start_text = story.get("exact_start_text", "")
-                
-                searchable_text = f"{title} {moral} {norm_saint} {start_text} {' '.join(assoc_topics)}".lower()
                 
                 # Handle possible float/decimal values safely
                 raw_start = story.get("start_time_seconds", 0)
@@ -84,19 +68,17 @@ def lambda_handler(event, context):
                 else:
                     start_time = int(raw_start) if raw_start else 0
 
-                all_stories.append(StoryModel(
+                all_stories.append(StoryItem(
                     video_id=video_id,
-                    title=title,
+                    title=story_title,
                     character_or_saint=saint,
                     normalized_saint_name=norm_saint,
                     associated_topics=assoc_topics,
                     moral=moral,
                     exact_start_text=start_text,
-                    exact_end_text=story.get("exact_end_text", ""),
                     start_time_seconds=start_time,
                     thumbnail_url=f"https://img.youtube.com/vi/{video_id}/hqdefault.jpg",
-                    youtube_url=f"https://www.youtube.com/watch?v={video_id}&t={start_time}s",
-                    searchable_text=searchable_text
+                    youtube_url=f"https://www.youtube.com/watch?v={video_id}&t={start_time}s"
                 ))
         # Shuffle the stories to provide a Discovery-style feed
         random.shuffle(all_stories)

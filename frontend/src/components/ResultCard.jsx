@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { formatTime, ytEmbedUrl, ytThumb } from '../utils';
 
-export default function ResultCard({ result, rank, style, isMarathi, metadata, onSearch, playingVideoId, setPlayingVideoId }) {
+export default function ResultCard({ result, rank, style, isMarathi, onSearch, playingVideoId, setPlayingVideoId }) {
   const [isTextExpanded, setIsTextExpanded] = useState(false);
   
   const { video_id, start_time, marathi_raw, score } = result;

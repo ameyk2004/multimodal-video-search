@@ -20,48 +20,10 @@ class DecimalEncoder(json.JSONEncoder):
             return obj.model_dump()
         return super(DecimalEncoder, self).default(obj)
 
-class VideoSummaryModel(BaseModel):
-    video_id: str
-    topic_count: int = Field(default=0)
-    query_count: int = Field(default=0)
-
-class VideoListResponse(BaseModel):
-    videos: List[VideoSummaryModel]
-
-class StoryModel(BaseModel):
-    video_id: str
-    title: str
-    character_or_saint: Optional[str] = ""
-    moral: Optional[str] = ""
-    exact_start_text: Optional[str] = ""
-    exact_end_text: Optional[str] = ""
-    start_time_seconds: int = 0
-
-class VerseModel(BaseModel):
-    verse_text: str
-    source_or_author: Optional[str] = ""
-
-class MusicalSegmentModel(BaseModel):
-    type: str
-    name: str
-    saint: Optional[str] = ""
-    confidence: Optional[str] = ""
-    exact_start_text: Optional[str] = ""
-    exact_end_text: Optional[str] = ""
-    start_time_seconds: int = 0
-    video_id: Optional[str] = ""
-
-class MusicListResponse(BaseModel):
-    segments: List[MusicalSegmentModel]
-
-class VideoDetailModel(BaseModel):
-    video_id: str
-    topics: List[str] = Field(default_factory=list)
-    queries: List[str] = Field(default_factory=list)
-    practices: List[str] = Field(default_factory=list)
-    verses: List[VerseModel] = Field(default_factory=list)
-    stories: List[StoryModel] = Field(default_factory=list)
-    musical_segments: List[MusicalSegmentModel] = Field(default_factory=list)
+from models.response import (
+    LibraryVideoSummary, VideosListResponse, VerseItem, 
+    StorySummary, VideoDetailResponse, MusicalSegmentItem, MusicListResponse
+)
 
 class TopicListModel(BaseModel):
     video_id: str
@@ -88,7 +50,7 @@ def lambda_handler(event, context):
     try:
         path = event.get('path', '')
         dynamodb = boto3.resource("dynamodb")
-        table_name = os.environ.get("DYNAMODB_TABLE", "guru-video-metadata")
+        table_name = os.environ.get("DYNAMODB_TABLE", "sadhananandadeep-content")
         table = dynamodb.Table(table_name)
         
         path_parameters = event.get('pathParameters') or {}
@@ -110,15 +72,13 @@ def lambda_handler(event, context):
                 for seg in raw_segments:
                     raw_start = seg.get("start_time_seconds", 0)
                     start_time = int(raw_start) if raw_start else 0
-                    all_segments.append(MusicalSegmentModel(
+                    all_segments.append(MusicalSegmentItem(
+                        video_id=v_id,
                         type=seg.get("type", "bhajan"),
                         name=seg.get("name", "Unknown"),
                         saint=seg.get("saint", ""),
-                        confidence=seg.get("confidence", ""),
                         exact_start_text=seg.get("exact_start_text", ""),
-                        exact_end_text=seg.get("exact_end_text", ""),
-                        start_time_seconds=start_time,
-                        video_id=v_id
+                        start_time_seconds=start_time
                     ))
             
             return _build_response(200, MusicListResponse(segments=all_segments))
@@ -144,45 +104,25 @@ def lambda_handler(event, context):
                 for story in raw_stories:
                     raw_start = story.get("start_time_seconds", 0)
                     start_time = int(raw_start) if raw_start else 0
-                    stories.append(StoryModel(
-                        video_id=video_id,
-                        title=story.get("title", ""),
-                        character_or_saint=story.get("character_or_saint", ""),
+                    stories.append(StorySummary(
+                        title=story.get("title", "प्रवचन"),
                         moral=story.get("moral", ""),
-                        exact_start_text=story.get("exact_start_text", ""),
-                        exact_end_text=story.get("exact_end_text", ""),
                         start_time_seconds=start_time
                     ))
                 
-                raw_segments = item.get("musical_segments", [])
-                musical_segments = []
-                for seg in raw_segments:
-                    raw_start = seg.get("start_time_seconds", 0)
-                    start_time = int(raw_start) if raw_start else 0
-                    musical_segments.append(MusicalSegmentModel(
-                        type=seg.get("type", "bhajan"),
-                        name=seg.get("name", "Unknown"),
-                        saint=seg.get("saint", ""),
-                        confidence=seg.get("confidence", ""),
-                        exact_start_text=seg.get("exact_start_text", ""),
-                        exact_end_text=seg.get("exact_end_text", ""),
-                        start_time_seconds=start_time,
-                        video_id=video_id
-                    ))
-                
-                detail_model = VideoDetailModel(
+                detail_model = VideoDetailResponse(
                     video_id=video_id,
+                    title=item.get("title", "प्रवचन"),
                     topics=item.get("topics", []),
                     queries=item.get("queries", []),
                     practices=item.get("actionable_practices", []),
                     verses=[
-                        VerseModel(
+                        VerseItem(
                             verse_text=v.get("verse_text", ""),
                             source_or_author=v.get("source_or_author", "")
                         ) for v in item.get("quoted_verses", [])
                     ],
-                    stories=stories,
-                    musical_segments=musical_segments
+                    stories=stories
                 )
                 return _build_response(200, detail_model)
             
@@ -197,14 +137,17 @@ def lambda_handler(event, context):
                 v_id = item.get("video_id")
                 topics = item.get("topics", [])
                 queries = item.get("queries", [])
+                title = item.get("title", "प्रवचन")
                 
-                video_summaries.append(VideoSummaryModel(
+                video_summaries.append(LibraryVideoSummary(
                     video_id=v_id,
+                    title=title,
+                    topics=topics,
                     topic_count=len(topics),
                     query_count=len(queries)
                 ))
             
-            list_response = VideoListResponse(videos=video_summaries)
+            list_response = VideosListResponse(videos=video_summaries)
             return _build_response(200, list_response)
 
     except Exception as exc:

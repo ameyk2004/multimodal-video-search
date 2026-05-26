@@ -113,7 +113,7 @@ Resources:
 
     # 4. Construct Quick Create URL
     region = "us-east-1"
-    stack_name = "multimodal-video-search"
+    stack_name = "sadhananandadeep-backend"
 
     qdrant_url = env_vars.get("QDRANT_URL", "ENTER_QDRANT_URL")
     qdrant_api_key = env_vars.get("QDRANT_API_KEY", "ENTER_QDRANT_API_KEY")

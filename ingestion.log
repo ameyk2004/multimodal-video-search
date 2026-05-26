@@ -238,3 +238,85 @@
 2026-05-25 07:59:32,903 - data_pipeline.chunker - INFO - Successfully created 43 aggregated chunks.
 2026-05-25 07:59:32,904 - data_pipeline.chunker - INFO - Chunking 1494 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
 2026-05-25 07:59:32,904 - data_pipeline.chunker - INFO - Successfully created 84 aggregated chunks.
+2026-05-26 17:47:25,286 - data_pipeline.chunker - INFO - Chunking 706 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 17:47:25,288 - data_pipeline.chunker - INFO - Successfully created 39 aggregated chunks.
+2026-05-26 17:47:25,290 - data_pipeline.chunker - INFO - Chunking 762 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 17:47:25,290 - data_pipeline.chunker - INFO - Successfully created 48 aggregated chunks.
+2026-05-26 17:47:25,292 - data_pipeline.chunker - INFO - Chunking 616 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 17:47:25,292 - data_pipeline.chunker - INFO - Successfully created 37 aggregated chunks.
+2026-05-26 17:55:40,194 - data_pipeline.chunker - INFO - Chunking 670 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 17:55:40,197 - data_pipeline.chunker - INFO - Successfully created 40 aggregated chunks.
+2026-05-26 17:55:40,201 - data_pipeline.chunker - INFO - Chunking 610 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 17:55:40,201 - data_pipeline.chunker - INFO - Successfully created 33 aggregated chunks.
+2026-05-26 17:55:40,204 - data_pipeline.chunker - INFO - Chunking 592 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 17:55:40,205 - data_pipeline.chunker - INFO - Successfully created 41 aggregated chunks.
+2026-05-26 17:55:40,207 - data_pipeline.chunker - INFO - Chunking 396 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 17:55:40,207 - data_pipeline.chunker - INFO - Successfully created 24 aggregated chunks.
+2026-05-26 18:06:27,532 - data_pipeline.chunker - INFO - Chunking 452 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,535 - data_pipeline.chunker - INFO - Successfully created 29 aggregated chunks.
+2026-05-26 18:06:27,542 - data_pipeline.chunker - INFO - Chunking 647 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,544 - data_pipeline.chunker - INFO - Successfully created 36 aggregated chunks.
+2026-05-26 18:06:27,547 - data_pipeline.chunker - INFO - Chunking 673 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,547 - data_pipeline.chunker - INFO - Successfully created 37 aggregated chunks.
+2026-05-26 18:06:27,549 - data_pipeline.chunker - INFO - Chunking 835 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,549 - data_pipeline.chunker - INFO - Successfully created 44 aggregated chunks.
+2026-05-26 18:06:27,552 - data_pipeline.chunker - INFO - Chunking 830 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,553 - data_pipeline.chunker - INFO - Successfully created 46 aggregated chunks.
+2026-05-26 18:06:27,554 - data_pipeline.chunker - INFO - Chunking 720 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,555 - data_pipeline.chunker - INFO - Successfully created 49 aggregated chunks.
+2026-05-26 18:06:27,556 - data_pipeline.chunker - INFO - Chunking 635 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,557 - data_pipeline.chunker - INFO - Successfully created 34 aggregated chunks.
+2026-05-26 18:06:27,558 - data_pipeline.chunker - INFO - Chunking 504 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,558 - data_pipeline.chunker - INFO - Successfully created 31 aggregated chunks.
+2026-05-26 18:06:27,559 - data_pipeline.chunker - INFO - Chunking 731 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,560 - data_pipeline.chunker - INFO - Successfully created 39 aggregated chunks.
+2026-05-26 18:06:27,561 - data_pipeline.chunker - INFO - Chunking 781 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,562 - data_pipeline.chunker - INFO - Successfully created 41 aggregated chunks.
+2026-05-26 18:06:27,563 - data_pipeline.chunker - INFO - Chunking 707 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,564 - data_pipeline.chunker - INFO - Successfully created 38 aggregated chunks.
+2026-05-26 18:06:27,565 - data_pipeline.chunker - INFO - Chunking 798 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,565 - data_pipeline.chunker - INFO - Successfully created 41 aggregated chunks.
+2026-05-26 18:06:27,567 - data_pipeline.chunker - INFO - Chunking 655 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,568 - data_pipeline.chunker - INFO - Successfully created 37 aggregated chunks.
+2026-05-26 18:06:27,568 - data_pipeline.chunker - INFO - Chunking 935 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,569 - data_pipeline.chunker - INFO - Successfully created 53 aggregated chunks.
+2026-05-26 18:06:27,571 - data_pipeline.chunker - INFO - Chunking 890 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,571 - data_pipeline.chunker - INFO - Successfully created 49 aggregated chunks.
+2026-05-26 18:06:27,574 - data_pipeline.chunker - INFO - Chunking 1259 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,575 - data_pipeline.chunker - INFO - Successfully created 63 aggregated chunks.
+2026-05-26 18:06:27,577 - data_pipeline.chunker - INFO - Chunking 1029 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,578 - data_pipeline.chunker - INFO - Successfully created 51 aggregated chunks.
+2026-05-26 18:06:27,579 - data_pipeline.chunker - INFO - Chunking 1061 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,579 - data_pipeline.chunker - INFO - Successfully created 52 aggregated chunks.
+2026-05-26 18:06:27,580 - data_pipeline.chunker - INFO - Chunking 848 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,581 - data_pipeline.chunker - INFO - Successfully created 41 aggregated chunks.
+2026-05-26 18:06:27,582 - data_pipeline.chunker - INFO - Chunking 586 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,583 - data_pipeline.chunker - INFO - Successfully created 35 aggregated chunks.
+2026-05-26 18:06:27,584 - data_pipeline.chunker - INFO - Chunking 726 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,584 - data_pipeline.chunker - INFO - Successfully created 40 aggregated chunks.
+2026-05-26 18:06:27,585 - data_pipeline.chunker - INFO - Chunking 704 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,586 - data_pipeline.chunker - INFO - Successfully created 40 aggregated chunks.
+2026-05-26 18:06:27,587 - data_pipeline.chunker - INFO - Chunking 682 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,587 - data_pipeline.chunker - INFO - Successfully created 38 aggregated chunks.
+2026-05-26 18:06:27,589 - data_pipeline.chunker - INFO - Chunking 947 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,589 - data_pipeline.chunker - INFO - Successfully created 54 aggregated chunks.
+2026-05-26 18:06:27,590 - data_pipeline.chunker - INFO - Chunking 730 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,591 - data_pipeline.chunker - INFO - Successfully created 40 aggregated chunks.
+2026-05-26 18:06:27,592 - data_pipeline.chunker - INFO - Chunking 602 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,592 - data_pipeline.chunker - INFO - Successfully created 35 aggregated chunks.
+2026-05-26 18:06:27,594 - data_pipeline.chunker - INFO - Chunking 890 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,595 - data_pipeline.chunker - INFO - Successfully created 52 aggregated chunks.
+2026-05-26 18:06:27,596 - data_pipeline.chunker - INFO - Chunking 915 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,596 - data_pipeline.chunker - INFO - Successfully created 50 aggregated chunks.
+2026-05-26 18:06:27,598 - data_pipeline.chunker - INFO - Chunking 783 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,598 - data_pipeline.chunker - INFO - Successfully created 45 aggregated chunks.
+2026-05-26 18:06:27,599 - data_pipeline.chunker - INFO - Chunking 855 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,600 - data_pipeline.chunker - INFO - Successfully created 45 aggregated chunks.
+2026-05-26 18:06:27,601 - data_pipeline.chunker - INFO - Chunking 927 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,601 - data_pipeline.chunker - INFO - Successfully created 51 aggregated chunks.
+2026-05-26 18:06:27,602 - data_pipeline.chunker - INFO - Chunking 724 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,603 - data_pipeline.chunker - INFO - Successfully created 47 aggregated chunks.
+2026-05-26 18:06:27,603 - data_pipeline.chunker - INFO - Chunking 843 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,604 - data_pipeline.chunker - INFO - Successfully created 50 aggregated chunks.
+2026-05-26 18:06:27,605 - data_pipeline.chunker - INFO - Chunking 1140 segments (Target: 30.0s - 60.0s, Overlap: 10.0s)
+2026-05-26 18:06:27,606 - data_pipeline.chunker - INFO - Successfully created 64 aggregated chunks.

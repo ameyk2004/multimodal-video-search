@@ -1,30 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import './RelatedQuestions.css';
 
-export default function RelatedQuestions({ metadata, onSearch, lang, customTitle, fallbackQueries }) {
+export default function RelatedQuestions({ relatedQueries, onSearch, lang, customTitle, fallbackQueries }) {
   const [randomQueries, setRandomQueries] = useState([]);
 
   useEffect(() => {
     let queriesToUse = [];
     
-    if (metadata && Object.keys(metadata).length > 0) {
-      const videoIds = Object.keys(metadata);
-      if (videoIds.length > 0) {
-        const randomVid = videoIds[Math.floor(Math.random() * videoIds.length)];
-        queriesToUse = metadata[randomVid]?.queries || [];
-      }
+    if (relatedQueries && relatedQueries.length > 0) {
+      // Normalize relatedQueries to objects if they are strings (legacy support)
+      queriesToUse = relatedQueries.map(q => typeof q === 'string' ? { query: q, type: 'direct' } : q);
+      // We don't need to shuffle if it's the structured mix from backend
+      setRandomQueries(queriesToUse.slice(0, 5));
     } else if (fallbackQueries && fallbackQueries.length > 0) {
-      queriesToUse = fallbackQueries;
+      queriesToUse = fallbackQueries.map(q => ({ query: q, type: 'direct' }));
+      // Shuffle fallback queries and pick 5
+      const shuffled = [...queriesToUse].sort(() => 0.5 - Math.random());
+      setRandomQueries(shuffled.slice(0, 5));
+    } else {
+      setRandomQueries([]);
     }
-
-    if (queriesToUse.length === 0) return;
-
-    // Shuffle and pick up to 5
-    const shuffled = [...queriesToUse].sort(() => 0.5 - Math.random());
-    const selected = shuffled.slice(0, 5);
-
-    setRandomQueries(selected);
-  }, [metadata, fallbackQueries]);
+  }, [relatedQueries, fallbackQueries]);
 
   if (randomQueries.length === 0) return null;
 
@@ -38,15 +34,17 @@ export default function RelatedQuestions({ metadata, onSearch, lang, customTitle
         <h3>{customTitle ? customTitle : (lang === 'mr' ? 'अधिक प्रश्न विचारा' : 'Ask More Questions')}</h3>
       </div>
       <div className="rq-chips-wrapper">
-        {randomQueries.map((q, idx) => (
+        {randomQueries.map((item, idx) => (
           <button 
             key={idx} 
-            className="rq-chip" 
-            onClick={() => onSearch(q)}
+            className={`rq-chip rq-chip-${item.type}`} 
+            onClick={() => onSearch(item.query)}
             style={{ animationDelay: `${idx * 0.1}s` }}
           >
             <span className="rq-chip-glow"></span>
-            <span className="rq-chip-text">{q}</span>
+            {item.type === 'wildcard' && <span className="rq-chip-icon">✨ </span>}
+            {item.type === 'tangential' && <span className="rq-chip-icon">🌿 </span>}
+            <span className="rq-chip-text">{item.query}</span>
           </button>
         ))}
       </div>
