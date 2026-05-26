@@ -9,10 +9,13 @@ This is a utility module imported by the main pipeline. To run the full pipeline
 import os
 import json
 import logging
+import requests
 from typing import List
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptFound, RequestBlocked, IpBlocked
+from dotenv import load_dotenv
 
+load_dotenv()
 logger = logging.getLogger(__name__)
 
 class YouTubeTranscriptManager:
@@ -29,11 +32,17 @@ class YouTubeTranscriptManager:
         """
         Iterates over video IDs and fetches Marathi transcripts. Returns a dict mapping video_id to transcript data.
         """
-        logger.info(f"Starting transcript fetching pipeline for {len(video_ids)} videos.")
+        print(f"\n[YouTubeTranscriptManager] Starting transcript fetching pipeline for {len(video_ids)} videos.")
         results = {}
         
         for video_id in video_ids:
-            logger.info(f"Fetching transcript for video ID: {video_id}")
+            # Idempotency check: Skip if already processed
+            output_file = os.path.join(self.output_dir, f"{video_id}.json")
+            if os.path.exists(output_file):
+                print(f"[{video_id}] ⏩ SKIPPED: Transcript already exists locally.")
+                continue
+                
+            print(f"[{video_id}] Fetching transcript...")
             try:
                 # Fetch explicitly requesting Marathi
                 api = YouTubeTranscriptApi()
@@ -50,16 +59,46 @@ class YouTubeTranscriptManager:
                     })
                 
                 results[video_id] = formatted_transcript
+                print(f"[{video_id}] ✅ Successfully extracted transcript (Local API). Length: {len(formatted_transcript)} segments.")
                 
-            except TranscriptsDisabled:
-                logger.error(f"Transcripts are disabled for video {video_id}. Skipping.")
-            except NoTranscriptFound:
-                logger.error(f"No Marathi transcript found for video {video_id}. Skipping.")
-            except (RequestBlocked, IpBlocked):
-                logger.error(f"YouTube rate limit or block hit while fetching {video_id}. Stopping pipeline.")
-                break
             except Exception as e:
-                logger.error(f"An unexpected error occurred for video {video_id}: {str(e)}")
+                # Fallback to TranscriptAPI.com
+                api_key = os.getenv("TRANSCRIPT_API_KEY")
+                if api_key:
+                    print(f"[{video_id}] ⚠️ Local fetch failed ({type(e).__name__}). Attempting TranscriptAPI fallback...")
+                    try:
+                        url = f"https://transcriptapi.com/api/v2/youtube/transcript?video_url=https://www.youtube.com/watch?v={video_id}&format=json"
+                        headers = {"Authorization": f"Bearer {api_key}"}
+                        response = requests.get(url, headers=headers)
+                        
+                        if response.status_code == 200:
+                            data = response.json()
+                            if 'segments' in data:
+                                formatted_transcript = []
+                                for entry in data['segments']:
+                                    formatted_transcript.append({
+                                        "text": entry.get('text'),
+                                        "start_time": entry.get('start'),
+                                        "duration": entry.get('duration', 0.0) # Might not be provided by fallback
+                                    })
+                                results[video_id] = formatted_transcript
+                                print(f"[{video_id}] ✅ Successfully extracted transcript (API Fallback). Length: {len(formatted_transcript)} segments.")
+                            else:
+                                print(f"[{video_id}] ❌ ERROR: Fallback API returned no segments.")
+                        else:
+                            print(f"[{video_id}] ❌ ERROR: Fallback API request failed with status {response.status_code}: {response.text}")
+                    except Exception as fallback_e:
+                        print(f"[{video_id}] ❌ ERROR: Fallback API exception: {str(fallback_e)}")
+                else:
+                    if isinstance(e, TranscriptsDisabled):
+                        print(f"[{video_id}] ❌ ERROR: Transcripts are disabled for this video. (No fallback API key provided)")
+                    elif isinstance(e, NoTranscriptFound):
+                        print(f"[{video_id}] ❌ ERROR: No Marathi transcript found. (No fallback API key provided)")
+                    elif isinstance(e, (RequestBlocked, IpBlocked)):
+                        print(f"[{video_id}] ❌ CRITICAL: YouTube rate limit or IP block hit! Stopping pipeline. (No fallback API key provided)")
+                        break
+                    else:
+                        print(f"[{video_id}] ❌ ERROR: An unexpected error occurred: {str(e)} (No fallback API key provided)")
                 
-        logger.info("Transcript fetching pipeline completed.")
+        print("\n[YouTubeTranscriptManager] Transcript fetching pipeline completed.")
         return results
