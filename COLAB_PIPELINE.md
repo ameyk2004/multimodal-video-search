@@ -146,6 +146,9 @@ from google.colab import userdata
 os.environ["HF_API_KEY"] = userdata.get("HF_API_KEY")
 !cd /content/repo && python scripts/embed_queries.py --yes
 
+import sys
+sys.path.append('/content/repo')
+
 import json, glob
 from data_pipeline.transcript_processor import TranscriptProcessor
 
