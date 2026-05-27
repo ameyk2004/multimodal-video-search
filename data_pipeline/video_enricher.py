@@ -231,13 +231,13 @@ class VideoEnricher:
     # ── Private helpers ───────────────────────────────────────────────────────
     
     def _resolve_timestamps(self, metadata: dict, full_text: str, char_to_time_map: list):
-        """Find the start index of exact_start_text and map it to time."""
+        """Find the start index of exact_start_text and map it to time using interpolation."""
         items_to_resolve = metadata.get("stories", []) + metadata.get("musical_segments", [])
         if not items_to_resolve:
             return
             
         # Extract just the char indices for bisect
-        char_indices = [idx for idx, _ in char_to_time_map]
+        char_indices = [entry[0] for entry in char_to_time_map]
 
         for item in items_to_resolve:
             start_text = item.get("exact_start_text", "")
@@ -275,17 +275,24 @@ class VideoEnricher:
                     item["start_time_seconds"] = 0.0
                     continue
 
-            # Find the largest character index that is less than or equal to start_index
+            # Interpolate: find the fragment and estimate exact position within it
             idx = bisect.bisect_right(char_indices, start_index) - 1
             if idx >= 0:
-                item["start_time_seconds"] = char_to_time_map[idx][1]
+                frag_char_start, frag_start_time, frag_duration, frag_text_len = char_to_time_map[idx]
+                chars_into = start_index - frag_char_start
+                if frag_text_len > 0:
+                    ratio = min(max(chars_into / frag_text_len, 0.0), 1.0)
+                else:
+                    ratio = 0.0
+                interpolated = frag_start_time + (frag_duration * ratio)
+                item["start_time_seconds"] = round(interpolated, 3)
             else:
                 item["start_time_seconds"] = 0.0
 
     def _reconstruct_transcript(self, fragments: list) -> tuple[str, list]:
-        """Concatenate all fragment texts and build a char index to timestamp map."""
+        """Concatenate all fragment texts and build a char index to timestamp map with duration info."""
         full_text_parts = []
-        char_to_time_map = []
+        char_to_time_map = []  # (char_index, start_time, duration, text_len)
         current_char_length = 0
 
         for f in fragments:
@@ -293,13 +300,15 @@ class VideoEnricher:
             if not text:
                 continue
                 
-            # Assume start time mapping
-            start_time = f.get("start", f.get("start_time", 0.0))
-            char_to_time_map.append((current_char_length, start_time))
+            start_time = float(f.get("start", f.get("start_time", 0.0)))
+            duration = float(f.get("duration", 0.0))
+            text_len = len(text)
+            
+            char_to_time_map.append((current_char_length, start_time, duration, text_len))
             
             full_text_parts.append(text)
             # length of text plus the space added during join
-            current_char_length += len(text) + 1
+            current_char_length += text_len + 1
             
         full_text = " ".join(full_text_parts)
         return full_text, char_to_time_map

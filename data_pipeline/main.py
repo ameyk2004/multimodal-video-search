@@ -204,17 +204,14 @@ if __name__ == "__main__":
     manager = YouTubeTranscriptManager(output_dir="data_pipeline/output")
     raw_transcripts, fetch_stats = manager.process_videos(video_ids)
     
-    print("Initializing chunking pipeline...")
-    chunker = TranscriptChunker(min_chunk_duration=30.0, pause_threshold=1.0)
+    print("Saving fine-grained raw transcripts...")
     
     for video_id, raw_data in raw_transcripts.items():
         output_path = f"data_pipeline/output/{video_id}.json"
         
-        chunked_data = chunker.process(raw_data)
-        
         with open(output_path, 'w', encoding='utf-8') as f:
-            json.dump(chunked_data, f, indent=4, ensure_ascii=False)
-        print(f"Saved directly chunked transcript for {video_id} to {output_path}")
+            json.dump(raw_data, f, indent=4, ensure_ascii=False)
+        print(f"Saved fine-grained raw transcript for {video_id} to {output_path}")
 
     # Calculate total existing JSON files in output directory
     total_existing = 0

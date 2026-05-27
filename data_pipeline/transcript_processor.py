@@ -60,7 +60,7 @@ class TranscriptProcessor:
 
     def process_file(
         self, filepath: str, video_id: str | None = None
-    ) -> tuple[list[dict[str, Any]], list[tuple[int, float]], str]:
+    ) -> tuple[list[dict[str, Any]], list[tuple[int, float, float, int]], str]:
         """
         Full pipeline for one raw transcript file.
 
@@ -89,7 +89,7 @@ class TranscriptProcessor:
     def resolve_story_time(
         self,
         exact_start_text: str,
-        char_map: list[tuple[int, float]],
+        char_map: list[tuple[int, float, float, int]],
         full_text: str,
     ) -> float | None:
         """
@@ -123,15 +123,15 @@ class TranscriptProcessor:
     @staticmethod
     def _stitch(
         fragments: list[dict],
-    ) -> tuple[str, list[tuple[int, float]]]:
+    ) -> tuple[str, list[tuple[int, float, float, int]]]:
         """
         Step 1 — Build full_text and char_to_time_map.
 
-        char_to_time_map is a sorted list of (char_index, start_time_seconds)
-        tuples.  Sorted order is guaranteed because we append in iteration order.
+        char_to_time_map is a sorted list of:
+        (char_index, start_time_seconds, duration_seconds, text_length)
         """
         full_text = ""
-        char_map: list[tuple[int, float]] = []
+        char_map: list[tuple[int, float, float, int]] = []
 
         for fragment in fragments:
             text = (fragment.get("text") or fragment.get("marathi_raw") or "").strip()
@@ -140,7 +140,11 @@ class TranscriptProcessor:
 
             current_char_length = len(full_text)           # absolute offset
             start_time = float(fragment.get("start_time", 0.0))
-            char_map.append((current_char_length, start_time))   # record mapping
+            duration = float(fragment.get("duration", 0.0))
+            text_len = len(text)
+            
+            # record mapping with duration and length for interpolation
+            char_map.append((current_char_length, start_time, duration, text_len))
 
             full_text += text + " "                        # single space separator
 
@@ -149,34 +153,44 @@ class TranscriptProcessor:
     @staticmethod
     def get_time_from_index(
         char_index: int,
-        char_map: list[tuple[int, float]],
+        char_map: list[tuple[int, float, float, int]],
     ) -> float:
         """
-        Step 3 helper — Binary-search the char_map for a char_index.
+        Step 3 helper — Binary-search the char_map for a char_index and interpolate.
 
-        Finds the largest recorded char_index ≤ char_index (i.e., the fragment
-        that was *in progress* at that position) and returns its start_time.
-
-        Uses bisect_right on the sorted list of (char_index, start_time) tuples
-        — comparing only the first element is default list behaviour in Python
-        when all first elements are unique (which they are here).
+        Finds the fragment that was *in progress* at that position, then uses
+        proportional interpolation to estimate the exact second based on how far 
+        into the fragment's text the char_index falls.
         """
         if not char_map:
             return 0.0
 
-        # Extract the char-index keys once for bisect (or use a view)
+        # Extract the char-index keys once for bisect
         keys = [entry[0] for entry in char_map]
 
         # bisect_right gives the insertion point AFTER any exact match
         pos = bisect.bisect_right(keys, char_index) - 1
         pos = max(pos, 0)   # clamp; never go negative
 
-        return char_map[pos][1]
+        fragment_start_char, start_time, duration, text_len = char_map[pos]
+        
+        # Calculate how far into the text fragment this character is
+        chars_into_fragment = char_index - fragment_start_char
+        
+        # Guard against division by zero or negative bounds
+        if text_len <= 0:
+            ratio = 0.0
+        else:
+            ratio = min(max(chars_into_fragment / text_len, 0.0), 1.0)
+            
+        # Interpolate the exact time
+        interpolated_time = start_time + (duration * ratio)
+        return round(interpolated_time, 3)
 
     def _resolve_chunk_timestamps(
         self,
         lc_chunks: list[Document],
-        char_map: list[tuple[int, float]],
+        char_map: list[tuple[int, float, float, int]],
         video_id: str,
     ) -> list[dict[str, Any]]:
         """
