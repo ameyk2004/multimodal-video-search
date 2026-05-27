@@ -3,6 +3,7 @@ import json
 import glob
 import time
 import uuid
+import sys
 import boto3
 from typing import List, Dict
 from qdrant_client import QdrantClient
@@ -125,24 +126,28 @@ def main():
         return
 
     # 2. Ask the user if they want to proceed with embedding and uploading
-    try:
-        user_input = input("\nDo you want to generate embeddings and upload these queries to Qdrant? (y/n) [y]: ").strip().lower()
-    except (KeyboardInterrupt, EOFError):
-        print("\nCancelled by user.")
-        return
-        
-    if user_input not in ('', 'y', 'yes'):
-        print("Operation cancelled by user.")
-        return
+    if "--yes" in sys.argv:
+        print("\nAuto-proceeding with upload (non-interactive mode).")
+        recreate_collection = False
+    else:
+        try:
+            user_input = input("\nDo you want to generate embeddings and upload these queries to Qdrant? (y/n) [y]: ").strip().lower()
+        except (KeyboardInterrupt, EOFError):
+            print("\nCancelled by user.")
+            return
+            
+        if user_input not in ('', 'y', 'yes'):
+            print("Operation cancelled by user.")
+            return
 
-    # Ask the user if they want to clean up / recreate the Qdrant collection
-    try:
-        cleanup_input = input("Do you want to clear/recreate the existing query collection in Qdrant first? (y/n) [n]: ").strip().lower()
-    except (KeyboardInterrupt, EOFError):
-        print("\nCancelled by user.")
-        return
-        
-    recreate_collection = cleanup_input in ('y', 'yes')
+        # Ask the user if they want to clean up / recreate the Qdrant collection
+        try:
+            cleanup_input = input("Do you want to clear/recreate the existing query collection in Qdrant first? (y/n) [n]: ").strip().lower()
+        except (KeyboardInterrupt, EOFError):
+            print("\nCancelled by user.")
+            return
+            
+        recreate_collection = cleanup_input in ('y', 'yes')
 
     client = QdrantClient(url=QDRANT_URL, api_key=QDRANT_API_KEY, timeout=60.0)
     

@@ -144,7 +144,7 @@ from google.colab import userdata
 
 # Run embed_queries.py using Hugging Face API key
 os.environ["HF_API_KEY"] = userdata.get("HF_API_KEY")
-!cd /content/repo && python scripts/embed_queries.py
+!cd /content/repo && python scripts/embed_queries.py --yes
 
 import json, glob
 from data_pipeline.transcript_processor import TranscriptProcessor
