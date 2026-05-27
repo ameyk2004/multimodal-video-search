@@ -74,6 +74,13 @@ def clean_item(item):
             changed = True
             continue
             
+        # Exception for Raghupati Raghav Rajaram
+        if "रघुपति" in name or "रघुपती" in name:
+            if video_id != "fLPku9IH4UA":
+                logging.info(f"[DELETE] video={video_id} - Removing Raghupati Raghav variation: {name!r}")
+                changed = True
+                continue
+            
         # 1. Handle Deletions
         if name in BHAJANS_TO_DELETE:
             logging.info(f"[DELETE] video={video_id} - Removing hallucinated bhajan: {name!r}")
