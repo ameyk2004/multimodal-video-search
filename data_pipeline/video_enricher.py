@@ -319,7 +319,7 @@ class VideoEnricher:
             f"व्हिडिओ ID: {video_id}\n\n"
             f"खालील संपूर्ण ट्रान्स्क्रिप्टचे विश्लेषण करा:\n\n{full_text}"
         )
-        for attempt in range(1, 2):
+        for attempt in range(1, 6):
             try:
                 response = self._genai_client.models.generate_content(
                     model=self._model_name,
@@ -352,10 +352,14 @@ class VideoEnricher:
             except Exception as e:
                 logger.error("LLM call failed on attempt %d for %s: %s", attempt, video_id, e)
                 if attempt < 5:
-                    # Longer exponential back-off (10s, 20s, 40s, 80s) to handle 503 High Demand
-                    sleep_time = 5 * (2 ** attempt)
-                    logger.info("Sleeping for %d seconds before next attempt...", sleep_time)
-                    time.sleep(sleep_time)
+                    error_msg = str(e).lower()
+                    if "429" in error_msg or "quota" in error_msg:
+                        logger.info("⏳ Gemini Rate Limit Hit! Waiting 65 seconds...")
+                        time.sleep(65)
+                    else:
+                        sleep_time = 5 * (2 ** attempt)
+                        logger.info("Sleeping for %d seconds before next attempt...", sleep_time)
+                        time.sleep(sleep_time)
         return None
 
 
