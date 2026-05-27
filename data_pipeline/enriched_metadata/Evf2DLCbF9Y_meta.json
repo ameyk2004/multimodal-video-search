@@ -47,14 +47,14 @@
   "musical_segments": [
     {
       "start_time_seconds": 1175.919,
-      "saint": "श्री पेठे काका",
+      "saint": "संत विश्वनाथ महाराज",
       "exact_end_text": "तुझ्या पायाची आठवण तुझ्या पायाची आठवण",
       "confidence": "high",
       "name": "तुझ्या पायाची आठवण",
       "type": "bhajan",
       "exact_start_text": "तुझ्या पायाची आठवण तुझ्या पायाची आठवण येता मन समाधान",
       "name_english": "Tujhya Payachi Athavan",
-      "saint_english": "Shri Pethe Kaka"
+      "saint_english": "Saint Vishvanath Maharaj"
     }
   ],
   "actionable_practices": [

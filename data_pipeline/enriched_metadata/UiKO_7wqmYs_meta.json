@@ -35,14 +35,14 @@
   "musical_segments": [
     {
       "start_time_seconds": 402.479,
-      "saint": "समर्थ रामदास स्वामी",
+      "saint": "श्री पेठे काका",
       "exact_end_text": "जय श्री रामदासा समर्थ दया",
       "confidence": "high",
-      "name": "सज्जनगडनिवासा राममय हृदया",
-      "type": "bhajan",
+      "name": "रामदास स्वामींची आरती",
+      "type": "aarti",
       "exact_start_text": "सज्जन गणनिवासा राममय हृदया",
-      "name_english": "Sajjanagadanivasa Ramamay Hrudaya",
-      "saint_english": "Samarth Ramadas Swami"
+      "name_english": "Ramdas Swaminchi Aarti",
+      "saint_english": "Shri Pethe Kaka"
     },
     {
       "start_time_seconds": 679.2,

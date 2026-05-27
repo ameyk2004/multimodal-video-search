@@ -49,14 +49,14 @@
   "musical_segments": [
     {
       "start_time_seconds": 1538.08,
-      "saint": "श्री पेठे काका",
+      "saint": "संत निरंजन महाराज",
       "exact_end_text": "निश्चय पूर्ण करा पूर्ण करा",
       "confidence": "high",
-      "name": "गुरु वचने भवसारा",
+      "name": "निश्चय पूर्ण करा",
       "type": "bhajan",
       "exact_start_text": "गुरु वचने भवसारा गुरु वचने भवसारा निश्चय",
-      "name_english": "Guru Vachane Bhavasara",
-      "saint_english": "Shri Pethe Kaka"
+      "name_english": "Nishchay Purna Kara",
+      "saint_english": "Snt Nirnjan Maharaj"
     },
     {
       "start_time_seconds": 1868.326,

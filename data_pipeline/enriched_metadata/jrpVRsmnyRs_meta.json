@@ -19,25 +19,25 @@
   "musical_segments": [
     {
       "start_time_seconds": 252.879,
-      "saint": "श्री माणिक प्रभू",
+      "saint": "श्री पेठे काका",
       "exact_end_text": "दिनजीवा ठरती करूया माणिक प्रभू आरती ठरती करूया माणिक प्रभू आरती",
       "confidence": "high",
       "name": "माणिक प्रभू आरती",
       "type": "aarti",
       "exact_start_text": "प्रभू प्रेम मूर्ती राजयोग मूर्ती करूया माणिक प्रभू आरती",
       "name_english": "Manik Prabhu Arati",
-      "saint_english": "Shri Manik Prabhu"
+      "saint_english": "Shri Pethe Kaka"
     },
     {
       "start_time_seconds": 688.88,
-      "saint": "श्री माणिक प्रभू",
+      "saint": "श्री पेठे काका",
       "exact_end_text": "दिनजीवा ठरती करूया माणिक प्रभू आरती जय जय माणिक्य प्रभू आरती",
       "confidence": "high",
       "name": "माणिक प्रभू आरती",
       "type": "aarti",
       "exact_start_text": "प्रभू प्रेम मूर्ती राजयोग मूर्ती करू जान माणिक प्रभू आरती",
       "name_english": "Manik Prabhu Arati",
-      "saint_english": "Shri Manik Prabhu"
+      "saint_english": "Shri Pethe Kaka"
     }
   ],
   "actionable_practices": [

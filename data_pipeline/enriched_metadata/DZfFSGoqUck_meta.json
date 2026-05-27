@@ -105,14 +105,14 @@
   "musical_segments": [
     {
       "start_time_seconds": 2030,
-      "saint": "श्री रमण महर्षी",
+      "saint": "श्री पेठे काका",
       "exact_end_text": "आत्मसस्थिते शितल दृष्टी मृतम वचनाय आत्मसस्थिते शितल दृष्टवना उद्या",
       "confidence": "high",
       "name": "नमो नमस्ते श्री रमणाय चिद्घन स्वरूपाय",
       "type": "bhajan",
       "exact_start_text": "पान 229 371 नमो नमस्ते श्री रमणाय चितघन स्वरूपाय",
       "name_english": "Namo Namaste Shri Ramanay Chidghan Swarupay",
-      "saint_english": "Shri Raman Maharshi"
+      "saint_english": "Shri Pethe Kaka"
     }
   ],
   "actionable_practices": [

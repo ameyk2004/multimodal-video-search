@@ -64,10 +64,10 @@
       "saint": "श्री पेठे काका",
       "exact_end_text": "चरित्र बोध घडविड साधका",
       "confidence": "high",
-      "name": "सद्गुरु लीलामृत ग्रंथा जय आद्य चरित्रा",
-      "type": "bhajan",
+      "name": "सद्गुरूलीलामृत आरती",
+      "type": "aarti",
       "exact_start_text": "सद्गुरु लीलामृत ग्रंथा जय आद्य चरित्रा हो जय जय",
-      "name_english": "Sadguru Lilamrut Grntha Jay Ady Charitra",
+      "name_english": "Sadguruleelamrut Aarti",
       "saint_english": "Shri Pethe Kaka"
     },
     {
@@ -75,10 +75,10 @@
       "saint": "श्री पेठे काका",
       "exact_end_text": "आम्हा ब्रह्म चैतन्यांचा",
       "confidence": "high",
-      "name": "एक निरंतर आम्हा ब्रह्म चैतन्यांचा आधार",
+      "name": "ब्रह्मचैतन्यांचा आधार",
       "type": "bhajan",
       "exact_start_text": "एक निरंतर आम्हा ब्रह्म चैतन्यांचा आधार आम्हा ब्रह्म",
-      "name_english": "Ek Nirntar Amha Brahm Chaitanyancha Adhar",
+      "name_english": "Brahmachaitanyancha Aadhar",
       "saint_english": "Shri Pethe Kaka"
     }
   ],

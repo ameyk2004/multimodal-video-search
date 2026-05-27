@@ -82,10 +82,10 @@
       "saint": "संत तुकाराम महाराज",
       "exact_end_text": "देव सखा अवज कृपा करी",
       "confidence": "high",
-      "name": "ऐसा असोनी अनुभव कासावीस होती जीव",
+      "name": "देव सखा जरी",
       "type": "bhajan",
       "exact_start_text": "ऐसा सोनी अनुभव कासा विस होती जीव",
-      "name_english": "Aisa Asoni Anubhav Kasavis Hoti Jiv",
+      "name_english": "Dev Sakha Jari",
       "saint_english": "Saint Tukaram Maharaj"
     },
     {
@@ -104,10 +104,10 @@
       "saint": "श्री पेठे काका",
       "exact_end_text": "कहे मोरे प्रभू घर",
       "confidence": "medium",
-      "name": "कहे मोरे प्रभू घर आवे",
+      "name": "दीन कहे मोहे",
       "type": "bhajan",
       "exact_start_text": "कहे मोरे प्रभू घर आवे",
-      "name_english": "Kahe More Prabhu Ghar Ave",
+      "name_english": "Din Kahe Mohe",
       "saint_english": "Shri Pethe Kaka"
     },
     {
@@ -134,14 +134,14 @@
     },
     {
       "start_time_seconds": 1564.72,
-      "saint": "श्री पेठे काका",
+      "saint": "वेण्णा स्वामी",
       "exact_end_text": "बंध विमोचन राम माझा बंध विमोचन राम",
       "confidence": "medium",
       "name": "बंध विमोचन राम",
       "type": "bhajan",
       "exact_start_text": "बंध विमोचन राम माझा बंध विमोचन राम",
       "name_english": "Bndh Vimochan Ram",
-      "saint_english": "Shri Pethe Kaka"
+      "saint_english": "Venna Swami"
     },
     {
       "start_time_seconds": 1970.1,

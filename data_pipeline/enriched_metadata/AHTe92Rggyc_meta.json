@@ -35,14 +35,14 @@
   "musical_segments": [
     {
       "start_time_seconds": 1663.919,
-      "saint": "श्री पेठे काका",
+      "saint": "श्री ब्रह्मचैतन्य गोंदवलेकर महाराज",
       "exact_end_text": "एक वेळ राम राम बोला",
       "confidence": "high",
       "name": "भजनाचा शेवट आला",
       "type": "bhajan",
       "exact_start_text": "भजनाचा शेवट आला भजनाचा शेवट आला",
       "name_english": "Bhajanacha Shevat Ala",
-      "saint_english": "Shri Pethe Kaka"
+      "saint_english": "Shri Brahmachaitany Gondavalekar Maharaj"
     }
   ],
   "actionable_practices": [

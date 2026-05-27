@@ -47,14 +47,14 @@
   "musical_segments": [
     {
       "start_time_seconds": 2763.971,
-      "saint": "दिनदास",
+      "saint": "श्री ब्रह्मचैतन्य गोंदवलेकर महाराज",
       "exact_end_text": "नामाविण हित समजू नका",
       "confidence": "high",
-      "name": "नामाविण हित समजू नका",
+      "name": "आजवरी तुम्हा सांगितला मात",
       "type": "bhajan",
       "exact_start_text": "नामाविण हित समजू नका काय अनेक",
-      "name_english": "Namavin Hit Samaju Naka",
-      "saint_english": "Dinadas"
+      "name_english": "Aajvari Tumha Sangitala Mat",
+      "saint_english": "Shri Brahmachaitany Gondavalekar Maharaj"
     },
     {
       "start_time_seconds": 3033.906,

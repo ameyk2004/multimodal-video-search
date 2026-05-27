@@ -74,14 +74,14 @@
   "musical_segments": [
     {
       "start_time_seconds": 796.48,
-      "saint": "श्री साईबाबा",
+      "saint": "श्री पेठे काका",
       "exact_end_text": "ना ओवाळू आरती साई शिर्डीच्या ओवाळू साई श ओवाळू आरती साई शिर्डीच्या ओवाळू साई श तो सद्गुरु साईनाथ महाराज की जय संत की जय जय समर्थ विठ्ठल",
       "confidence": "high",
-      "name": "आम्हा महा आरतांच्या नाथा चरणी ठेवनिया माथा ओवाळू आरती साई शिर्डीच्या नाथा",
+      "name": "साईबाबांची आरती",
       "type": "aarti",
       "exact_start_text": "सर्वांना स्वागत आहे आम्हा महा आरतांच्या नाथा चरणी ठेवनिया माथा ओवाळू आरती साई शेठच्या नाथा",
-      "name_english": "Amha Maha Aratanchya Natha Charani Thevaniya Matha Ovalu Arati Sai Shirdichya Natha",
-      "saint_english": "Shri Saibaba"
+      "name_english": "Saibabachi Aarti",
+      "saint_english": "Shri Pethe Kaka"
     }
   ],
   "actionable_practices": [

@@ -47,14 +47,14 @@
   "musical_segments": [
     {
       "start_time_seconds": 1473,
-      "saint": "श्री पेठे काका",
+      "saint": "संत निरंजन महाराज",
       "exact_end_text": "जानकी जीवन स्मरण जय जय राम",
       "confidence": "high",
       "name": "मनुजा राम सदावदरे",
       "type": "bhajan",
       "exact_start_text": "मनुजा राम सदा वध रे मनुजा राम सदा वध रे",
       "name_english": "Manuja Ram Sadavadare",
-      "saint_english": "Shri Pethe Kaka"
+      "saint_english": "Snt Nirnjan Maharaj"
     }
   ],
   "actionable_practices": [

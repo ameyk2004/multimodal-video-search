@@ -108,10 +108,15 @@ class QdrantSearcher:
             ).points
 
         results = []
+        
+        # RRF scores (Hybrid) are typically small fractions (0.01 - 0.50).
+        # Cosine scores (Dense) are absolute distances (0.42 is garbage, 0.50+ is good).
+        effective_min_score = 0.01 if sparse_vec else max(0.46, min_score)
+        
         for hit in hits:
             # Layer 2 Robustness: Hard cutoff to drop completely unrelated chunks
-            if hit.score < min_score:
-                logger.info("Dropping hit due to low score: %.4f < %.4f", hit.score, min_score)
+            if hit.score < effective_min_score:
+                logger.info("Dropping hit due to low score: %.4f < %.4f", hit.score, effective_min_score)
                 continue
                 
             results.append(

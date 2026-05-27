@@ -45,10 +45,10 @@
       "saint": "समर्थ रामदास स्वामी",
       "exact_end_text": "नाम दे सखया नाम दे सखया नाम",
       "confidence": "high",
-      "name": "महाभय नामे निवारण दे",
+      "name": "नामची कारण दे",
       "type": "bhajan",
       "exact_start_text": "महाभय नामे निवारण दे नामची कारण दे सखया",
-      "name_english": "Mahabhay Name Nivaran De",
+      "name_english": "Namachi Karan De",
       "saint_english": "Samarth Ramadas Swami"
     },
     {
@@ -67,10 +67,10 @@
       "saint": "समर्थ रामदास स्वामी",
       "exact_end_text": "सखया नाम हरीचे बोल सखया नाम",
       "confidence": "high",
-      "name": "सखया नाम हरीचे गोड",
+      "name": "नाम हरीचे गोड",
       "type": "bhajan",
       "exact_start_text": "सखया नाम हरीचे गुण सखया नाम हरीचे गुण",
-      "name_english": "Sakhaya Nam Hariche God",
+      "name_english": "Nam Hariche God",
       "saint_english": "Samarth Ramadas Swami"
     }
   ],

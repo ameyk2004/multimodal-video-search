@@ -61,14 +61,14 @@
   "musical_segments": [
     {
       "start_time_seconds": 2076.56,
-      "saint": "श्री निरंजन स्वामी",
+      "saint": "संत निरंजन महाराज",
       "exact_end_text": "निरंजन पदरे मनुजा राम सदावदरे मनुजा राम",
       "confidence": "high",
       "name": "मनुजा राम सदावदरे",
       "type": "bhajan",
       "exact_start_text": "मनुजा राम सदावदरे मनुजा राम सदावदरे",
       "name_english": "Manuja Ram Sadavadare",
-      "saint_english": "Shri Niranjan Swami"
+      "saint_english": "Snt Nirnjan Maharaj"
     }
   ],
   "actionable_practices": [

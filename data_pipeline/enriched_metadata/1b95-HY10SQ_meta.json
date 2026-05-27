@@ -37,10 +37,10 @@
       "saint": "संत कबीर",
       "exact_end_text": "बडा बिकट यम घाट कोण बतावे गुरु विन कोण बतावे",
       "confidence": "high",
-      "name": "कट यमघाट रे बडा बिकट यम घाट रे",
+      "name": "बडा बिकट यम घाट रे",
       "type": "bhajan",
       "exact_start_text": "कट यमघाट रे बडा बिकट यम घाट रे",
-      "name_english": "Kat Yamaghat Re Bada Bikat Yam Ghat Re",
+      "name_english": "Bada Bikat Yam Ghat Re",
       "saint_english": "Saint Kabir"
     },
     {
@@ -48,10 +48,10 @@
       "saint": "संत तुकाराम महाराज",
       "exact_end_text": "तुमचा भरोसा जानकी जीवन स्मरण जय जय राम",
       "confidence": "high",
-      "name": "चुकल्या कर्माची करा क्षमा",
+      "name": "तुमचा परोचा दिला तुम्हा हाती",
       "type": "bhajan",
       "exact_start_text": "चुकल्या करवाची करा क्षमा चुकल्या गर्भाची करा क्षमा",
-      "name_english": "Chukalya Karmachi Kara Kshama",
+      "name_english": "Tumcha Parocha Dila Tumha Hati",
       "saint_english": "Saint Tukaram Maharaj"
     }
   ],

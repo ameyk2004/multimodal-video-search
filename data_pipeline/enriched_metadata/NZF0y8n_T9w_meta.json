@@ -33,14 +33,14 @@
   "musical_segments": [
     {
       "start_time_seconds": 1689.24,
-      "saint": "श्री पेठे काका",
+      "saint": "श्री ब्रह्मचैतन्य गोंदवलेकर महाराज",
       "exact_end_text": "अभ्यास वैखरी सोडू नका",
       "confidence": "high",
-      "name": "नामाविण हित समजू नका",
+      "name": "आजवरी तुम्हा सांगितला मात",
       "type": "bhajan",
       "exact_start_text": "नामाविण हित समजू नका",
-      "name_english": "Namavin Hit Samaju Naka",
-      "saint_english": "Shri Pethe Kaka"
+      "name_english": "Aajvari Tumha Sangitala Mat",
+      "saint_english": "Shri Brahmachaitany Gondavalekar Maharaj"
     }
   ],
   "actionable_practices": [

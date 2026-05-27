@@ -106,25 +106,25 @@
   "musical_segments": [
     {
       "start_time_seconds": 31.439,
-      "saint": "श्री पेठे काका",
+      "saint": "श्री ब्रह्मचैतन्य गोंदवलेकर महाराज",
       "exact_end_text": "ऐसे करी माझे आई हो ऐसे करी माझे आई",
       "confidence": "high",
       "name": "मी माझे विसरून जाई",
       "type": "bhajan",
       "exact_start_text": "मी माझे विसरून जाई मी माझे विसरून जाई",
       "name_english": "Mi Majhe Visarun Jai",
-      "saint_english": "Shri Pethe Kaka"
+      "saint_english": "Shri Brahmachaitany Gondavalekar Maharaj"
     },
     {
       "start_time_seconds": 1569.919,
-      "saint": "श्री ब्रह्मचैतन्य गोंदवलेकर महाराज",
+      "saint": "कै. जगन्नाथपंत आठवले",
       "exact_end_text": "श्री ब्रह्म चैतन्यासारखा नाही पाहिला",
       "confidence": "high",
       "name": "मी नाही पाहिला मी नाही देखिला",
       "type": "bhajan",
       "exact_start_text": "मी नाही पाहिला मी नाही देखिला मी नाही पाहिला मी नाही देखिला श्री ब्रह्म चैतन्या सारखा",
       "name_english": "Mi Nahi Pahila Mi Nahi Dekhila",
-      "saint_english": "Shri Brahmachaitany Gondavalekar Maharaj"
+      "saint_english": "Kai. Jagannathpant Athavale"
     },
     {
       "start_time_seconds": 1943.039,

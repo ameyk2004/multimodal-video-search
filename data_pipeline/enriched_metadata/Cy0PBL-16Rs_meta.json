@@ -116,14 +116,14 @@
     },
     {
       "start_time_seconds": 337.44,
-      "saint": "हनुमान",
+      "saint": "श्री पेठे काका",
       "exact_end_text": "जय जय हनुमंता ओवाळू जय जय हनुमंता जानकी जीवन स्मरण जय जय राम अम",
       "confidence": "high",
-      "name": "जय जय हनुमंता",
+      "name": "हनुमानाची आरती",
       "type": "aarti",
       "exact_start_text": "जय जय हनुमंता जय धीमंता जय राम जय जय हनुमंता",
-      "name_english": "Jay Jay Hanumnta",
-      "saint_english": "Hanuman"
+      "name_english": "Hanumanachi Aarti",
+      "saint_english": "Shri Pethe Kaka"
     }
   ],
   "actionable_practices": [
