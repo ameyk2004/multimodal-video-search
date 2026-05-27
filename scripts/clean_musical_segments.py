@@ -3,6 +3,7 @@ import logging
 import os
 import glob
 import json
+import sys
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -17,7 +18,14 @@ TABLE_NAME = os.environ.get("DYNAMODB_TABLE", "sadhananandadeep-content")
 # I will populate these variables based on your instructions in the chat!
 
 BHAJANS_TO_DELETE = {
-    # e.g., "hallucinated_bhajan_1",
+    "अज्ञात",
+    "जानकी स्मरण जय जय राम",
+    "जानकी जीवन स्मरण जय जय राम",
+    "जानकी जीवन स्मरण",
+    "जानकी जीवनस्मरण जय जय राम",
+    "जानकी अनुस्मरणे जय राम",
+    "जानकीस्मरण जय जय राम",
+    "जय जय राम",
 }
 
 BHAJANS_TO_RENAME = {
@@ -62,7 +70,8 @@ def clean_item(item):
         name = seg.get("name")
         
         if not name:
-            new_segments.append(seg)
+            logging.info(f"[DELETE] video={video_id} - Removing hallucinated segment with EMPTY title")
+            changed = True
             continue
             
         # 1. Handle Deletions
@@ -85,7 +94,7 @@ def clean_item(item):
         
     return changed
 
-def clean_local_files(directory="data_pipeline/enriched_metadata"):
+def clean_local_files(directory="data_pipeline/enriched_metadata", dry_run=False):
     """
     Reads all local JSON files, applies deletions/renames, and rewrites them if changed.
     """
@@ -98,26 +107,34 @@ def clean_local_files(directory="data_pipeline/enriched_metadata"):
                 item = json.load(f)
                 
             if clean_item(item):
-                with open(filepath, 'w', encoding='utf-8') as f:
-                    json.dump(item, f, ensure_ascii=False, indent=2)
+                if not dry_run:
+                    with open(filepath, 'w', encoding='utf-8') as f:
+                        json.dump(item, f, ensure_ascii=False, indent=2)
                 updated_files += 1
         except Exception as e:
             logging.error(f"Failed to clean local file {filepath}: {e}")
             
-    logging.info(f"Done local cleaning. Updated {updated_files} JSON files.")
+    action = "Would update" if dry_run else "Updated"
+    logging.info(f"Done local cleaning. {action} {updated_files} JSON files.")
 
 # =========================
 # MAIN
 # =========================
 
 if __name__ == "__main__":
+    dry_run = "--dry-run" in sys.argv
+    if dry_run:
+        logging.info("=========================================")
+        logging.info("🏃 DRY RUN MODE - No files will be saved")
+        logging.info("=========================================")
+
     if not BHAJANS_TO_DELETE and not BHAJANS_TO_RENAME:
         logging.warning("No bhajans configured for deletion or renaming! Exiting.")
-        exit(0)
+        sys.exit(0)
 
     # 1. Clean local JSON files
     logging.info("Starting cleanup of local JSON files...")
-    clean_local_files()
+    clean_local_files(dry_run=dry_run)
     
     # 2. Clean DynamoDB
     logging.info("Starting cleanup of DynamoDB...")
@@ -129,19 +146,21 @@ if __name__ == "__main__":
         for item in items:
             if clean_item(item):
                 video_id = item["video_id"]
-                try:
-                    table.update_item(
-                        Key={"video_id": video_id},
-                        UpdateExpression="SET musical_segments = :ms",
-                        ExpressionAttributeValues={
-                            ":ms": item.get("musical_segments", []),
-                        },
-                    )
-                    updated_count += 1
-                except Exception as e:
-                    logging.error(f"Failed to update {video_id} in DynamoDB: {e}")
+                updated_count += 1
+                if not dry_run:
+                    try:
+                        table.update_item(
+                            Key={"video_id": video_id},
+                            UpdateExpression="SET musical_segments = :ms",
+                            ExpressionAttributeValues={
+                                ":ms": item.get("musical_segments", []),
+                            },
+                        )
+                    except Exception as e:
+                        logging.error(f"Failed to update {video_id} in DynamoDB: {e}")
     
-        logging.info(f"Done. Total Updated Items in DynamoDB: {updated_count}")
+        action = "Would update" if dry_run else "Total Updated"
+        logging.info(f"Done. {action} Items in DynamoDB: {updated_count}")
         
     except Exception as e:
         logging.error(f"Failed to scan or update DynamoDB: {e}")
