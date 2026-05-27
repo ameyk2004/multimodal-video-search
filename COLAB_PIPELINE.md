@@ -116,7 +116,7 @@ print("✅ Repo cloned and Google Drive symlinks created.")
 *Uploads the newly fixed metadata (with accurate timestamps) to AWS DynamoDB.*
 ```python
 %cd /content/repo
-!python scripts/dynamo_uploader.py
+!python scripts/upload_dynamo.py
 ```
 
 ---
