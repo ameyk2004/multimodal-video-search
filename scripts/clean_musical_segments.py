@@ -1,83 +1,148 @@
 import boto3
-from decimal import Decimal
+import logging
+import os
+import glob
+import json
+from dotenv import load_dotenv
 
-def clean_segments():
-    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
-    table = dynamodb.Table('sadhananandadeep-content')
-    
-    print("Scanning DynamoDB table for items with musical_segments...")
+load_dotenv()
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
+
+REGION = os.environ.get("AWS_DEFAULT_REGION", "us-east-1")
+TABLE_NAME = os.environ.get("DYNAMODB_TABLE", "sadhananandadeep-content")
+
+# =========================
+# CONFIGURATION
+# =========================
+# I will populate these variables based on your instructions in the chat!
+
+BHAJANS_TO_DELETE = {
+    # e.g., "hallucinated_bhajan_1",
+}
+
+BHAJANS_TO_RENAME = {
+    # e.g., "wrong_name_1": "correct_name_1",
+}
+
+# =========================
+# DYNAMODB SETUP
+# =========================
+
+dynamodb = boto3.resource("dynamodb", region_name=REGION)
+table = dynamodb.Table(TABLE_NAME)
+
+# =========================
+# HELPERS
+# =========================
+
+def scan_all_items():
+    items = []
     response = table.scan()
-    items = response.get('Items', [])
+    items.extend(response.get("Items", []))
+    while "LastEvaluatedKey" in response:
+        response = table.scan(ExclusiveStartKey=response["LastEvaluatedKey"])
+        items.extend(response.get("Items", []))
+    return items
+
+def clean_item(item):
+    """
+    Cleans up the musical_segments in-place based on the DELETE and RENAME config.
+    Returns True if the item was changed.
+    """
+    changed = False
+    video_id = item.get("video_id", "?")
     
-    while 'LastEvaluatedKey' in response:
-        response = table.scan(ExclusiveStartKey=response['LastEvaluatedKey'])
-        items.extend(response.get('Items', []))
+    original_segments = item.get("musical_segments", [])
+    if not original_segments:
+        return False
         
-    invalid_names = {"", "अज्ञात", "शांत संगीत", "प्रार्थना संगीत", "मंगलाचरण आणि प्रार्थना"}
+    new_segments = []
     
-    total_removed = 0
-    updated_items_count = 0
-    
-    for item in items:
-        video_id = item.get('video_id')
-        segments = item.get('musical_segments', [])
+    for seg in original_segments:
+        name = seg.get("name")
         
-        if not segments:
+        if not name:
+            new_segments.append(seg)
             continue
             
-        original_count = len(segments)
-        valid_segments = []
+        # 1. Handle Deletions
+        if name in BHAJANS_TO_DELETE:
+            logging.info(f"[DELETE] video={video_id} - Removing hallucinated bhajan: {name!r}")
+            changed = True
+            continue # skip adding it to new_segments
+            
+        # 2. Handle Renames
+        if name in BHAJANS_TO_RENAME:
+            new_name = BHAJANS_TO_RENAME[name]
+            logging.info(f"[RENAME] video={video_id} - {name!r} → {new_name!r}")
+            seg["name"] = new_name
+            changed = True
+            
+        new_segments.append(seg)
         
-        for seg in segments:
-            name = seg.get('name', '').strip()
-            seg_type = seg.get('type', '')
-            
-            start = float(seg.get('start_time_seconds', 0))
-            end = float(seg.get('end_time_seconds', 0))
-            
-            # Identify hallucinated segments
-            
-            # 1. Check for completely invalid names
-            if name in invalid_names:
-                continue
+    if changed:
+        item["musical_segments"] = new_segments
+        
+    return changed
+
+def clean_local_files(directory="data_pipeline/enriched_metadata"):
+    """
+    Reads all local JSON files, applies deletions/renames, and rewrites them if changed.
+    """
+    json_files = glob.glob(os.path.join(directory, "*.json"))
+    updated_files = 0
+    
+    for filepath in json_files:
+        try:
+            with open(filepath, 'r', encoding='utf-8') as f:
+                item = json.load(f)
                 
-            # 2. Check for background_music type
-            if seg_type == 'background_music':
-                continue
-                
-            # 3. Check for short duration (less than 5 seconds) 
-            # ONLY if end time is actually > 0 and greater than start
-            # This fixes the bug where end=0 caused negative durations and deleted everything!
-            if end > 0 and end > start:
-                duration = end - start
-                if duration < 5.0:
-                    continue
-                    
-            # 4. Hard-delete specific hallucinated intros (even if end_time is 0)
-            if "जागृत जीवन" in name or "अंतर यात्रा" in name:
-                continue
-                
-            # If it passes the checks, it's valid! Keep it.
-            valid_segments.append(seg)
+            if clean_item(item):
+                with open(filepath, 'w', encoding='utf-8') as f:
+                    json.dump(item, f, ensure_ascii=False, indent=2)
+                updated_files += 1
+        except Exception as e:
+            logging.error(f"Failed to clean local file {filepath}: {e}")
             
-        # Check if we removed any segments 
-        if valid_segments != segments:
-            removed = original_count - len(valid_segments)
-            total_removed += removed
-            updated_items_count += 1
-            
-            print(f"Updating {video_id}: Removed {removed} hallucinated segments / Standardized names. ({len(valid_segments)} valid remaining)")
-            
-            # Update DynamoDB
-            table.update_item(
-                Key={'video_id': video_id},
-                UpdateExpression="SET musical_segments = :val",
-                ExpressionAttributeValues={':val': valid_segments}
-            )
-            
-    print(f"\nCleanup Complete!")
-    print(f"Total Segments Removed: {total_removed}")
-    print(f"Total Videos Updated: {updated_items_count}")
+    logging.info(f"Done local cleaning. Updated {updated_files} JSON files.")
+
+# =========================
+# MAIN
+# =========================
 
 if __name__ == "__main__":
-    clean_segments()
+    if not BHAJANS_TO_DELETE and not BHAJANS_TO_RENAME:
+        logging.warning("No bhajans configured for deletion or renaming! Exiting.")
+        exit(0)
+
+    # 1. Clean local JSON files
+    logging.info("Starting cleanup of local JSON files...")
+    clean_local_files()
+    
+    # 2. Clean DynamoDB
+    logging.info("Starting cleanup of DynamoDB...")
+    try:
+        items = scan_all_items()
+        logging.info(f"Total Items Scanned from DynamoDB: {len(items)}")
+    
+        updated_count = 0
+        for item in items:
+            if clean_item(item):
+                video_id = item["video_id"]
+                try:
+                    table.update_item(
+                        Key={"video_id": video_id},
+                        UpdateExpression="SET musical_segments = :ms",
+                        ExpressionAttributeValues={
+                            ":ms": item.get("musical_segments", []),
+                        },
+                    )
+                    updated_count += 1
+                except Exception as e:
+                    logging.error(f"Failed to update {video_id} in DynamoDB: {e}")
+    
+        logging.info(f"Done. Total Updated Items in DynamoDB: {updated_count}")
+        
+    except Exception as e:
+        logging.error(f"Failed to scan or update DynamoDB: {e}")
+        logging.info("Local files were still updated.")
