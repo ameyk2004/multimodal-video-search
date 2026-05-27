@@ -3,22 +3,26 @@
   "video_id": "JRQwh9N5AO8",
   "musical_segments": [
     {
-      "start_time_seconds": 19.76,
+      "start_time_seconds": 32.719,
       "saint": "श्री कृष्णदास महाराज",
       "exact_end_text": "माझा मारुती प्राण सखा माझा मारुती प्राण सखा [संगीत]",
       "confidence": "high",
       "name": "राम कृपेची छाया",
       "type": "aarti",
-      "exact_start_text": "राम कृपेची छाया माझा मारुती प्राण सखा राम कृपेची छाया"
+      "exact_start_text": "राम कृपेची छाया माझा मारुती प्राण सखा राम कृपेची छाया",
+      "name_english": "Ram Krupechi Chhaya",
+      "saint_english": "Shri Krushnadas Maharaj"
     },
     {
-      "start_time_seconds": 69.119,
+      "start_time_seconds": 78.4,
       "saint": "श्री कृष्णदास महाराज",
       "exact_end_text": "माझा मारुती प्राण सखा माझा मारुती प्राण सखा [संगीत]",
       "confidence": "high",
       "name": "राम कृपेची छाया",
       "type": "kirtan",
-      "exact_start_text": "राम कृपेची छाया माझा मारुती प्राण सखा माझा मारुती प्राण सखा"
+      "exact_start_text": "राम कृपेची छाया माझा मारुती प्राण सखा माझा मारुती प्राण सखा",
+      "name_english": "Ram Krupechi Chhaya",
+      "saint_english": "Shri Krushnadas Maharaj"
     }
   ],
   "actionable_practices": [

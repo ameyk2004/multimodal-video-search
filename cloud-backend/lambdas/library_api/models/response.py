@@ -19,6 +19,7 @@ class VerseItem(BaseModel):
 
 class StorySummary(BaseModel):
     title: str
+    title_english: Optional[str] = ""
     moral: Optional[str] = ""
     start_time_seconds: int = 0
 
@@ -36,7 +37,9 @@ class MusicalSegmentItem(BaseModel):
     video_id: str
     type: str
     name: str
+    name_english: Optional[str] = ""
     saint: Optional[str] = ""
+    saint_english: Optional[str] = ""
     exact_start_text: Optional[str] = ""
     start_time_seconds: int = 0
 

@@ -10,7 +10,9 @@
       "exact_end_text": "पाय आखडून घेतो आता त्यातून केला",
       "title": "तात्यासाहेबांची परमलीनता आणि नम्रता",
       "exact_start_text": "तात्यासाहेबांच्याला पायाना शेवटी इवर्शन झालं होत",
-      "moral": "सद्गुरू किंवा संतांच्या अंगी अत्यंत परमलीनता असते. लोक चरणावर डोके ठेवतील या भीतीने किंवा नम्रतेपोटी ते आपले पाय आखडून घेत असत. खरी लीनता ही केवळ बाह्य नसून ती अंतःकरणातून प्रकट होते आणि ती व्यक्तीच्या संपूर्ण अस्तित्वातून जाणवते."
+      "moral": "सद्गुरू किंवा संतांच्या अंगी अत्यंत परमलीनता असते. लोक चरणावर डोके ठेवतील या भीतीने किंवा नम्रतेपोटी ते आपले पाय आखडून घेत असत. खरी लीनता ही केवळ बाह्य नसून ती अंतःकरणातून प्रकट होते आणि ती व्यक्तीच्या संपूर्ण अस्तित्वातून जाणवते.",
+      "title_english": "Tatyasahebanchi Paramalinata Ani Namrata",
+      "normalized_saint_name_english": "Shri Pethe Kaka"
     }
   ],
   "video_id": "uKQRo5yHg9Q",
@@ -22,7 +24,9 @@
       "confidence": "high",
       "name": "अगम्य सद्गुरु लीलामृत",
       "type": "bhajan",
-      "exact_start_text": "अगम्य सद्गुरु लीलामृत निष्ठा असे त्या पावत"
+      "exact_start_text": "अगम्य सद्गुरु लीलामृत निष्ठा असे त्या पावत",
+      "name_english": "Agamy Sadguru Lilamrut",
+      "saint_english": "Shri Pethe Kaka"
     },
     {
       "start_time_seconds": 1539.6,
@@ -31,7 +35,9 @@
       "confidence": "high",
       "name": "नामाविण हित समजू नका",
       "type": "bhajan",
-      "exact_start_text": "नामाविण हित समजू नका आजवरी तुमहा सांगितली मात"
+      "exact_start_text": "नामाविण हित समजू नका आजवरी तुमहा सांगितली मात",
+      "name_english": "Namavin Hit Samaju Naka",
+      "saint_english": "Shri Brahmachaitany Gondavalekar Maharaj"
     }
   ],
   "actionable_practices": [

@@ -2,7 +2,7 @@
   "stories": [
     {
       "normalized_saint_name": "श्री ब्रह्मचैतन्य गोंदवलेकर महाराज",
-      "start_time_seconds": 50.32,
+      "start_time_seconds": 80.346,
       "associated_topics": [
         "सद्गुरू आणि संत चरित्र",
         "संस्कार आणि मानवी मूल्ये",
@@ -11,28 +11,34 @@
       "exact_end_text": "द्विजत्व तेही दिसेना त्यांच्या मनाशी हा विचार येतोय",
       "title": "बाल गणपतीचे मुंजीच्या वेळचे चिंतन",
       "exact_start_text": "नौ वर्षाचे वसरी मनी विचार करी व्रत बंद",
-      "moral": "कोणताही धार्मिक विधी किंवा संस्कार केवळ बाह्य आचारापुरता मर्यादित न ठेवता, त्यामागील खरा अर्थ आणि भाव समजून घेतला पाहिजे. मुंजीच्या वेळी 'सावधान' म्हणताना आपण आपल्या मूळ स्वरूपाविषयी आणि कर्तव्याविषयी जागृत झाले पाहिजे. केवळ बाह्य कृती करण्यापेक्षा अंतःकरणातील वैराग्य आणि ज्ञान जागृत करणे हाच खऱ्या संस्काराचा उद्देश आहे."
+      "moral": "कोणताही धार्मिक विधी किंवा संस्कार केवळ बाह्य आचारापुरता मर्यादित न ठेवता, त्यामागील खरा अर्थ आणि भाव समजून घेतला पाहिजे. मुंजीच्या वेळी 'सावधान' म्हणताना आपण आपल्या मूळ स्वरूपाविषयी आणि कर्तव्याविषयी जागृत झाले पाहिजे. केवळ बाह्य कृती करण्यापेक्षा अंतःकरणातील वैराग्य आणि ज्ञान जागृत करणे हाच खऱ्या संस्काराचा उद्देश आहे.",
+      "title_english": "Bal Ganapatiche Munjichya Velache Chintan",
+      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj"
     }
   ],
   "video_id": "skRs4n9crGo",
   "musical_segments": [
     {
-      "start_time_seconds": 1784.96,
+      "start_time_seconds": 1832.399,
       "saint": "श्री पेठे काका",
       "exact_end_text": "सच्चिदानंदाची प्रभा सच्चिदानंदाची प्रभा",
       "confidence": "high",
       "name": "शब्द अर्थावेण फोल",
       "type": "bhajan",
-      "exact_start_text": "शब्द अर्थावेण फुल शब्द अर्थावेण फोल आचरणाने"
+      "exact_start_text": "शब्द अर्थावेण फुल शब्द अर्थावेण फोल आचरणाने",
+      "name_english": "Shabd Arthaven Phol",
+      "saint_english": "Shri Pethe Kaka"
     },
     {
-      "start_time_seconds": 1930.64,
+      "start_time_seconds": 1958.64,
       "saint": "श्री ब्रह्मचैतन्य गोंदवलेकर महाराज",
       "exact_end_text": "श्रीराम जानकी वनस्मरण जय जय राम",
       "confidence": "high",
       "name": "श्रीराम जय राम जय जय राम",
       "type": "namasmarana",
-      "exact_start_text": "श्रीराम जय राम जय जय राम श्रीराम जय"
+      "exact_start_text": "श्रीराम जय राम जय जय राम श्रीराम जय",
+      "name_english": "Shriram Jay Ram Jay Jay Ram",
+      "saint_english": "Shri Brahmachaitany Gondavalekar Maharaj"
     }
   ],
   "actionable_practices": [

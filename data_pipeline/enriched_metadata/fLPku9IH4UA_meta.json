@@ -2,7 +2,7 @@
   "stories": [
     {
       "normalized_saint_name": "समर्थ रामदास स्वामी",
-      "start_time_seconds": 1003.12,
+      "start_time_seconds": 1017.92,
       "associated_topics": [
         "इतर",
         "साधना आणि ध्यान",
@@ -11,55 +11,67 @@
       "exact_end_text": "आणि शेवटची बा वर्ष माहिती आहेत आपल्या हे सगळं परिचित आहे",
       "title": "समर्थ रामदास स्वामींचे तपश्चर्यायुक्त जीवन आणि साधना",
       "exact_start_text": "आधीची बारा वर्ष आपल्याला माहितीच आहेत समर्था सगळ तपाच्या भाषेत आहे",
-      "moral": "समर्थ रामदास स्वामींनी आपल्या आयुष्यात १२-१२ वर्षांचे टप्पे करून अत्यंत कठोर तपश्चर्या केली. त्यांनी स्वतः साधना करून जे मिळवले, तेच जगाला सांगितले. संतांचे जीवन हे केवळ स्वतःच्या कल्याणासाठी नसून समाजाला योग्य दिशा दाखवण्यासाठी आणि त्यांना सुलभ साधना देऊन सन्मार्गावर आणण्यासाठी असते, हाच यातून बोध मिळतो."
+      "moral": "समर्थ रामदास स्वामींनी आपल्या आयुष्यात १२-१२ वर्षांचे टप्पे करून अत्यंत कठोर तपश्चर्या केली. त्यांनी स्वतः साधना करून जे मिळवले, तेच जगाला सांगितले. संतांचे जीवन हे केवळ स्वतःच्या कल्याणासाठी नसून समाजाला योग्य दिशा दाखवण्यासाठी आणि त्यांना सुलभ साधना देऊन सन्मार्गावर आणण्यासाठी असते, हाच यातून बोध मिळतो.",
+      "title_english": "Samarth Ramadas Swaminche Tapashcharyayukt Jivan Ani Sadhana",
+      "normalized_saint_name_english": "Samarth Ramadas Swami"
     }
   ],
   "video_id": "fLPku9IH4UA",
   "musical_segments": [
     {
-      "start_time_seconds": 0.37,
+      "start_time_seconds": 16.64,
       "saint": "श्री पेठे काका",
       "exact_end_text": "रघुपति राघव राजाराम पतित पावन जानकी जीवन स्मरण जय जय राम",
       "confidence": "high",
       "name": "रघुपति राघव राजा राम",
       "type": "namasmarana",
-      "exact_start_text": "जीवन स्मरण जय जय राम रघुपति राघव राजा राम"
+      "exact_start_text": "जीवन स्मरण जय जय राम रघुपति राघव राजा राम",
+      "name_english": "Raghupati Raghav Raja Ram",
+      "saint_english": "Shri Pethe Kaka"
     },
     {
-      "start_time_seconds": 240.239,
+      "start_time_seconds": 292.08,
       "saint": "श्री पेठे काका",
       "exact_end_text": "आरती गुणरूप रामा निर्गुण विश्रामा आरती गुणरूप रामा",
       "confidence": "high",
       "name": "आरती गुणरूप रामा निर्गुण विश्रामा",
       "type": "aarti",
-      "exact_start_text": "आरती गुणरूप रामा निर्गुण विश्रामा आरती गुणरूप रामा"
+      "exact_start_text": "आरती गुणरूप रामा निर्गुण विश्रामा आरती गुणरूप रामा",
+      "name_english": "Arati Gunarup Rama Nirgun Vishrama",
+      "saint_english": "Shri Pethe Kaka"
     },
     {
-      "start_time_seconds": 417.33,
+      "start_time_seconds": 447.68,
       "saint": "समर्थ रामदास स्वामी",
       "exact_end_text": "नाम दे सखया नाम दे सखया नाम",
       "confidence": "high",
       "name": "महाभय नामे निवारण दे",
       "type": "bhajan",
-      "exact_start_text": "महाभय नामे निवारण दे नामची कारण दे सखया"
+      "exact_start_text": "महाभय नामे निवारण दे नामची कारण दे सखया",
+      "name_english": "Mahabhay Name Nivaran De",
+      "saint_english": "Samarth Ramadas Swami"
     },
     {
-      "start_time_seconds": 631.08,
+      "start_time_seconds": 677.36,
       "saint": "समर्थ रामदास स्वामी",
       "exact_end_text": "राम माहे माय राम माहे माय",
       "confidence": "high",
       "name": "राम माझे माय कै भेटील",
       "type": "bhajan",
-      "exact_start_text": "राम माझे माय कै भेटील राम माझे माय कै भेटल"
+      "exact_start_text": "राम माझे माय कै भेटील राम माझे माय कै भेटल",
+      "name_english": "Ram Majhe May Kai Bhetil",
+      "saint_english": "Samarth Ramadas Swami"
     },
     {
-      "start_time_seconds": 2604.8,
+      "start_time_seconds": 2638.72,
       "saint": "समर्थ रामदास स्वामी",
       "exact_end_text": "सखया नाम हरीचे बोल सखया नाम",
       "confidence": "high",
       "name": "सखया नाम हरीचे गोड",
       "type": "bhajan",
-      "exact_start_text": "सखया नाम हरीचे गुण सखया नाम हरीचे गुण"
+      "exact_start_text": "सखया नाम हरीचे गुण सखया नाम हरीचे गुण",
+      "name_english": "Sakhaya Nam Hariche God",
+      "saint_english": "Samarth Ramadas Swami"
     }
   ],
   "actionable_practices": [

@@ -2,9 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import './StoryCard.css'; // Reusing the exact same CSS as StoryCard
 import './Music.css';
 
-const MusicModal = ({ track, onClose }) => {
+const MusicModal = ({ track, onClose, lang }) => {
   const [iframeLoaded, setIframeLoaded] = useState(false);
-  const { video_id, start_time_seconds, name, type, saint, exact_start_text } = track;
+  const { video_id, start_time_seconds, name, name_english, type, saint, saint_english, exact_start_text } = track;
+
+  const displayName = lang === 'en' && name_english ? name_english : name;
+  const displaySaint = lang === 'en' && saint_english ? saint_english : saint;
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -54,8 +57,8 @@ const MusicModal = ({ track, onClose }) => {
 
         <div className="story-modal-info">
           <div className="story-modal-info-left">
-            <h2 className="story-card-title" style={{ fontSize: '32px', marginBottom: '12px' }}>{name}</h2>
-            {saint && <span className="saint-tag">{saint}</span>}
+            <h2 className="story-card-title" style={{ fontSize: '32px', marginBottom: '12px' }}>{displayName}</h2>
+            {displaySaint && <span className="saint-tag">{displaySaint}</span>}
             <span className="story-topic-tag" style={{ marginLeft: '12px', textTransform: 'capitalize' }}>{type}</span>
           </div>
 
@@ -73,17 +76,22 @@ const MusicModal = ({ track, onClose }) => {
   );
 };
 
-const MusicCard = ({ track }) => {
+const MusicCard = ({ track, lang }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   
   const { 
     name, 
+    name_english,
     type,
     saint,
+    saint_english,
     exact_start_text,
     video_id, 
     start_time_seconds,
   } = track;
+
+  const displayName = lang === 'en' && name_english ? name_english : name;
+  const displaySaint = lang === 'en' && saint_english ? saint_english : saint;
 
   const [thumbSrc, setThumbSrc] = useState(`https://img.youtube.com/vi/${video_id}/hqdefault.jpg`);
 
@@ -114,10 +122,10 @@ const MusicCard = ({ track }) => {
           </div>
 
           <div className="ultra-music-info">
-            <h3 className="ultra-music-title">{name}</h3>
+            <h3 className="ultra-music-title">{displayName}</h3>
             
             <div className="ultra-music-meta">
-              {saint && <span className="ultra-pill">{saint}</span>}
+              {displaySaint && <span className="ultra-pill">{displaySaint}</span>}
               <span className="ultra-pill highlight" style={{ textTransform: 'capitalize' }}>{type}</span>
               {start_time_seconds > 0 && (
                 <span className="ultra-pill" style={{ opacity: 0.8, borderColor: 'transparent', background: 'transparent', padding: '0' }}>Starts at {formatTime(start_time_seconds)}</span>
@@ -134,7 +142,7 @@ const MusicCard = ({ track }) => {
       </div>
 
       {isModalOpen && (
-        <MusicModal track={track} onClose={() => setIsModalOpen(false)} />
+        <MusicModal track={track} onClose={() => setIsModalOpen(false)} lang={lang} />
       )}
     </>
   );

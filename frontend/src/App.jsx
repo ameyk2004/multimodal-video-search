@@ -224,9 +224,11 @@ export default function App() {
   const filteredStories = allStories.filter(s => {
     const textToSearch = (
       s.title + ' ' + 
+      (s.title_english || '') + ' ' +
       (s.moral || '') + ' ' + 
       (s.character_or_saint || '') + ' ' + 
       (s.normalized_saint_name || '') + ' ' + 
+      (s.normalized_saint_name_english || '') + ' ' +
       (s.associated_topics?.join(' ') || '')
     ).toLowerCase();
     
@@ -393,6 +395,7 @@ export default function App() {
                           key={`${story.video_id}-${i}`} 
                           story={story} 
                           autoOpen={location.state?.openStoryTitle === story.title}
+                          lang={lang}
                         />
                       ))
                     )}
@@ -457,6 +460,7 @@ export default function App() {
                   <CinematicVideoPanel 
                     videoSummary={selectedVideo} 
                     initialTitle={selectedVideoTitle}
+                    lang={lang}
                     onClose={() => setSelectedVideo(null)} 
                     onSearch={(q) => {
                       setSelectedVideo(null);

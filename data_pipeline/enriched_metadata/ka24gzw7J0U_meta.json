@@ -2,7 +2,7 @@
   "stories": [
     {
       "normalized_saint_name": "श्री ब्रह्मचैतन्य गोंदवलेकर महाराज",
-      "start_time_seconds": 646.56,
+      "start_time_seconds": 667.271,
       "associated_topics": [
         "सद्गुरू आणि संत चरित्र",
         "संस्कार आणि मानवी मूल्ये"
@@ -10,11 +10,13 @@
       "exact_end_text": "अन्नछत्र राजद्वारी ठेवीन नित्य",
       "title": "बाल महाराजांचा आजोबांशी संवाद आणि औदार्य",
       "exact_start_text": "पुनरपी म्हणे आजा तुझा केलिया राजा",
-      "moral": "बालपणीच महाराजांच्या मनात अत्यंत सात्विक आणि परोपकारी विचार होते. जर आपल्याला प्रपंचात सुखी व्हायचे असेल, तर आपल्यामुळे कुटुंबातील किंवा समाजातील कोणालाही दुःख होणार नाही आणि सर्वजण सुखात राहतील अशी भावना ठेवली पाहिजे. हेच खऱ्या परमार्थाचे आणि संत चरित्राचे सार आहे."
+      "moral": "बालपणीच महाराजांच्या मनात अत्यंत सात्विक आणि परोपकारी विचार होते. जर आपल्याला प्रपंचात सुखी व्हायचे असेल, तर आपल्यामुळे कुटुंबातील किंवा समाजातील कोणालाही दुःख होणार नाही आणि सर्वजण सुखात राहतील अशी भावना ठेवली पाहिजे. हेच खऱ्या परमार्थाचे आणि संत चरित्राचे सार आहे.",
+      "title_english": "Bal Maharajancha Ajobanshi Snvad Ani Audary",
+      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj"
     },
     {
       "normalized_saint_name": "श्री पेठे काका",
-      "start_time_seconds": 1069.44,
+      "start_time_seconds": 1116.017,
       "associated_topics": [
         "साधना आणि ध्यान",
         "अहंकार आणि विकार"
@@ -22,11 +24,13 @@
       "exact_end_text": "ते अन्न घेतलं आता ते शुद्ध",
       "title": "संन्याशांची भिक्षा आणि आसक्ती विरहित भोजन",
       "exact_start_text": "म्हणून संन्यासाना पाच घरी भिक्षा मागायला",
-      "moral": "भोजनातील गोड-तिखट अशा चवींची आसक्ती सोडण्यासाठी संन्यासी भिक्षा पाण्यात भिजवून खात असत. अन्नाचा स्वीकार केवळ शरीर टिकवण्यासाठी आणि भगवंताचा प्रसाद म्हणून करावा, त्यात कोणतीही आसक्ती नसावी हे यातून शिकायला मिळते."
+      "moral": "भोजनातील गोड-तिखट अशा चवींची आसक्ती सोडण्यासाठी संन्यासी भिक्षा पाण्यात भिजवून खात असत. अन्नाचा स्वीकार केवळ शरीर टिकवण्यासाठी आणि भगवंताचा प्रसाद म्हणून करावा, त्यात कोणतीही आसक्ती नसावी हे यातून शिकायला मिळते.",
+      "title_english": "Snnyashanchi Bhiksha Ani Asakti Virahit Bhojan",
+      "normalized_saint_name_english": "Shri Pethe Kaka"
     },
     {
       "normalized_saint_name": "श्री ब्रह्मचैतन्य गोंदवलेकर महाराज",
-      "start_time_seconds": 1971.679,
+      "start_time_seconds": 1979.846,
       "associated_topics": [
         "अध्यात्म आणि भक्ती",
         "साधना आणि ध्यान"
@@ -34,28 +38,34 @@
       "exact_end_text": "नुसत राम म्हणल तरी चालेल",
       "title": "तात्यासाहेब आणि राम नाम जप",
       "exact_start_text": "तात्यासाहेबांनी ते सांगितले आहे की त्यानी",
-      "moral": "वृद्धापकाळात किंवा कठीण प्रसंगी मोठे मंत्र आठवत नसतील, तरी केवळ 'राम' किंवा 'श्रीराम' म्हणणे देखील पुरेसे असते. नामाची गोडी आणि अंतःकरणातील शुद्ध भाव हाच सर्वात महत्त्वाचा आहे, ज्यामुळे चित्त शुद्ध होते."
+      "moral": "वृद्धापकाळात किंवा कठीण प्रसंगी मोठे मंत्र आठवत नसतील, तरी केवळ 'राम' किंवा 'श्रीराम' म्हणणे देखील पुरेसे असते. नामाची गोडी आणि अंतःकरणातील शुद्ध भाव हाच सर्वात महत्त्वाचा आहे, ज्यामुळे चित्त शुद्ध होते.",
+      "title_english": "Tatyasaheb Ani Ram Nam Jap",
+      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj"
     }
   ],
   "video_id": "ka24gzw7J0U",
   "musical_segments": [
     {
-      "start_time_seconds": 2726.66,
+      "start_time_seconds": 2763.971,
       "saint": "दिनदास",
       "exact_end_text": "नामाविण हित समजू नका",
       "confidence": "high",
       "name": "नामाविण हित समजू नका",
       "type": "bhajan",
-      "exact_start_text": "नामाविण हित समजू नका काय अनेक"
+      "exact_start_text": "नामाविण हित समजू नका काय अनेक",
+      "name_english": "Namavin Hit Samaju Naka",
+      "saint_english": "Dinadas"
     },
     {
-      "start_time_seconds": 3012.72,
+      "start_time_seconds": 3033.906,
       "saint": "श्री ब्रह्मचैतन्य गोंदवलेकर महाराज",
       "exact_end_text": "जय जय राम श्रीराम",
       "confidence": "high",
       "name": "श्रीराम जय राम जय जय राम",
       "type": "namasmarana",
-      "exact_start_text": "श्रीराम जय राम जय जय राम"
+      "exact_start_text": "श्रीराम जय राम जय जय राम",
+      "name_english": "Shriram Jay Ram Jay Jay Ram",
+      "saint_english": "Shri Brahmachaitany Gondavalekar Maharaj"
     }
   ],
   "actionable_practices": [

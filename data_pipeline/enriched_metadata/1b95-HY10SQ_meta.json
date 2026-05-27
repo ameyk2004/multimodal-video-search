@@ -2,7 +2,7 @@
   "stories": [
     {
       "normalized_saint_name": "श्री रमण महर्षी",
-      "start_time_seconds": 912.639,
+      "start_time_seconds": 940.855,
       "associated_topics": [
         "इतर",
         "तत्त्वज्ञान आणि विचार",
@@ -11,11 +11,13 @@
       "exact_end_text": "पहिले दरवाजापासून अरुणाचलाच्या त्या मंदिराच्या मूर्तीपर्यंतचे सर्व दरवाजे उघडे होते",
       "title": "संत रमण महर्षींचा गृहत्याग आणि अरुणाचल प्रवास",
       "exact_start_text": "साधारण 96 च्या दरम्यानी त्यांच असं झालं की ते काही व्याकरणाचा धडा",
-      "moral": "जेव्हा मनात तीव्र मुमुक्षुत्व आणि ईश्वराची ओढ निर्माण होते, तेव्हा लौकिक बंधने गळून पडतात. घर सोडल्याच्या क्षणापासूनच भगवंत साधकाचे रक्षण करतो आणि त्याला योग्य मार्ग दाखवतो."
+      "moral": "जेव्हा मनात तीव्र मुमुक्षुत्व आणि ईश्वराची ओढ निर्माण होते, तेव्हा लौकिक बंधने गळून पडतात. घर सोडल्याच्या क्षणापासूनच भगवंत साधकाचे रक्षण करतो आणि त्याला योग्य मार्ग दाखवतो.",
+      "title_english": "Saint Raman Maharshincha Gruhatyag Ani Arunachal Pravas",
+      "normalized_saint_name_english": "Shri Raman Maharshi"
     },
     {
       "normalized_saint_name": "श्री रमण महर्षी",
-      "start_time_seconds": 863.519,
+      "start_time_seconds": 872.264,
       "associated_topics": [
         "इतर",
         "आत्मज्ञान आणि मुक्ती"
@@ -23,28 +25,34 @@
       "exact_end_text": "देह आणि चैतन्य याच्यामधला फरक लक्षात आला आणि आपण देह नव्हे",
       "title": "संत रमण महर्षींना आलेला मृत्यूचा अनुभव",
       "exact_start_text": "त्यानंतरचा त्यांचा महत्त्वाचा अनुभव मृत्यूचा मृत्यूचा त्यांना साधारण",
-      "moral": "देह आणि चैतन्य यातील फरक समजणे म्हणजेच आत्मज्ञान होय. मृत्यूच्या अनुभवातून जाताना देहभाव नष्ट होतो आणि आपण केवळ शुद्ध चैतन्य आहोत याची प्रचिती येते."
+      "moral": "देह आणि चैतन्य यातील फरक समजणे म्हणजेच आत्मज्ञान होय. मृत्यूच्या अनुभवातून जाताना देहभाव नष्ट होतो आणि आपण केवळ शुद्ध चैतन्य आहोत याची प्रचिती येते.",
+      "title_english": "Saint Raman Maharshinna Alela Mrutyucha Anubhav",
+      "normalized_saint_name_english": "Shri Raman Maharshi"
     }
   ],
   "video_id": "1b95-HY10SQ",
   "musical_segments": [
     {
-      "start_time_seconds": 0.37,
+      "start_time_seconds": 16.48,
       "saint": "संत कबीर",
       "exact_end_text": "बडा बिकट यम घाट कोण बतावे गुरु विन कोण बतावे",
       "confidence": "high",
       "name": "कट यमघाट रे बडा बिकट यम घाट रे",
       "type": "bhajan",
-      "exact_start_text": "कट यमघाट रे बडा बिकट यम घाट रे"
+      "exact_start_text": "कट यमघाट रे बडा बिकट यम घाट रे",
+      "name_english": "Kat Yamaghat Re Bada Bikat Yam Ghat Re",
+      "saint_english": "Saint Kabir"
     },
     {
-      "start_time_seconds": 2294.88,
+      "start_time_seconds": 2339.119,
       "saint": "संत तुकाराम महाराज",
       "exact_end_text": "तुमचा भरोसा जानकी जीवन स्मरण जय जय राम",
       "confidence": "high",
       "name": "चुकल्या कर्माची करा क्षमा",
       "type": "bhajan",
-      "exact_start_text": "चुकल्या करवाची करा क्षमा चुकल्या गर्भाची करा क्षमा"
+      "exact_start_text": "चुकल्या करवाची करा क्षमा चुकल्या गर्भाची करा क्षमा",
+      "name_english": "Chukalya Karmachi Kara Kshama",
+      "saint_english": "Saint Tukaram Maharaj"
     }
   ],
   "actionable_practices": [

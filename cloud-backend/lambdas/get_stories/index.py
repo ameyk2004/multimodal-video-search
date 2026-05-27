@@ -55,9 +55,11 @@ def lambda_handler(event, context):
             stories = item.get("stories", [])
             for story in stories:
                 story_title = story.get("title", title)
+                story_title_english = story.get("title_english", "")
                 moral = story.get("moral", "")
                 saint = story.get("character_or_saint", story.get("normalized_saint_name", ""))
                 norm_saint = story.get("normalized_saint_name", saint)
+                norm_saint_english = story.get("normalized_saint_name_english", "")
                 assoc_topics = story.get("associated_topics", [])
                 start_text = story.get("exact_start_text", "")
                 
@@ -71,8 +73,10 @@ def lambda_handler(event, context):
                 all_stories.append(StoryItem(
                     video_id=video_id,
                     title=story_title,
+                    title_english=story_title_english,
                     character_or_saint=saint,
                     normalized_saint_name=norm_saint,
+                    normalized_saint_name_english=norm_saint_english,
                     associated_topics=assoc_topics,
                     moral=moral,
                     exact_start_text=start_text,

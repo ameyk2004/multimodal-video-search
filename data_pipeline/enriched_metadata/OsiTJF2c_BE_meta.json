@@ -2,7 +2,7 @@
   "stories": [
     {
       "normalized_saint_name": "संत विश्वामित्र",
-      "start_time_seconds": 2423.28,
+      "start_time_seconds": 2434.687,
       "associated_topics": [
         "इतर",
         "अहंकार आणि विकार"
@@ -10,11 +10,13 @@
       "exact_end_text": "आता तुम्ही ब्रह्मला योग्य ब्रह्मच्या ठिकाणी कलीचा वास नाही",
       "title": "वशिष्ठ आणि विश्वामित्र यांच्यातील कलीचा प्रभाव आणि अहंकार गळणे",
       "exact_start_text": "विश्वामित्रांना असं वाटलं की वशिष्ठ मोठे होतायत",
-      "moral": "अतिशय कडक तपश्चर्या करूनही मनात द्वेष आणि तुलना असेल तर कलीचा प्रभाव कायम राहतो. जेव्हा वशिष्ठ महाराजांनी विश्वामित्रांच्या तपश्चर्येचे मनापासून कौतुक केले, तेव्हा विश्वामित्रांचा अहंकार गळून पडला. खऱ्या साधूच्या निष्कलंक प्रेमाने आणि कौतुकाने मनातील द्वेष नष्ट होतो आणि कलीचा नाश होतो."
+      "moral": "अतिशय कडक तपश्चर्या करूनही मनात द्वेष आणि तुलना असेल तर कलीचा प्रभाव कायम राहतो. जेव्हा वशिष्ठ महाराजांनी विश्वामित्रांच्या तपश्चर्येचे मनापासून कौतुक केले, तेव्हा विश्वामित्रांचा अहंकार गळून पडला. खऱ्या साधूच्या निष्कलंक प्रेमाने आणि कौतुकाने मनातील द्वेष नष्ट होतो आणि कलीचा नाश होतो.",
+      "title_english": "Vashishth Ani Vishvamitr Yanchyatil Kalicha Prabhav Ani Ahnkar Galane",
+      "normalized_saint_name_english": "Saint Vishvamitr"
     },
     {
       "normalized_saint_name": "श्री पेठे काका",
-      "start_time_seconds": 8512.16,
+      "start_time_seconds": 8533.76,
       "associated_topics": [
         "सद्गुरू आणि संत चरित्र",
         "मनःशांती आणि आनंद"
@@ -22,46 +24,56 @@
       "exact_end_text": "भयकृत भयनाश म्हणजे काय आता काय किती सांगा थांबतो मी",
       "title": "पंढरपूरच्या वाटेवरील भयकृत भयनाश अनुभव",
       "exact_start_text": "पंढरपूरला चालत चाललो होतो त्यावेळ रात्री दहा वाजताच्या",
-      "moral": "संकट समयी किंवा थकलेल्या प्रसंगी जेव्हा आपण गुरूंना मनापासून आळवतो, तेव्हा ते कोणत्याही रूपात येऊन आपल्याला सहाय्य करतात. कधीकधी ते आपल्याला भीती दाखवून किंवा कडक शिस्तीने योग्य मार्गावर आणतात, ज्याला 'भयकृत भयनाश' म्हणतात. गुरूंचे रक्षण नेहमी आपल्या पाठीशी असते आणि ते आपल्याला ध्येयापर्यंत पोहोचवतात."
+      "moral": "संकट समयी किंवा थकलेल्या प्रसंगी जेव्हा आपण गुरूंना मनापासून आळवतो, तेव्हा ते कोणत्याही रूपात येऊन आपल्याला सहाय्य करतात. कधीकधी ते आपल्याला भीती दाखवून किंवा कडक शिस्तीने योग्य मार्गावर आणतात, ज्याला 'भयकृत भयनाश' म्हणतात. गुरूंचे रक्षण नेहमी आपल्या पाठीशी असते आणि ते आपल्याला ध्येयापर्यंत पोहोचवतात.",
+      "title_english": "Pndharapurachya Vatevaril Bhayakrut Bhayanash Anubhav",
+      "normalized_saint_name_english": "Shri Pethe Kaka"
     }
   ],
   "video_id": "OsiTJF2c_BE",
   "musical_segments": [
     {
-      "start_time_seconds": 6415.28,
+      "start_time_seconds": 6430.239,
       "saint": "श्री पेठे काका",
       "exact_end_text": "करी रे हरीच्या जागरणा",
       "confidence": "high",
       "name": "करी रे हरीच्या जागरणा",
       "type": "bhajan",
-      "exact_start_text": "करी रे हरीच्या जागरणा प्रणाम करी रे हरीच्या जागरणा"
+      "exact_start_text": "करी रे हरीच्या जागरणा प्रणाम करी रे हरीच्या जागरणा",
+      "name_english": "Kari Re Harichya Jagarana",
+      "saint_english": "Shri Pethe Kaka"
     },
     {
-      "start_time_seconds": 6827.679,
+      "start_time_seconds": 6842.96,
       "saint": "श्री पेठे काका",
       "exact_end_text": "इतर जणू आकारचा गल्ला हो",
       "confidence": "high",
       "name": "तेच म्हणावे भजन हरीचे",
       "type": "bhajan",
-      "exact_start_text": "तेच म्हणावे भजन हरीचे तेच म्हणावे भजन हरीचे"
+      "exact_start_text": "तेच म्हणावे भजन हरीचे तेच म्हणावे भजन हरीचे",
+      "name_english": "Tech Mhanave Bhajan Hariche",
+      "saint_english": "Shri Pethe Kaka"
     },
     {
-      "start_time_seconds": 7045.97,
+      "start_time_seconds": 7092.4,
       "saint": "स्वामी ब्रह्मानंद महाराज",
       "exact_end_text": "नाम जपो नाम राम का",
       "confidence": "high",
       "name": "नाम जपो नाम राम का",
       "type": "bhajan",
-      "exact_start_text": "नाम काम तजू काम धाम का तजू काम धाम का"
+      "exact_start_text": "नाम काम तजू काम धाम का तजू काम धाम का",
+      "name_english": "Nam Japo Nam Ram Ka",
+      "saint_english": "Swami Brahmannd Maharaj"
     },
     {
-      "start_time_seconds": 6623.6,
+      "start_time_seconds": 6632.4,
       "saint": "श्री पेठे काका",
       "exact_end_text": "श्री ज्ञानदेव तुकाराम महाराज की जय",
       "confidence": "high",
       "name": "विठ्ठल नामस्मरण",
       "type": "namasmarana",
-      "exact_start_text": "विठ्ठल विठ्ठल विठ्ठल विठ्ठल"
+      "exact_start_text": "विठ्ठल विठ्ठल विठ्ठल विठ्ठल",
+      "name_english": "Viththal Namasmaran",
+      "saint_english": "Shri Pethe Kaka"
     }
   ],
   "actionable_practices": [

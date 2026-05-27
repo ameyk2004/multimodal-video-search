@@ -76,7 +76,9 @@ def lambda_handler(event, context):
                         video_id=v_id,
                         type=seg.get("type", "bhajan"),
                         name=seg.get("name", "Unknown"),
+                        name_english=seg.get("name_english", ""),
                         saint=seg.get("saint", ""),
+                        saint_english=seg.get("saint_english", ""),
                         exact_start_text=seg.get("exact_start_text", ""),
                         start_time_seconds=start_time
                     ))
@@ -106,6 +108,7 @@ def lambda_handler(event, context):
                     start_time = int(raw_start) if raw_start else 0
                     stories.append(StorySummary(
                         title=story.get("title", "प्रवचन"),
+                        title_english=story.get("title_english", ""),
                         moral=story.get("moral", ""),
                         start_time_seconds=start_time
                     ))

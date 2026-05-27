@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { api } from '../utils/api';
 import './CinematicVideoPanel.css';
 
-const CinematicVideoPanel = ({ videoSummary, initialTitle, onClose, onSearch, onStoryClick }) => {
+const CinematicVideoPanel = ({ videoSummary, initialTitle, onClose, onSearch, onStoryClick, lang }) => {
   const [details, setDetails] = useState(null);
   const [topics, setTopics] = useState([]);
   const [questions, setQuestions] = useState([]);
@@ -175,7 +175,9 @@ const CinematicVideoPanel = ({ videoSummary, initialTitle, onClose, onSearch, on
                                 onClick={() => { if (onStoryClick) onStoryClick(story); }}
                                 style={{ cursor: onStoryClick ? 'pointer' : 'default', transition: 'background 0.2s', '&:hover': { background: 'rgba(255,255,255,0.05)' } }}
                               >
-                                <h3 style={{ color: onStoryClick ? 'var(--saffron)' : 'inherit' }}>{story.title}</h3>
+                                <h3 style={{ color: onStoryClick ? 'var(--saffron)' : 'inherit' }}>
+                                  {lang === 'en' && story.title_english ? story.title_english : story.title}
+                                </h3>
                                 {story.moral && <p className="story-moral">"{story.moral}"</p>}
                               </div>
                             ))}

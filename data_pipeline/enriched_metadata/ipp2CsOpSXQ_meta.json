@@ -2,7 +2,7 @@
   "stories": [
     {
       "normalized_saint_name": "श्री पेठे काका",
-      "start_time_seconds": 70.64,
+      "start_time_seconds": 100.178,
       "associated_topics": [
         "तत्त्वज्ञान आणि विचार",
         "प्रपंच आणि परमार्थ"
@@ -10,11 +10,13 @@
       "exact_end_text": "कुठली गाठ कशाची आहे हेच लक्षात राहायचं",
       "title": "गोकुळच्या उपरण्याच्या गाठींची गोष्ट",
       "exact_start_text": "तो गोकुळ गाठी मारायचा मला आठवत असेल",
-      "moral": "माणूस प्रपंचात अनेक गोष्टी लक्षात ठेवण्यासाठी वेगवेगळ्या उपाधी किंवा गाठी मारतो, पण मूळ ध्येय विसरून जातो. संतांचा बोध आपल्याला या विस्मरणातून जागे करतो आणि मूळ ध्येयाची आठवण करून देतो."
+      "moral": "माणूस प्रपंचात अनेक गोष्टी लक्षात ठेवण्यासाठी वेगवेगळ्या उपाधी किंवा गाठी मारतो, पण मूळ ध्येय विसरून जातो. संतांचा बोध आपल्याला या विस्मरणातून जागे करतो आणि मूळ ध्येयाची आठवण करून देतो.",
+      "title_english": "Gokulachya Uparanyachya Gathinchi Gosht",
+      "normalized_saint_name_english": "Shri Pethe Kaka"
     },
     {
       "normalized_saint_name": "श्री ब्रह्मचैतन्य गोंदवलेकर महाराज",
-      "start_time_seconds": 1266.36,
+      "start_time_seconds": 1305.6,
       "associated_topics": [
         "सद्गुरू आणि संत चरित्र",
         "अध्यात्म आणि भक्ती"
@@ -22,11 +24,13 @@
       "exact_end_text": "महाराजांनी त्याला ला बघितलं अरे व्हायचे का",
       "title": "श्री गोंदवलेकर महाराजांचे बालकाची सेवा करणे",
       "exact_start_text": "दामलेंच्याकडे महाराज बाहेर बसले होते झोपाळ्यावर",
-      "moral": "सद्गुरू अत्यंत साधेपणाने आणि निरहंकारी वृत्तीने भक्तांची सेवा करतात. त्यांच्यासाठी कोणतेही काम लहान किंवा मोठे नसते. ते भक्तांच्या कल्याणासाठी सदैव तत्पर असतात."
+      "moral": "सद्गुरू अत्यंत साधेपणाने आणि निरहंकारी वृत्तीने भक्तांची सेवा करतात. त्यांच्यासाठी कोणतेही काम लहान किंवा मोठे नसते. ते भक्तांच्या कल्याणासाठी सदैव तत्पर असतात.",
+      "title_english": "Shri Gondavalekar Maharajanche Balakachi Seva Karane",
+      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj"
     },
     {
       "normalized_saint_name": "श्री अंबुराव महाराज",
-      "start_time_seconds": 1368.08,
+      "start_time_seconds": 1376.05,
       "associated_topics": [
         "सद्गुरू आणि संत चरित्र",
         "साधना आणि ध्यान"
@@ -34,11 +38,13 @@
       "exact_end_text": "तिथे ते मुक्काम करायला तयार ते काय",
       "title": "श्री अंबुराव महाराजांचा नामधारकाच्या घरी मुक्काम",
       "exact_start_text": "अंबूराव महाराजांचे प्रवचन आवरलं तर त्यानी",
-      "moral": "संतांना भौतिक सुखाची किंवा श्रीमंतीची हाव नसते. त्यांना फक्त नाम घेणाऱ्या भक्ताची ओढ असते. ते गरिबातील गरीब नामधारकाच्या घरीही आनंदाने मुक्काम करतात."
+      "moral": "संतांना भौतिक सुखाची किंवा श्रीमंतीची हाव नसते. त्यांना फक्त नाम घेणाऱ्या भक्ताची ओढ असते. ते गरिबातील गरीब नामधारकाच्या घरीही आनंदाने मुक्काम करतात.",
+      "title_english": "Shri Amburav Maharajancha Namadharakachya Ghari Mukkam",
+      "normalized_saint_name_english": "Shri Amburav Maharaj"
     },
     {
       "normalized_saint_name": "भगवान शंकर",
-      "start_time_seconds": 1418.96,
+      "start_time_seconds": 1456.345,
       "associated_topics": [
         "अध्यात्म आणि भक्ती",
         "तत्त्वज्ञान आणि विचार"
@@ -46,19 +52,23 @@
       "exact_end_text": "भोळ्या भक्तांचा मी दास आहे पण गुंड",
       "title": "भोळ्या भक्तांचा दास आणि गुंडांचा गुरु",
       "exact_start_text": "गीता शंकर गीता चालू आहे आपली तर",
-      "moral": "भगवान शंकर हे अत्यंत भोळ्या आणि निष्पाप भक्तांचे दास बनतात, तर जे दुष्ट किंवा गुंड प्रवृत्तीचे असतात त्यांना वठणीवर आणण्यासाठी त्यांचे गुरु बनतात."
+      "moral": "भगवान शंकर हे अत्यंत भोळ्या आणि निष्पाप भक्तांचे दास बनतात, तर जे दुष्ट किंवा गुंड प्रवृत्तीचे असतात त्यांना वठणीवर आणण्यासाठी त्यांचे गुरु बनतात.",
+      "title_english": "Bholya Bhaktancha Das Ani Gundancha Guru",
+      "normalized_saint_name_english": "Bhagavan Shnkar"
     }
   ],
   "video_id": "ipp2CsOpSXQ",
   "musical_segments": [
     {
-      "start_time_seconds": 1673.279,
+      "start_time_seconds": 1712.799,
       "saint": "श्री पेठे काका",
       "exact_end_text": "जन्मा येण्या कारण नुरे जानकी जीवन",
       "confidence": "high",
       "name": "वाटे अमृत घेऊनी अमर देहे",
       "type": "bhajan",
-      "exact_start_text": "वाटे अमृत घेऊनी अमर देहे देव"
+      "exact_start_text": "वाटे अमृत घेऊनी अमर देहे देव",
+      "name_english": "Vate Amrut Gheuni Amar Dehe",
+      "saint_english": "Shri Pethe Kaka"
     }
   ],
   "actionable_practices": [

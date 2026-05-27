@@ -2,7 +2,7 @@
   "stories": [
     {
       "normalized_saint_name": "श्री रमण महर्षी",
-      "start_time_seconds": 463.199,
+      "start_time_seconds": 516,
       "associated_topics": [
         "सद्गुरू आणि संत चरित्र",
         "आत्मज्ञान आणि मुक्ती"
@@ -10,11 +10,13 @@
       "exact_end_text": "तेव्हा त्यांच्या हृदयात रमण वास करीत असले पाहिजेत म्हणून त्यांना कळलं",
       "title": "श्री रमण महर्षींच्या आजारपणातील संवाद",
       "exact_start_text": "रमणांच्या आजारपणात जसं शेवटी उपचार नेहमीप्रमाणे खूप केले",
-      "moral": "संत हे देहातीत अवस्थेत असतात आणि त्यांच्या इच्छाशक्तीवर सर्व काही अवलंबून असते. बाह्य उपचारांपेक्षा त्यांची आंतरिक स्थिती अधिक महत्त्वाची असते. भक्तांनी त्यांच्या हृदयात शिरून त्यांची इच्छा जाणून घेणे हेच खरे ज्ञान आहे, कारण संतांना स्वतःच्या देहाची पर्वा नसते."
+      "moral": "संत हे देहातीत अवस्थेत असतात आणि त्यांच्या इच्छाशक्तीवर सर्व काही अवलंबून असते. बाह्य उपचारांपेक्षा त्यांची आंतरिक स्थिती अधिक महत्त्वाची असते. भक्तांनी त्यांच्या हृदयात शिरून त्यांची इच्छा जाणून घेणे हेच खरे ज्ञान आहे, कारण संतांना स्वतःच्या देहाची पर्वा नसते.",
+      "title_english": "Shri Raman Maharshinchya Ajarapanatil Snvad",
+      "normalized_saint_name_english": "Shri Raman Maharshi"
     },
     {
       "normalized_saint_name": "श्री पेठे काका",
-      "start_time_seconds": 2869.2,
+      "start_time_seconds": 2877.883,
       "associated_topics": [
         "सद्गुरू आणि संत चरित्र",
         "अध्यात्म आणि भक्ती",
@@ -23,37 +25,45 @@
       "exact_end_text": "ते मला सांगता येत नाही पण ते मला आवडते",
       "title": "आईच्या प्रेमाची व्याख्या",
       "exact_start_text": "महाराज म्हणायच्या मागे आपल्याला एकदा त्या डेपटी त्यांनी उदाहरण शाळेत शिकवायला आलेला",
-      "moral": "खरे प्रेम हे कोणत्याही अपेक्षा किंवा स्वार्थावर आधारित नसते. ते निरपेक्ष आणि निःस्वार्थ असते. जसे एका मुलाला आई का आवडते हे सांगता येत नाही, कारण ते प्रेम शब्दातीत असते, तसेच भगवंताचे आणि गुरूंचे प्रेम असते. हेच खरे साधन आहे, जे कोणत्याही कारणाशिवाय असते."
+      "moral": "खरे प्रेम हे कोणत्याही अपेक्षा किंवा स्वार्थावर आधारित नसते. ते निरपेक्ष आणि निःस्वार्थ असते. जसे एका मुलाला आई का आवडते हे सांगता येत नाही, कारण ते प्रेम शब्दातीत असते, तसेच भगवंताचे आणि गुरूंचे प्रेम असते. हेच खरे साधन आहे, जे कोणत्याही कारणाशिवाय असते.",
+      "title_english": "Aichya Premachi Vyakhya",
+      "normalized_saint_name_english": "Shri Pethe Kaka"
     }
   ],
   "video_id": "SsdKmzBNgoM",
   "musical_segments": [
     {
-      "start_time_seconds": 0.41,
+      "start_time_seconds": 42.239,
       "saint": "संत तुकाराम महाराज",
       "exact_end_text": "आपुलिया सत्ता पांडुरंगा येउनिया वास करीशी हृदयवास",
       "confidence": "high",
       "name": "येऊनिया वास करीसी हृदयी",
       "type": "bhajan",
-      "exact_start_text": "येऊनिया वास करीसी हृदयी"
+      "exact_start_text": "येऊनिया वास करीसी हृदयी",
+      "name_english": "Yeuniya Vas Karisi Hrudayi",
+      "saint_english": "Saint Tukaram Maharaj"
     },
     {
-      "start_time_seconds": 3276.72,
+      "start_time_seconds": 3293.92,
       "saint": "संत तुकाराम महाराज",
       "exact_end_text": "सुखे घालावे आम्हासी सुखे घालावे आम्हासी महाराज की जय",
       "confidence": "high",
       "name": "हेची माझे सर्व जोडी",
       "type": "bhajan",
-      "exact_start_text": "हेच देवा तुझा विसरण व्हावा तुझा विसरण व्हावा"
+      "exact_start_text": "हेच देवा तुझा विसरण व्हावा तुझा विसरण व्हावा",
+      "name_english": "Hechi Majhe Sarv Jodi",
+      "saint_english": "Saint Tukaram Maharaj"
     },
     {
-      "start_time_seconds": 3476.48,
+      "start_time_seconds": 3506.72,
       "saint": "श्री पेठे काका",
       "exact_end_text": "निरंजन पदरे मनुजा राम सदा",
       "confidence": "high",
       "name": "मनुजा राम सदावदरे",
       "type": "bhajan",
-      "exact_start_text": "3579 मनुजा राम सराव"
+      "exact_start_text": "3579 मनुजा राम सराव",
+      "name_english": "Manuja Ram Sadavadare",
+      "saint_english": "Shri Pethe Kaka"
     }
   ],
   "actionable_practices": [

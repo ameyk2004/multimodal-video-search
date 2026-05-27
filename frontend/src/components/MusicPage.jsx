@@ -50,7 +50,7 @@ export default function MusicPage({ lang }) {
       if (saintFilter !== 'सर्व' && s.saint !== saintFilter) return false;
       
       if (searchQuery.trim()) {
-        const textToSearch = `${s.name} ${s.saint || ''} ${s.exact_start_text || ''}`.toLowerCase();
+        const textToSearch = `${s.name} ${s.name_english || ''} ${s.saint || ''} ${s.saint_english || ''} ${s.exact_start_text || ''}`.toLowerCase();
         if (!textToSearch.includes(searchQuery.toLowerCase())) {
           return false;
         }
@@ -179,6 +179,7 @@ export default function MusicPage({ lang }) {
               <MusicCard 
                 key={`${track.video_id}-${track.start_time_seconds}-${i}`}
                 track={track}
+                lang={lang}
               />
             ))
           )}

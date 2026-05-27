@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './StoryCard.css';
 
-const StoryModal = ({ story, onClose }) => {
+const StoryModal = ({ story, onClose, lang }) => {
   const [iframeLoaded, setIframeLoaded] = useState(false);
-  const { video_id, start_time_seconds, title, moral, character_or_saint, normalized_saint_name, associated_topics, exact_start_text } = story;
+  const { video_id, start_time_seconds, title, title_english, moral, character_or_saint, normalized_saint_name, normalized_saint_name_english, associated_topics, exact_start_text } = story;
+
+  const displayTitle = lang === 'en' && title_english ? title_english : title;
+  const displaySaint = lang === 'en' && normalized_saint_name_english ? normalized_saint_name_english : (normalized_saint_name || character_or_saint);
 
   // Prevent background scrolling when modal is open
   useEffect(() => {
@@ -54,9 +57,8 @@ const StoryModal = ({ story, onClose }) => {
 
         <div className="story-modal-info">
           <div className="story-modal-info-left">
-            <h2 className="story-card-title" style={{ fontSize: '32px', marginBottom: '12px' }}>{title}</h2>
-            {normalized_saint_name && <span className="saint-tag">{normalized_saint_name}</span>}
-            {!normalized_saint_name && character_or_saint && <span className="saint-tag">{character_or_saint}</span>}
+            <h2 className="story-card-title" style={{ fontSize: '32px', marginBottom: '12px' }}>{displayTitle}</h2>
+            {displaySaint && <span className="saint-tag">{displaySaint}</span>}
             
             {associated_topics && associated_topics.length > 0 && (
               <div className="story-card-topics" style={{ marginTop: '12px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
@@ -88,7 +90,7 @@ const StoryModal = ({ story, onClose }) => {
   );
 };
 
-const StoryCard = ({ story, autoOpen }) => {
+const StoryCard = ({ story, autoOpen, lang }) => {
   const [isModalOpen, setIsModalOpen] = useState(autoOpen || false);
   const [isExpanded, setIsExpanded] = useState(false);
   const cardRef = useRef(null);
@@ -104,16 +106,21 @@ const StoryCard = ({ story, autoOpen }) => {
     }
   }, [autoOpen]);
   const { 
-    title, 
+    title,
+    title_english, 
     moral, 
     character_or_saint, 
     normalized_saint_name,
+    normalized_saint_name_english,
     associated_topics,
     exact_start_text,
     video_id, 
     start_time_seconds,
     thumbnail_url
   } = story;
+
+  const displayTitle = lang === 'en' && title_english ? title_english : title;
+  const displaySaint = lang === 'en' && normalized_saint_name_english ? normalized_saint_name_english : (normalized_saint_name || character_or_saint);
 
   const [thumbSrc, setThumbSrc] = useState(thumbnail_url || `https://img.youtube.com/vi/${video_id}/hqdefault.jpg`);
 
@@ -146,8 +153,7 @@ const StoryCard = ({ story, autoOpen }) => {
         <div className="story-card-center">
           <div className="story-card-top-row">
             <div className="story-card-meta">
-              {normalized_saint_name && <span className="saint-tag">{normalized_saint_name}</span>}
-              {!normalized_saint_name && character_or_saint && <span className="saint-tag">{character_or_saint}</span>}
+              {displaySaint && <span className="saint-tag">{displaySaint}</span>}
               {start_time_seconds > 0 && (
                 <span className="time-tag">Starts at {formatTime(start_time_seconds)}</span>
               )}
@@ -166,7 +172,7 @@ const StoryCard = ({ story, autoOpen }) => {
             </div>
           </div>
           
-          <h3 className="story-card-title">{title}</h3>
+          <h3 className="story-card-title">{displayTitle}</h3>
           
           {moral && (
             <div className="story-card-moral">
@@ -192,7 +198,7 @@ const StoryCard = ({ story, autoOpen }) => {
       </div>
 
       {isModalOpen && (
-        <StoryModal story={story} onClose={() => setIsModalOpen(false)} />
+        <StoryModal story={story} onClose={() => setIsModalOpen(false)} lang={lang} />
       )}
     </>
   );
