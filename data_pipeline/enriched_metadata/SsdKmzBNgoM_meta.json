@@ -38,15 +38,6 @@
       "exact_start_text": "येऊनिया वास करीसी हृदयी"
     },
     {
-      "start_time_seconds": 303.94,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "जानकी जीवन स्मरण जय जय राम",
-      "confidence": "high",
-      "name": "जानकी जीवन स्मरण जय जय राम",
-      "type": "namasmarana",
-      "exact_start_text": "जानकी जीवन स्मरण जय जय राम"
-    },
-    {
       "start_time_seconds": 3276.72,
       "saint": "संत तुकाराम महाराज",
       "exact_end_text": "सुखे घालावे आम्हासी सुखे घालावे आम्हासी महाराज की जय",
@@ -60,7 +51,7 @@
       "saint": "श्री पेठे काका",
       "exact_end_text": "निरंजन पदरे मनुजा राम सदा",
       "confidence": "high",
-      "name": "मनुजा राम सदाव",
+      "name": "मनुजा राम सदावदरे",
       "type": "bhajan",
       "exact_start_text": "3579 मनुजा राम सराव"
     }

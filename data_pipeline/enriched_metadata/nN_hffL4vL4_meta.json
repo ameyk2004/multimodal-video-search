@@ -28,20 +28,11 @@
   "video_id": "nN_hffL4vL4",
   "musical_segments": [
     {
-      "start_time_seconds": 0.24,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "राजाराम पतित पावन सीताराम समवीरांत",
-      "confidence": "high",
-      "name": "रघुपति राघव राजाराम",
-      "type": "namasmarana",
-      "exact_start_text": "रघुपति राघव राजाराम पतित पावन"
-    },
-    {
       "start_time_seconds": 1304.64,
       "saint": "श्री पेठे काका",
       "exact_end_text": "राम जानकी स्मरण जय जय राम",
       "confidence": "high",
-      "name": "राम कृष्ण हरी",
+      "name": "राम कृष्ण हरी नामस्मरण",
       "type": "namasmarana",
       "exact_start_text": "राम कृष्ण हरी राम जय जय"
     }

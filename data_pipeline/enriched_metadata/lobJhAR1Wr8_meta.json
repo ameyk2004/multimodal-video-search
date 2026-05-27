@@ -63,24 +63,6 @@
   "video_id": "lobJhAR1Wr8",
   "musical_segments": [
     {
-      "start_time_seconds": 0.37,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "संबंधित वाच सद्गुरुनाथ महाराज की जय",
-      "confidence": "low",
-      "name": "अज्ञात",
-      "type": "background_music",
-      "exact_start_text": "[संगीत] तीन च्या सुमाराडे"
-    },
-    {
-      "start_time_seconds": 696.959,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "[संगीत] [प्रशंसा] सर्वांना स्वागत आहे",
-      "confidence": "low",
-      "name": "अज्ञात",
-      "type": "background_music",
-      "exact_start_text": "[संगीत] [प्रशंसा] [संगीत] [प्रशंसा] सद्गुरू श्री साईनाथ महाराज की जय जय समर्थ"
-    },
-    {
       "start_time_seconds": 772.35,
       "saint": "श्री साईबाबा",
       "exact_end_text": "ना ओवाळू आरती साई शिर्डीच्या ओवाळू साई श ओवाळू आरती साई शिर्डीच्या ओवाळू साई श तो सद्गुरु साईनाथ महाराज की जय संत की जय जय समर्थ विठ्ठल",

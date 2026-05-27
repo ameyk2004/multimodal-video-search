@@ -52,15 +52,6 @@
   "video_id": "ipp2CsOpSXQ",
   "musical_segments": [
     {
-      "start_time_seconds": 0.16,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "राजाराम पतित पावन सीताराम",
-      "confidence": "high",
-      "name": "रघुपति राघव राजाराम",
-      "type": "namasmarana",
-      "exact_start_text": "रघुपति राघव राजाराम पतित पावन"
-    },
-    {
       "start_time_seconds": 1673.279,
       "saint": "श्री पेठे काका",
       "exact_end_text": "जन्मा येण्या कारण नुरे जानकी जीवन",

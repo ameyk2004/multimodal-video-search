@@ -43,15 +43,6 @@
   "video_id": "lm-zwgzxxKw",
   "musical_segments": [
     {
-      "start_time_seconds": 0.24,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "सीताराम प्रकृतीचा संघ घडला सगुणत्वाचा आळा आला",
-      "confidence": "high",
-      "name": "रघुपति राघव राजाराम",
-      "type": "namasmarana",
-      "exact_start_text": "रघुपति राघव राजाराम पतित पावन सीताराम रघुपति राघव राजाराम पतित पावन"
-    },
-    {
       "start_time_seconds": 1755.919,
       "saint": "श्री पेठे काका",
       "exact_end_text": "राम नाम वधो वाणी अन्नदान राहो सदनी जानकी जीवन स्मरण जय जय राम",

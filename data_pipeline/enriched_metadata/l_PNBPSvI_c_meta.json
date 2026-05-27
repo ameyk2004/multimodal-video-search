@@ -28,15 +28,6 @@
   "video_id": "l_PNBPSvI_c",
   "musical_segments": [
     {
-      "start_time_seconds": 0.16,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "राजाराम पतित पावन सीताराम",
-      "confidence": "high",
-      "name": "रघुपति राघव राजाराम",
-      "type": "namasmarana",
-      "exact_start_text": "रघुपति राघव राजाराम पतित पावन"
-    },
-    {
       "start_time_seconds": 2190.72,
       "saint": "संत तुकाराम महाराज",
       "exact_end_text": "जानकी जीवन स्मरण जय जय राम",

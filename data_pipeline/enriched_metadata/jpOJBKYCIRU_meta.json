@@ -41,20 +41,11 @@
   "video_id": "jpOJBKYCIRU",
   "musical_segments": [
     {
-      "start_time_seconds": 1.04,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "रघुपति राघव राजाराम पतित पावन सीताराम",
-      "confidence": "high",
-      "name": "रघुपती राघव राजाराम",
-      "type": "namasmarana",
-      "exact_start_text": "रघुपती राघव राजाराम पतित पावन सीताराम"
-    },
-    {
       "start_time_seconds": 1457.679,
       "saint": "श्री पेठे काका",
       "exact_end_text": "राम कृष्ण हरी राम जानकी जीवन स्मरण",
       "confidence": "high",
-      "name": "राम कृष्ण हरी",
+      "name": "राम कृष्ण हरी नामस्मरण",
       "type": "namasmarana",
       "exact_start_text": "जय राम कृष्ण हरी राम जय जय"
     }

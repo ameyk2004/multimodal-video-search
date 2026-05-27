@@ -40,15 +40,6 @@
   "video_id": "A9wGK4kyIiA",
   "musical_segments": [
     {
-      "start_time_seconds": 0.16,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "रघुपति राघव राजाराम पतित पावन सीताराम",
-      "confidence": "high",
-      "name": "रघुपति राघव राजाराम",
-      "type": "namasmarana",
-      "exact_start_text": "रघुपति राघव राजाराम पतित पावन सीताराम"
-    },
-    {
       "start_time_seconds": 1573.52,
       "saint": "श्री पेठे काका",
       "exact_end_text": "कृपे सार्थक होऊ उरले सद्गुरुनाथ महाराज की",

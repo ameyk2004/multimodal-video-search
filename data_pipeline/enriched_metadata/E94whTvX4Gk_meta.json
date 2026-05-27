@@ -28,15 +28,6 @@
   "video_id": "E94whTvX4Gk",
   "musical_segments": [
     {
-      "start_time_seconds": 0.24,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "सर्वांगेव वासुदेवा वासुदेवा",
-      "confidence": "high",
-      "name": "अंतर यात्रा करूया आणि वासुदेव नामस्मरण",
-      "type": "namasmarana",
-      "exact_start_text": "करूया. अंतर यात्रा जरा करूया."
-    },
-    {
       "start_time_seconds": 4655.52,
       "saint": "श्री पेठे काका",
       "exact_end_text": "जगेन जीवन तुझे सदैव विश्वास",

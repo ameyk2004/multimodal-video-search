@@ -42,15 +42,6 @@
   "video_id": "q_sI7-kB3ag",
   "musical_segments": [
     {
-      "start_time_seconds": 0.24,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "रघुपति राघव राजाराम पतित पावन सीताराम",
-      "confidence": "high",
-      "name": "रघुपति राघव राजाराम",
-      "type": "namasmarana",
-      "exact_start_text": "रघुपति राघव राजाराम पतित पावन सीताराम"
-    },
-    {
       "start_time_seconds": 1513.92,
       "saint": "श्री पेठे काका",
       "exact_end_text": "त्याची जीवन बोली दैवी त्याची जीवन बोली दैवी",

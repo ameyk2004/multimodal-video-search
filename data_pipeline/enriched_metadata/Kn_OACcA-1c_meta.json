@@ -172,71 +172,7 @@
     }
   ],
   "video_id": "Kn_OACcA-1c",
-  "musical_segments": [
-    {
-      "start_time_seconds": 0.37,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "मग आपल्याला काय हायलाईट करता येईल थोडक्यात त्यांचीच पाहता येईल पुढ पाहूया",
-      "confidence": "high",
-      "name": "अज्ञात",
-      "type": "background_music",
-      "exact_start_text": "कृष्णमूर्ती थोडस दोन दोन मिनिटाच दर्शन सुरुवातीला आणि शेवटी येऊया"
-    },
-    {
-      "start_time_seconds": 45.36,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "शेवटी त्या मुद्यावर गेल सगळ्यात शेवटच प्रवन",
-      "confidence": "high",
-      "name": "अज्ञात",
-      "type": "background_music",
-      "exact_start_text": "शेवटी त्या मुद्यावर गेल सगळ्यात शेवटच प्रवन"
-    },
-    {
-      "start_time_seconds": 75.98,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "सास अस पूर्वक",
-      "confidence": "high",
-      "name": "अज्ञात",
-      "type": "background_music",
-      "exact_start_text": "आम्ही जाऊबा"
-    },
-    {
-      "start_time_seconds": 186.959,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "आन बाय अबाटशन पर्सनलिटी",
-      "confidence": "high",
-      "name": "अज्ञात",
-      "type": "background_music",
-      "exact_start_text": "खाई नॉट ओली बट"
-    },
-    {
-      "start_time_seconds": 1819.84,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "तेव्हा माणसाला त्याचा मोठेपणा कळतो",
-      "confidence": "high",
-      "name": "अज्ञात",
-      "type": "background_music",
-      "exact_start_text": "ग्रेटनेस"
-    },
-    {
-      "start_time_seconds": 1916.399,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "म्हणजे प्रश्न त्याच्यात उत्तरात आहे म्हणून प्रश्न उतात",
-      "confidence": "high",
-      "name": "अज्ञात",
-      "type": "background_music",
-      "exact_start_text": "देव देवळात ठेव"
-    },
-    {
-      "start_time_seconds": 3336,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "पण विनंती करतो पण पण",
-      "confidence": "high",
-      "name": "अज्ञात",
-      "type": "background_music",
-      "exact_start_text": "पण विनंती करतो पण पण"
-    }
-  ],
+  "musical_segments": [],
   "actionable_practices": [
     "आपल्या मुक्ततेचा आणि आनंदाचा शोध घ्या.",
     "आपला मार्ग स्वतः शोधा.",

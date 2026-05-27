@@ -65,26 +65,7 @@
     }
   ],
   "video_id": "iDCt6E-tNWE",
-  "musical_segments": [
-    {
-      "start_time_seconds": 0.16,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "सीताराम सद्गुरु नाथ महाराज की जय",
-      "confidence": "high",
-      "name": "रघुपति राघव राजाराम",
-      "type": "namasmarana",
-      "exact_start_text": "रघुपति राघव राजाराम पतित पावन सीताराम रघुपति राघव राजाराम पतित पावन"
-    },
-    {
-      "start_time_seconds": 2496.48,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "जानकी जीवन स्मरण जय जय राम",
-      "confidence": "high",
-      "name": "जानकी जीवन स्मरण",
-      "type": "namasmarana",
-      "exact_start_text": "जानकी जीवन स्मरण जय जय राम"
-    }
-  ],
+  "musical_segments": [],
   "actionable_practices": [
     "परमार्थ हा स्वतः स्वतःशी व्यवहार आहे हे लक्षात ठेवावे.",
     "भगवंताला नामानेच ओळखावे, कारण नामाशी आपले तादात्म्य आहे.",

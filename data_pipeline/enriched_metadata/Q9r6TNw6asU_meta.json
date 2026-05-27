@@ -28,17 +28,7 @@
     }
   ],
   "video_id": "Q9r6TNw6asU",
-  "musical_segments": [
-    {
-      "start_time_seconds": 0.24,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "अंतर यात्रा जरा.",
-      "confidence": "high",
-      "name": "अंतर यात्रा जरा करूया",
-      "type": "namasmarana",
-      "exact_start_text": "करूया. अंतर यात्रा जरा करूया."
-    }
-  ],
+  "musical_segments": [],
   "actionable_practices": [
     "रोज किमान पाच ते दहा मिनिटे शांत बसून अंतर्यात्रेचा (ध्यानाचा) सराव करणे.",
     "बाहेर घडणाऱ्या घटनांना आतून कोणतीही प्रतिक्रिया न देता, तटस्थ राहून केवळ साक्षीभावाने पाहणे.",

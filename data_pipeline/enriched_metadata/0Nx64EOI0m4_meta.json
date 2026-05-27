@@ -28,20 +28,11 @@
   "video_id": "0Nx64EOI0m4",
   "musical_segments": [
     {
-      "start_time_seconds": 0.24,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "रघुपति राघव राजाराम पतित पावन सीताराम",
-      "confidence": "high",
-      "name": "रघुपती राघव राजाराम",
-      "type": "namasmarana",
-      "exact_start_text": "रघुपति राघव राजाराम पतित पावन सीताराम"
-    },
-    {
       "start_time_seconds": 1817.039,
       "saint": "संत तुकाराम महाराज",
       "exact_end_text": "जानकी जीवन स्मरण जय जय राम",
       "confidence": "high",
-      "name": "चित्ती त्याची घडावी संगती",
+      "name": "देव वसे चित्ती त्याची घडावी संगती",
       "type": "bhajan",
       "exact_start_text": "चित्ती त्याची घडावी संगती देव बसे चित्ती"
     }

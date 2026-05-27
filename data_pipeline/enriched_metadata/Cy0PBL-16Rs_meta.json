@@ -106,15 +106,6 @@
       "name": "जय जय हनुमंता",
       "type": "aarti",
       "exact_start_text": "जय जय हनुमंता जय धीमंता जय राम जय जय हनुमंता"
-    },
-    {
-      "start_time_seconds": 0.37,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "[संगीत]",
-      "confidence": "low",
-      "name": "अज्ञात",
-      "type": "background_music",
-      "exact_start_text": "[संगीत]"
     }
   ],
   "actionable_practices": [

@@ -26,10 +26,25 @@ BHAJANS_TO_DELETE = {
     "जानकी अनुस्मरणे जय राम",
     "जानकीस्मरण जय जय राम",
     "जय जय राम",
+    "सद्गुरु महाराज की जय",
+    "सद्गुरू महाराज की जय",
+    "सद्गुरुनाथ महाराज की जय",
 }
 
 BHAJANS_TO_RENAME = {
-    # e.g., "wrong_name_1": "correct_name_1",
+    "काय हो उतराई तया सद्गुरूच्या पायी": "काय हो उतराई",
+    "तुझे रूप ध्यानी राहो माझे मन": "तुझे रूप ध्यानी राहो माझे मनी",
+    "चित्ती त्याची घडावी संगती": "देव वसे चित्ती त्याची घडावी संगती",
+    "मनुजा राम सदा वध रे": "मनुजा राम सदावदरे",
+    "मनुजा राम सदाव": "मनुजा राम सदावदरे",
+    "येऊनिया वास करीसे हृदय": "येऊनिया वास करीसी हृदयी",
+    "नाम हरीचे गोड सखया": "सखया नाम हरीचे गोड",
+    "सखया नाम हरीचे गुण": "सखया नाम हरीचे गोड",
+    "न दिसे देव असुनी डोळा": "देव न दिसे असुनी डोळा",
+    "राम कृष्ण हरी": "राम कृष्ण हरी नामस्मरण",
+    "विठ्ठल विठ्ठल": "विठ्ठल नामस्मरण",
+    "विठ्ठल विठ्ठल नामस्मरण": "विठ्ठल नामस्मरण",
+    "श्री राम जय राम जय जय राम": "श्रीराम जय राम जय जय राम",
 }
 
 # =========================
@@ -80,6 +95,21 @@ def clean_item(item):
                 logging.info(f"[DELETE] video={video_id} - Removing Raghupati Raghav variation: {name!r}")
                 changed = True
                 continue
+                
+        if "अंतर यात्रा" in name or "अंतरयात्रा" in name:
+            logging.info(f"[DELETE] video={video_id} - Removing Antar Yatra variation: {name!r}")
+            changed = True
+            continue
+            
+        if "जागृत जीवन जगुनी जिज्ञासा" in name:
+            logging.info(f"[DELETE] video={video_id} - Removing Jagrut Jivan variation: {name!r}")
+            changed = True
+            continue
+            
+        if seg.get("type") == "background_music" or name == "background_music":
+            logging.info(f"[DELETE] video={video_id} - Removing background_music: {name!r}")
+            changed = True
+            continue
             
         # 1. Handle Deletions
         if name in BHAJANS_TO_DELETE:

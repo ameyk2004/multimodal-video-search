@@ -40,20 +40,11 @@
   "video_id": "Z2er2Nnne54",
   "musical_segments": [
     {
-      "start_time_seconds": 0.24,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "सीताराम महाराज जे म्हणाले की पोटाला मिळायला सुद्धा",
-      "confidence": "high",
-      "name": "रघुपति राघव राजाराम",
-      "type": "namasmarana",
-      "exact_start_text": "रघुपति राघव राजाराम पतित पावन सीताराम रघुपति राघव"
-    },
-    {
       "start_time_seconds": 1432.48,
       "saint": "श्री पेठे काका",
       "exact_end_text": "जानकी जीवन स्मरण जय जय राम",
       "confidence": "high",
-      "name": "मनुजा राम सदा वध रे",
+      "name": "मनुजा राम सदावदरे",
       "type": "bhajan",
       "exact_start_text": "मनुजा राम सदा वध रे मनुजा राम सदा वध रे"
     }

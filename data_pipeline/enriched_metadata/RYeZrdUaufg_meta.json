@@ -39,17 +39,7 @@
     }
   ],
   "video_id": "RYeZrdUaufg",
-  "musical_segments": [
-    {
-      "start_time_seconds": 3082.16,
-      "saint": "श्री ब्रह्मचैतन्य गोंदवलेकर महाराज",
-      "exact_end_text": "जय जय जय रघुवीर समर्थ",
-      "confidence": "high",
-      "name": "सद्गुरुनाथ महाराज की जय",
-      "type": "namasmarana",
-      "exact_start_text": "सद्गुरुनाथ महाराज की जय"
-    }
-  ],
+  "musical_segments": [],
   "actionable_practices": [
     "प्रपंचाची केवळ ठेवण आणि दिशा बदलून तो भगवंताच्या स्मरणात करावा.",
     "अहंकार नष्ट करण्यासाठी आणि मनातील अस्वस्थता दूर करण्यासाठी नियमित नामस्मरण करावे.",

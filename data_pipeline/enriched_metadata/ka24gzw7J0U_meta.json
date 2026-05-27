@@ -40,15 +40,6 @@
   "video_id": "ka24gzw7J0U",
   "musical_segments": [
     {
-      "start_time_seconds": 0.16,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "राजाराम पतित पावन सीताराम",
-      "confidence": "high",
-      "name": "रघुपति राघव राजाराम",
-      "type": "namasmarana",
-      "exact_start_text": "रघुपति राघव राजाराम पतित पावन"
-    },
-    {
       "start_time_seconds": 2726.66,
       "saint": "दिनदास",
       "exact_end_text": "नामाविण हित समजू नका",

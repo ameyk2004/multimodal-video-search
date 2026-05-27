@@ -3,15 +3,6 @@
   "video_id": "C0wX1PsMXes",
   "musical_segments": [
     {
-      "start_time_seconds": 1.92,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "श्रीराम समर्थ",
-      "confidence": "low",
-      "name": "श्रीराम समर्थ",
-      "type": "background_music",
-      "exact_start_text": "पर दोहोत श्रेष्ठ गती"
-    },
-    {
       "start_time_seconds": 2365.44,
       "saint": "संत विश्वनाथ महाराज",
       "exact_end_text": "तुझ्या पायाची आठवण तुझ्या पायाची आठवण",

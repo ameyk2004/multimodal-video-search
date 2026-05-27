@@ -67,15 +67,6 @@
   "video_id": "E1UNGao3P3E",
   "musical_segments": [
     {
-      "start_time_seconds": 0.37,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "हे आपल्या भाषेमध्ये त्यांना पुण्यतिथी जयंती वगैरे काही रस नाही",
-      "confidence": "low",
-      "name": "अज्ञात",
-      "type": "background_music",
-      "exact_start_text": "आजच्या दिवसाचे विशेष प्रयोजन आपल्याला माहिती आहे आजच्या दिवसाचे विशेष प्रयोजन आपल्याला माहिती आहे"
-    },
-    {
       "start_time_seconds": 3226.88,
       "saint": "श्री पेठे काका",
       "exact_end_text": "नाम मार्ग हा सोपा धरी नाम मार्ग हा सोपा",
@@ -83,15 +74,6 @@
       "name": "वणवण करीसी फुका",
       "type": "bhajan",
       "exact_start_text": "वणवण करीसी फुकाकारी वणवण करीसी फुका वणवण करीसी फुकाकारी वणवण करीसी फुका"
-    },
-    {
-      "start_time_seconds": 3559.44,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "जानकी जीवन स्मरण जय जय राम",
-      "confidence": "high",
-      "name": "जानकी जीवन स्मरण जय जय राम",
-      "type": "namasmarana",
-      "exact_start_text": "जानकी जीवन स्मरण जय जय राम"
     }
   ],
   "actionable_practices": [

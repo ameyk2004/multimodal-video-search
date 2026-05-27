@@ -81,7 +81,7 @@
       "saint": "संत तुकाराम महाराज",
       "exact_end_text": "येवोनिया वास करीशी",
       "confidence": "high",
-      "name": "येऊनिया वास करीसे हृदय",
+      "name": "येऊनिया वास करीसी हृदयी",
       "type": "bhajan",
       "exact_start_text": "येऊनी आवास करीसे हृदय"
     },
@@ -147,15 +147,6 @@
       "name": "गण गण गणात बोते",
       "type": "namasmarana",
       "exact_start_text": "गण गण गणात बोते गण गण गणात बोते"
-    },
-    {
-      "start_time_seconds": 4917.52,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "समर्थ ज्ञान",
-      "confidence": "high",
-      "name": "सद्गुरू महाराज की जय",
-      "type": "kirtan",
-      "exact_start_text": "सद्गुरू महाराज की जय हरी जय जय जय समर्थ ज्ञान महाराज की जय हरी जय जय जय समर्थ ज्ञान"
     }
   ],
   "actionable_practices": [

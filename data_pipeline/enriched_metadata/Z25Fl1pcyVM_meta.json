@@ -27,26 +27,7 @@
     }
   ],
   "video_id": "Z25Fl1pcyVM",
-  "musical_segments": [
-    {
-      "start_time_seconds": 0.24,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "अंतर यात्रा जरा.",
-      "confidence": "high",
-      "name": "अंतर यात्रा जरा करूया",
-      "type": "bhajan",
-      "exact_start_text": "करूया. अंतर यात्रा जरा करूया."
-    },
-    {
-      "start_time_seconds": 2071.359,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "जय जय राम",
-      "confidence": "high",
-      "name": "जानकी स्मरण जय जय राम",
-      "type": "namasmarana",
-      "exact_start_text": "जानकी स्मरण"
-    }
-  ],
+  "musical_segments": [],
   "actionable_practices": [
     "प्रपंचात कर्तव्ये पार पाडताना आसक्ती न ठेवता अनासक्त वृत्तीने वागावे.",
     "बाहेरील सामाजिक आणि राजकीय वादळांमध्ये स्वतःची मानसिक बाजू सांभाळून नामस्मरण आणि जपावर लक्ष केंद्रित करावे.",

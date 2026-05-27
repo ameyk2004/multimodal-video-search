@@ -90,15 +90,6 @@
   "video_id": "DZfFSGoqUck",
   "musical_segments": [
     {
-      "start_time_seconds": 0.37,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "आपल्याला हाच आहे [संगीत] भवाच्या भय काय ते असोत नसोत",
-      "confidence": "high",
-      "name": "",
-      "type": "background_music",
-      "exact_start_text": "[संगीत] आज शनिवारची हजरी भगवंताच्या कृपेने आपल्या प्रार्थनेमुळे"
-    },
-    {
       "start_time_seconds": 2006.08,
       "saint": "श्री रमण महर्षी",
       "exact_end_text": "आत्मसस्थिते शितल दृष्टी मृतम वचनाय आत्मसस्थिते शितल दृष्टवना उद्या",
@@ -106,15 +97,6 @@
       "name": "नमो नमस्ते श्री रमणाय चिद्घन स्वरूपाय",
       "type": "bhajan",
       "exact_start_text": "पान 229 371 नमो नमस्ते श्री रमणाय चितघन स्वरूपाय"
-    },
-    {
-      "start_time_seconds": 2310.16,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "जानकी स्मरण जय जय राम",
-      "confidence": "high",
-      "name": "",
-      "type": "background_music",
-      "exact_start_text": "सद्गुरु नाथ [संगीत] जानकी स्मरण जय जय राम"
     }
   ],
   "actionable_practices": [

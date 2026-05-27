@@ -28,15 +28,6 @@
   "video_id": "F1R2JwbFOf8",
   "musical_segments": [
     {
-      "start_time_seconds": 0.24,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "रघुपति राघव राजाराम पतित पावन सीताराम",
-      "confidence": "high",
-      "name": "रघुपति राघव राजाराम",
-      "type": "namasmarana",
-      "exact_start_text": "रघुपति राघव राजाराम पतित पावन सीताराम"
-    },
-    {
       "start_time_seconds": 1692.64,
       "saint": "संत तुकाराम महाराज",
       "exact_end_text": "माझी शेवटची विणवणी माझी शेवटची विणवणी",
@@ -44,15 +35,6 @@
       "name": "संतजनी परिसावी माझी शेवटची विनवणी",
       "type": "bhajan",
       "exact_start_text": "संत जनी परिसावी संत भजनी परिसावी माझी शेवटची विनवणी"
-    },
-    {
-      "start_time_seconds": 1835.88,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "जानकी जीवन स्मरण जय जय राम",
-      "confidence": "high",
-      "name": "जानकी जीवन स्मरण जय जय राम",
-      "type": "namasmarana",
-      "exact_start_text": "जानकी जीवन स्मरण जय जय राम"
     }
   ],
   "actionable_practices": [

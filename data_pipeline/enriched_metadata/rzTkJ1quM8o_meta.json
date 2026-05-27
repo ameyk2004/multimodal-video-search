@@ -28,15 +28,6 @@
   "video_id": "rzTkJ1quM8o",
   "musical_segments": [
     {
-      "start_time_seconds": 0.24,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "राघुपति राघव राजाराम पतित पावन सीताराम ह्या",
-      "confidence": "high",
-      "name": "रघुपति राघव राजाराम पतित पावन सीताराम",
-      "type": "namasmarana",
-      "exact_start_text": "रघुपति राघव राजाराम पतित पावन सीताराम रघुपति"
-    },
-    {
       "start_time_seconds": 2402.32,
       "saint": "श्री पेठे काका",
       "exact_end_text": "माझे चित्त सदा करा पायी स्थिर करा",

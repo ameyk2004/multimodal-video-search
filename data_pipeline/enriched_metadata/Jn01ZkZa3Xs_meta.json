@@ -40,15 +40,6 @@
   "video_id": "Jn01ZkZa3Xs",
   "musical_segments": [
     {
-      "start_time_seconds": 0.16,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "रघुपति राघव राजाराम पतित पावन सीताराम",
-      "confidence": "high",
-      "name": "रघुपति राघव राजाराम पतित पावन सीताराम",
-      "type": "namasmarana",
-      "exact_start_text": "रघुपति राघव राजाराम पतित पावन सीताराम"
-    },
-    {
       "start_time_seconds": 1924.18,
       "saint": "समर्थ रामदास स्वामी",
       "exact_end_text": "सद्गुरु चरणा जोड सखया नाम हरी",

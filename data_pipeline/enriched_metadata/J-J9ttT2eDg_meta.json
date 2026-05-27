@@ -52,15 +52,6 @@
   "video_id": "J-J9ttT2eDg",
   "musical_segments": [
     {
-      "start_time_seconds": 0.24,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "राजाराम पतित पावन सीताराम सद्गुरुनाथ",
-      "confidence": "high",
-      "name": "रघुपति राघव राजाराम पतित पावन सीताराम",
-      "type": "namasmarana",
-      "exact_start_text": "रघुपति राघव राजाराम पतित पावन"
-    },
-    {
       "start_time_seconds": 2941.54,
       "saint": "श्री निरंजन स्वामी",
       "exact_end_text": "तराई तया सद्गुरूच्या पाय जानकी",
@@ -68,15 +59,6 @@
       "name": "काय हो उतराई",
       "type": "bhajan",
       "exact_start_text": "काय होत तराई तया सद्गुरूच्या"
-    },
-    {
-      "start_time_seconds": 3042.599,
-      "saint": "श्री पेठे काका",
-      "exact_end_text": "वनस्मरण जय जय राम",
-      "confidence": "high",
-      "name": "जय जय राम",
-      "type": "namasmarana",
-      "exact_start_text": "वनस्मरण जय जय राम पाय जानकी"
     }
   ],
   "actionable_practices": [
