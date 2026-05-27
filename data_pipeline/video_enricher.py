@@ -319,7 +319,7 @@ class VideoEnricher:
             f"व्हिडिओ ID: {video_id}\n\n"
             f"खालील संपूर्ण ट्रान्स्क्रिप्टचे विश्लेषण करा:\n\n{full_text}"
         )
-        for attempt in range(1, 6):
+        for attempt in range(1, 2):
             try:
                 response = self._genai_client.models.generate_content(
                     model=self._model_name,

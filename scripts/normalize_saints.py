@@ -1,6 +1,8 @@
 import boto3
 import logging
 import os
+import glob
+import json
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -132,12 +134,43 @@ def normalize_item(item):
 
 
 # =========================
+# LOCAL JSON NORMALIZATION
+# =========================
+
+def normalize_local_files(directory="data_pipeline/enriched_metadata"):
+    """
+    Reads all local JSON files, applies normalizations, and rewrites them if changed.
+    """
+    json_files = glob.glob(os.path.join(directory, "*.json"))
+    updated_files = 0
+    
+    for filepath in json_files:
+        try:
+            with open(filepath, 'r', encoding='utf-8') as f:
+                item = json.load(f)
+                
+            if normalize_item(item):
+                with open(filepath, 'w', encoding='utf-8') as f:
+                    json.dump(item, f, ensure_ascii=False, indent=2)
+                updated_files += 1
+        except Exception as e:
+            logging.error(f"Failed to normalize local file {filepath}: {e}")
+            
+    logging.info(f"Done local normalization. Updated {updated_files} JSON files.")
+
+# =========================
 # MAIN
 # =========================
 
 if __name__ == "__main__":
+    # 1. Normalize local JSON files
+    logging.info("Starting normalization of local JSON files...")
+    normalize_local_files()
+    
+    # 2. Normalize DynamoDB
+    logging.info("Starting normalization of DynamoDB...")
     items = scan_all_items()
-    logging.info(f"Total Items Scanned: {len(items)}")
+    logging.info(f"Total Items Scanned from DynamoDB: {len(items)}")
 
     updated_count = 0
 
