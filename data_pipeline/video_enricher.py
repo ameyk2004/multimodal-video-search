@@ -103,7 +103,7 @@ class VideoEnricher:
             raise ValueError("GEMINI_API_KEY not set in environment / .env file.")
         self._genai_client = genai.Client(
             api_key=api_key,
-            http_options={'timeout': 600000}  # 600,000 ms = 10 minutes (Required for massive transcripts)
+            http_options={'timeout': 60000}  # 60,000 ms = 60 seconds (Fail fast if stuck)
         )
         self._model_name = "gemini-3.5-flash"
         self._gen_config = types.GenerateContentConfig(
