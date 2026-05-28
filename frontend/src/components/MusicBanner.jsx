@@ -29,12 +29,11 @@ const MusicBanner = ({ isLoading, totalTracks, filteredTracks }) => {
 
         <div className="stories-banner-content">
           {/* Left Images */}
-          <div className="banner-images-left" style={{ position: 'relative', bottom: '-1.5rem' }}>
+          <div className="banner-images-left">
             <motion.img 
               src={kakaMusicImg} 
               alt="Shree Pethe Kaka Singing" 
-              className="banner-img"
-              style={{ marginLeft: '-1.5rem', marginBottom: '-1rem', height: '170px', objectFit: 'contain' }}
+              className="banner-img img-kaka-music"
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: showContent ? 1 : 0, x: showContent ? 0 : -30 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -42,8 +41,7 @@ const MusicBanner = ({ isLoading, totalTracks, filteredTracks }) => {
             <motion.img 
               src={ramdasImg} 
               alt="Samarth Ramdas Swami" 
-              className="banner-img"
-              style={{ marginBottom: '-1rem', height: '150px', objectFit: 'contain' }}
+              className="banner-img img-ramdas"
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: showContent ? 1 : 0, x: showContent ? 0 : -30 }}
               transition={{ duration: 0.8, delay: 0.4 }}
@@ -64,7 +62,7 @@ const MusicBanner = ({ isLoading, totalTracks, filteredTracks }) => {
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
                 <h1 className="banner-title">
-                  अभंग <span className="banner-title-desktop-only">व आरत्या</span>
+                  अभंग<span className="banner-title-desktop-only"> व आरत्या</span>
                 </h1>
                 <div className="banner-divider">
                   <span className="star" style={{ color: '#FFD700' }}>✧</span>
@@ -72,9 +70,16 @@ const MusicBanner = ({ isLoading, totalTracks, filteredTracks }) => {
                   <span className="star" style={{ color: '#FFD700' }}>✧</span>
                 </div>
                 <p className="banner-stats">
-                  {filteredTracks === totalTracks 
-                    ? `Showing all ${totalTracks} tracks`
-                    : `Showing ${filteredTracks} of ${totalTracks} tracks`}
+                  <span className="stats-desktop">
+                    {filteredTracks === totalTracks 
+                      ? `Showing all ${totalTracks} tracks`
+                      : `Showing ${filteredTracks} of ${totalTracks} tracks`}
+                  </span>
+                  <span className="stats-mobile">
+                    {filteredTracks === totalTracks 
+                      ? `${totalTracks} tracks`
+                      : `${filteredTracks} / ${totalTracks} tracks`}
+                  </span>
                 </p>
               </motion.div>
             )}

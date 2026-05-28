@@ -160,6 +160,16 @@ body {
   box-shadow: 0 0 15px rgba(249, 115, 22, 0.2);
 }
 
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
 /* ── Main Layout ─────────────────────────────────────── */
 .main {
   flex: 1;
@@ -669,6 +679,7 @@ body {
   color: #fff;
   font-size: 18px;
   font-family: var(--font-body);
+  min-width: 0; /* Prevents flex overflow */
 }
 
 .search-input::placeholder { color: rgba(255, 255, 255, 0.4); }
@@ -779,16 +790,38 @@ body {
   }
 
   .desktop-nav {
-    margin-left: 0;
-    gap: 12px;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    width: 100%;
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(12, 9, 8, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 20px;
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+  
+  .desktop-nav.mobile-open {
+    display: flex;
   }
   
   .nav-link {
-    font-size: 14px;
-    padding: 6px 12px;
+    font-size: 16px;
+    padding: 12px 16px;
+    text-align: center;
+  }
+  
+  .header-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .mobile-menu-btn {
+    display: block;
   }
 
   .mobile-filter-toggle {
@@ -814,6 +847,32 @@ body {
 
   .main {
     padding: 20px 4vw 100px;
+  }
+
+  .search-bar-wrap {
+    padding: 12px 16px;
+  }
+
+  .search-form {
+    padding: 6px 6px 6px 16px;
+    gap: 8px;
+  }
+
+  .search-input {
+    font-size: 16px;
+  }
+
+  .search-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+  }
+
+  .icon-btn {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    margin-left: 4px;
   }
 }
 

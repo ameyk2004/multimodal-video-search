@@ -65,7 +65,7 @@ const StoriesBanner = ({ isLoading, totalStories, filteredStories }) => {
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
                 <h1 className="banner-title">
-                  अध्यात्मिक गोष्टी <span className="banner-title-desktop-only">व कथा</span>
+                  अध्यात्मिक गोष्टी<span className="banner-title-desktop-only"> व कथा</span>
                 </h1>
                 <div className="banner-divider">
                   <span className="star">✧</span>
@@ -73,9 +73,16 @@ const StoriesBanner = ({ isLoading, totalStories, filteredStories }) => {
                   <span className="star">✧</span>
                 </div>
                 <p className="banner-stats">
-                  {filteredStories === totalStories 
-                    ? `Showing all ${totalStories} stories`
-                    : `Showing ${filteredStories} of ${totalStories} stories`}
+                  <span className="stats-desktop">
+                    {filteredStories === totalStories 
+                      ? `Showing all ${totalStories} stories`
+                      : `Showing ${filteredStories} of ${totalStories} stories`}
+                  </span>
+                  <span className="stats-mobile">
+                    {filteredStories === totalStories 
+                      ? `${totalStories} stories`
+                      : `${filteredStories} / ${totalStories} stories`}
+                  </span>
                 </p>
               </motion.div>
             )}

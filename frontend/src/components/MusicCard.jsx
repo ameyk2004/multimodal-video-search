@@ -76,7 +76,7 @@ const MusicModal = ({ track, onClose, lang }) => {
   );
 };
 
-const MusicCard = ({ track, lang }) => {
+const MusicCard = ({ track, lang, badgeText }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   
   const { 
@@ -129,6 +129,11 @@ const MusicCard = ({ track, lang }) => {
               <span className="ultra-pill highlight" style={{ textTransform: 'capitalize' }}>{type}</span>
               {start_time_seconds > 0 && (
                 <span className="ultra-pill" style={{ opacity: 0.8, borderColor: 'transparent', background: 'transparent', padding: '0' }}>Starts at {formatTime(start_time_seconds)}</span>
+              )}
+              {badgeText && (
+                <span className="ultra-pill" style={{ background: 'linear-gradient(135deg, #FFD700, #FFA500)', color: '#000', fontWeight: 'bold', border: 'none', boxShadow: '0 2px 10px rgba(255,170,0,0.3)', padding: '4px 12px' }}>
+                  {badgeText}
+                </span>
               )}
             </div>
             

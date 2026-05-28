@@ -68,6 +68,7 @@ export default function App() {
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   const [allStories, setAllStories] = useState([]);
   const [allVideos, setAllVideos] = useState([]);
@@ -247,28 +248,33 @@ export default function App() {
       <div className="app">
         <header className="header">
           <div className="logo-nav-group">
-            <NavLink to="/" className="logo">
+            <NavLink to="/" className="logo" onClick={() => setIsMobileMenuOpen(false)}>
               <span className="logo-icon">🪔</span>
               <span className="logo-text">{lang === 'mr' ? 'साधननंदादीप' : 'Sadhananandadeep'}</span>
             </NavLink>
-            <nav className="desktop-nav">
-              <NavLink to="/" className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>
-                {t.searchTab}
-              </NavLink>
-              <NavLink to="/stories" className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>
-                {t.storiesTab}
-              </NavLink>
-              <NavLink to="/music" className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>
-                {t.musicTab}
-              </NavLink>
-              <NavLink to="/library" className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>
-                {t.libraryTab}
-              </NavLink>
-            </nav>
           </div>
+          
+          <nav className={`desktop-nav ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
+            <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)} className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>
+              {t.searchTab}
+            </NavLink>
+            <NavLink to="/stories" onClick={() => setIsMobileMenuOpen(false)} className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>
+              {t.storiesTab}
+            </NavLink>
+            <NavLink to="/music" onClick={() => setIsMobileMenuOpen(false)} className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>
+              {t.musicTab}
+            </NavLink>
+            <NavLink to="/library" onClick={() => setIsMobileMenuOpen(false)} className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>
+              {t.libraryTab}
+            </NavLink>
+          </nav>
+
           <div className="header-controls">
-            <button className="lang-toggle" onClick={() => setLang(l => l === 'mr' ? 'en' : 'mr')}>
+            <button className="lang-toggle" onClick={() => { setLang(l => l === 'mr' ? 'en' : 'mr'); setIsMobileMenuOpen(false); }}>
               {lang === 'mr' ? 'English' : 'मराठी'}
+            </button>
+            <button className="mobile-menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} aria-label="Toggle navigation menu">
+              {isMobileMenuOpen ? '✕' : '☰'}
             </button>
           </div>
         </header>
@@ -386,9 +392,16 @@ export default function App() {
                 ) : (
                   <div className="stories-list" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                     {filteredStories.length === 0 ? (
-                      <p className="no-results" style={{ textAlign: 'center', padding: '40px', color: 'var(--text-dim)' }}>
-                        {t.noStories}
-                      </p>
+                      <div className="no-results" style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--text-dim)', background: 'rgba(255,255,255,0.02)', borderRadius: '16px', border: '1px dashed rgba(255,255,255,0.1)' }}>
+                        <p style={{ fontSize: '1.2rem', marginBottom: '12px', color: '#fff' }}>No stories found.</p>
+                        <p style={{ marginBottom: '24px' }}>It looks like your current filters are hiding everything.</p>
+                        <button 
+                          onClick={() => { setTopicFilter('सर्व'); setSaintFilter('सर्व'); setStorySearchQuery(''); }}
+                          style={{ background: 'var(--saffron)', color: '#fff', border: 'none', padding: '10px 24px', borderRadius: '999px', fontSize: '1rem', cursor: 'pointer', fontWeight: '500' }}
+                        >
+                          Clear All Filters
+                        </button>
+                      </div>
                     ) : (
                       filteredStories.map((story, i) => (
                         <StoryCard 
