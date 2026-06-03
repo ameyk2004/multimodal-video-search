@@ -5,3 +5,18 @@ __pycache__/
 .aws-sam/
 samconfig.toml
 .upload_state.json
+
+# Generated data directories
+data_pipeline/output/
+data_pipeline/enriched_metadata/
+data_pipeline/enriched_json/
+
+# Log files
+*.log
+ingestion.log
+
+# Data dumps
+metadat.txt
+
+# OS files
+.DS_Store

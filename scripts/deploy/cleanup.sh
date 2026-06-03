@@ -5,14 +5,13 @@
 # local SAM build artifacts.
 #
 # To run this script:
-#   chmod +x scripts/cleanup.sh
-#   ./scripts/cleanup.sh
+#   chmod +x scripts/deploy/cleanup.sh
+#   ./scripts/deploy/cleanup.sh
 # ─────────────────────────────────────────────────────────────
 
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+PROJECT_ROOT="$(dirname "$(dirname "$SCRIPT_DIR")")"
 CLOUD_DIR="$PROJECT_ROOT/cloud-backend"
 
 echo "============================================"

@@ -5,7 +5,7 @@ and writes them back to data_pipeline/enriched_metadata/ as <video_id>_meta.json
 
 To run:
     source venv/bin/activate
-    python scripts/dynamo_extractor.py
+    python scripts/metadata/extract_from_dynamodb.py
 """
 import os
 import json
@@ -20,8 +20,8 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
 TABLE_NAME  = os.environ.get("DYNAMODB_TABLE", "sadhananandadeep-content")
-OUTPUT_DIR  = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-                           "data_pipeline", "enriched_metadata")
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+OUTPUT_DIR  = os.path.join(PROJECT_ROOT, "data_pipeline", "enriched_metadata")
 
 
 class DecimalConverter(json.JSONEncoder):

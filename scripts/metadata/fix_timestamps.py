@@ -6,8 +6,8 @@ then re-resolves start_time_seconds for stories and musical_segments
 WITHOUT re-calling Gemini.
 
 Usage:
-    python scripts/re_resolve_timestamps.py
-    python scripts/re_resolve_timestamps.py --dry-run   # preview changes only
+    python scripts/metadata/fix_timestamps.py
+    python scripts/metadata/fix_timestamps.py --dry-run   # preview changes only
 """
 
 import bisect
@@ -20,7 +20,7 @@ import string
 import sys
 import argparse
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
@@ -175,7 +175,7 @@ def main():
     if args.dry_run:
         print(f"\n⚠️  DRY RUN — no files were modified. Remove --dry-run to apply.")
     else:
-        print(f"\n✅ Done! Re-upload to DynamoDB with: python scripts/dynamo_uploader.py")
+        print(f"\n✅ Done! Re-upload to DynamoDB with: python data_pipeline/dynamo_uploader.py")
 
 
 if __name__ == "__main__":
