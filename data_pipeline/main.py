@@ -14,7 +14,7 @@ import urllib.parse as urlparse
 # Ensure the root directory is in the path if running from root
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from data_pipeline import YouTubeTranscriptManager, TranscriptChunker
+from data_pipeline import YouTubeTranscriptManager
 
 # Configure root logger
 logging.basicConfig(
