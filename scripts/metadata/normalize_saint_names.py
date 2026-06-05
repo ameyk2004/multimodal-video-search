@@ -137,7 +137,7 @@ def normalize_item(item):
 # LOCAL JSON NORMALIZATION
 # =========================
 
-def normalize_local_files(directory="data_pipeline/enriched_metadata"):
+def normalize_local_files(directory="data_pipeline/videos/enriched_metadata"):
     """
     Reads all local JSON files, applies normalizations, and rewrites them if changed.
     """

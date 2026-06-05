@@ -25,8 +25,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
 
-RAW_DIR = "data_pipeline/output"
-META_DIR = "data_pipeline/enriched_metadata"
+RAW_DIR = "data_pipeline/videos/output"
+META_DIR = "data_pipeline/videos/enriched_metadata"
 
 
 def reconstruct_transcript(fragments: list) -> tuple[str, list]:

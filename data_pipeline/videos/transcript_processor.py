@@ -14,7 +14,7 @@ Usage (Colab / local):
     from data_pipeline.transcript_processor import TranscriptProcessor
 
     processor = TranscriptProcessor()
-    chunks, char_map, full_text = processor.process_file("data_pipeline/output/9RAqjOZEOh4.json")
+    chunks, char_map, full_text = processor.process_file("data_pipeline/videos/output/9RAqjOZEOh4.json")
     story_time = processor.resolve_story_time("तिथे सोन आहे फक्त", char_map, full_text)
 """
 
@@ -223,7 +223,7 @@ class TranscriptProcessor:
 # ── Convenience batch runner ─────────────────────────────────────────────────
 
 def process_directory(
-    input_dir: str = "data_pipeline/output",
+    input_dir: str = "data_pipeline/videos/output",
     output_dir: str = "data_pipeline/processed_chunks",
 ) -> None:
     """

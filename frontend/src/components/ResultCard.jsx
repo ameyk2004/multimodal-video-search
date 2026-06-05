@@ -17,14 +17,23 @@ export default function ResultCard({ result, rank, style, isMarathi, onSearch, p
   const pct = Math.round(score * 100);
 
   // Auto-expand text when video is playing
-  const showFullText = isPlaying || isTextExpanded;
+  const showFullText = isPlaying || isTextExpanded || result.type === 'book';
+
+  const lang = isMarathi ? 'mr' : 'en';
 
   return (
     <div className={`result-card ${isPlaying ? 'expanded' : 'collapsed'}`} style={style}>
       
       {/* Media Section */}
       <div className="media-section">
-        {!isPlaying ? (
+        {result.type === 'book' ? (
+          <div className="book-wrapper">
+            <div className="book-icon">📚</div>
+            <div className="book-badge">
+              {lang === 'mr' ? `पुस्तकाचे पान: ${result.page_number}` : `Page: ${result.page_number}`}
+            </div>
+          </div>
+        ) : !isPlaying ? (
           <div className="thumbnail-wrapper" onClick={() => setIsPlaying(true)}>
             <img 
               src={ytThumb(video_id)} 
@@ -57,9 +66,16 @@ export default function ResultCard({ result, rank, style, isMarathi, onSearch, p
       {/* Content Section */}
       <div className="card-content">
         <div className="card-header">
-          <span className="relevance-badge">
-            <span className="sparkle">✧</span> {isMarathi ? `सुसंगतता: ${pct}%` : `Relevance: ${pct}%`}
-          </span>
+          <div className="relevance-group">
+            <span className="relevance-badge">
+              <span className="sparkle">✧</span> {isMarathi ? `सुसंगतता: ${pct}%` : `Relevance: ${pct}%`}
+            </span>
+            {result.type === 'book' && (
+              <span className="book-name-badge">
+                {result.book_name}
+              </span>
+            )}
+          </div>
           {isPlaying && (
             <button className="close-video-btn" onClick={() => setIsPlaying(false)}>
               ✕ {isMarathi ? 'बंद करा' : 'Close Player'}

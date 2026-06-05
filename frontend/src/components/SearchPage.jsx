@@ -8,6 +8,7 @@ import { api } from '../utils/api';
 export default function SearchPage({ 
   lang, t, 
   query, setQuery, 
+  searchType, setSearchType,
   sessions, setSessions, 
   loading, setLoading,
   isListening, setIsListening,
@@ -95,6 +96,26 @@ export default function SearchPage({
 
       {/* Floating Search Bar for SearchPage */}
       <div className="search-bar-wrap">
+        <div className="search-type-toggle">
+          <button 
+            className={`toggle-btn ${searchType === 'video' ? 'active' : ''}`}
+            onClick={() => setSearchType('video')}
+          >
+            {lang === 'mr' ? 'प्रवचने (Videos)' : 'Videos'}
+          </button>
+          <button 
+            className={`toggle-btn ${searchType === 'book' ? 'active' : ''}`}
+            onClick={() => setSearchType('book')}
+          >
+            {lang === 'mr' ? 'पुस्तके (Books)' : 'Books'}
+          </button>
+          <button 
+            className={`toggle-btn ${searchType === 'combined' ? 'active' : ''}`}
+            onClick={() => setSearchType('combined')}
+          >
+            {lang === 'mr' ? 'सर्व (Combined)' : 'Combined'}
+          </button>
+        </div>
         <div className="search-form">
           <input
             ref={inputRef}

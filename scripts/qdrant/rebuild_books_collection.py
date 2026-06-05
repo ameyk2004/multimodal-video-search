@@ -12,8 +12,8 @@ from qdrant_client.http import models
 load_dotenv()
 QDRANT_URL = os.getenv("QDRANT_URL")
 QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")
-COLLECTION_NAME = os.getenv("COLLECTION_NAME", "sadhananandadeep-videos")
-PROCESSED_JSON_DIR = os.getenv("ENRICHED_JSON_DIR", "data_pipeline/videos/enriched_json")
+COLLECTION_NAME = os.getenv("COLLECTION_NAME", "sadhananandadeep-books")
+PROCESSED_JSON_DIR = os.getenv("ENRICHED_JSON_DIR", "data_pipeline/books/processed_books_chunks")
 
 # BM25 Parameters
 K1 = 1.2
@@ -30,9 +30,9 @@ def main():
     if not QDRANT_URL or not QDRANT_API_KEY:
         raise ValueError("Missing Qdrant credentials in .env file.")
 
-    json_files = glob.glob(f"{PROCESSED_JSON_DIR}/*_enriched.json")
+    json_files = glob.glob(f"{PROCESSED_JSON_DIR}/*_chunks.json")
     if not json_files:
-        print(f"No '_enriched.json' files found in {PROCESSED_JSON_DIR}. Run the pipeline first.")
+        print(f"No '_chunks.json' files found in {PROCESSED_JSON_DIR}. Run the pipeline first.")
         return
 
     print("=== PASS 1: Building BM25 Vocabulary and IDF ===")
@@ -66,7 +66,7 @@ def main():
         idf_map[token_id] = max(idf, 0)
 
     # Save to lambda directory
-    vocab_idf_path = "cloud-backend/lambdas/similarity_search/vocab_idf.json"
+    vocab_idf_path = "cloud-backend/lambdas/similarity_search/vocab_idf_books.json"
     os.makedirs(os.path.dirname(vocab_idf_path), exist_ok=True)
     with open(vocab_idf_path, "w", encoding="utf-8") as f:
         json.dump({"vocab": vocab, "idf": idf_map, "avgdl": avgdl}, f, ensure_ascii=False)
@@ -92,7 +92,7 @@ def main():
     batch_size = 100
     for filepath in json_files:
         filename = os.path.basename(filepath)
-        video_id = filename.replace('_enriched.json', '')
+        book_name = filename.replace('_chunks.json', '')
         
         with open(filepath, 'r', encoding='utf-8') as f:
             data = json.load(f)
@@ -102,6 +102,7 @@ def main():
             embedding = row.get('embedding_vector')
             text = row.get('marathi_raw', '')
             if not embedding or not text:
+                print(f"Warning: Missing embedding or text for {book_name} chunk. Did you run the Colab embedder?")
                 continue
 
             tokens = tokenize(text)
@@ -121,15 +122,14 @@ def main():
                 indices.append(token_id)
                 values.append(score)
 
-            start_time = row.get('start_time', 0)
-            point_id = str(uuid.uuid5(uuid.NAMESPACE_URL, f"{video_id}_{start_time}"))
+            page_number = row.get('page_number', 1)
+            point_id = str(uuid.uuid5(uuid.NAMESPACE_URL, f"{book_name}_{page_number}_{row.get('char_index', 0)}"))
 
             payload = {
-                "video_id": video_id,
-                "type": row.get('type', 'video'),
+                "book_name": book_name,
+                "type": "book",
                 "marathi_raw": text,
-                "start_time": start_time,
-                "duration": row.get('duration', 0)
+                "page_number": page_number
             }
 
             sparse_vector = models.SparseVector(indices=indices, values=values)
@@ -152,7 +152,7 @@ def main():
             )
         print(f"Uploaded {len(points)} Hybrid vectors from {filename}")
 
-    print("\nAll data successfully locked into Qdrant with Hybrid Search enabled!")
+    print("\nAll book data successfully locked into Qdrant with Hybrid Search enabled!")
 
 if __name__ == "__main__":
     main()

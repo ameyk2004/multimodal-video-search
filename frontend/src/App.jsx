@@ -65,6 +65,7 @@ const CONTENT = {
 export default function App() {
   const [lang, setLang] = useState('mr');
   const [query, setQuery] = useState('');
+  const [searchType, setSearchType] = useState('combined');
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
@@ -197,15 +198,17 @@ export default function App() {
     }
   }, [hasFetchedData]);
 
-  const handleSearch = async (q) => {
+  const handleSearch = async (q, typeOverride = null) => {
     const searchQuery = (q || query).trim();
     if (!searchQuery || loading) return;
     setQuery('');
     setLoading(true);
     navigate('/search');
 
+    const typeToUse = typeOverride || searchType;
+
     try {
-      const data = await api.search(searchQuery);
+      const data = await api.search(searchQuery, typeToUse);
       
       setSessions(prev => [...prev, { 
         query: data.translated_query && data.translated_query !== searchQuery ? `${searchQuery} (${data.translated_query})` : searchQuery, 
@@ -498,6 +501,8 @@ export default function App() {
                 t={t} 
                 query={query} 
                 setQuery={setQuery} 
+                searchType={searchType}
+                setSearchType={setSearchType}
                 sessions={sessions} 
                 setSessions={setSessions} 
                 loading={loading} 

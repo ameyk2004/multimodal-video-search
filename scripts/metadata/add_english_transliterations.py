@@ -3,7 +3,7 @@ import glob
 import os
 
 DICT_PATH = 'data_pipeline/marathi_to_english_dict.json'
-METADATA_DIR = 'data_pipeline/enriched_metadata'
+METADATA_DIR = 'data_pipeline/videos/enriched_metadata'
 
 def main():
     if not os.path.exists(DICT_PATH):

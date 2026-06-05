@@ -7,15 +7,18 @@ The Data Ingestion Pipeline is the first module of the Multimodal Search Engine.
 
 We prioritize **reliability and scalability** over pure speed, specifically tailoring this pipeline to run stably on consumer hardware like a MacBook Air.
 
-### 1. Transcript Fetching (`youtube-transcript-api`)
+### 1. Transcript Fetching (Videos)
 We use `youtube-transcript-api` to directly pull auto-generated or manually uploaded Marathi (`mr`) subtitles from YouTube.
 - **Why use API over local STT?** Local Speech-To-Text models like Whisper can struggle with complex accents, background music, or non-English languages, leading to hallucinations. Fetching transcripts directly from YouTube is exponentially faster, requires zero local compute, and provides highly accurate native Devanagari text.
 
-### 2. Scalability Strategy
+### 2. PDF Parsing (Books)
+For text extraction from spiritual texts, we use `PyMuPDF` to parse PDF files page-by-page. This ensures we accurately capture textual content while preserving the absolute page number, allowing us to map search results to the exact page of the book.
+
+### 3. Scalability Strategy
 - **Lightweight & Fast**: Because we rely entirely on API calls rather than downloading gigabytes of audio and running heavy AI models, processing 100+ videos takes seconds instead of hours. The pipeline is fully equipped with error handling to skip videos without Marathi transcripts or gracefully exit if rate limits are hit.
 
 ### 4. Structured Output
-The output is a DRY (Don't Repeat Yourself), clean JSON file per video. It contains exactly what we need for the next contextual step:
+The output is a DRY (Don't Repeat Yourself), clean JSON file per video or book. It contains exactly what we need for the next contextual step:
 ```json
 [
   {

@@ -12,14 +12,14 @@ class QdrantSearcher:
     """
     Handles semantic search queries against a Qdrant collection.
     """
-    def __init__(self, url: str, api_key: str, collection_name: str = "sadhananandadeep-videos"):
+    def __init__(self, url: str, api_key: str, collection_name: str = "sadhananandadeep-videos", vocab_file: str = "vocab_idf.json"):
         self.collection_name = collection_name
         self.client = QdrantClient(url=url, api_key=api_key, timeout=20.0)
         logger.info("QdrantSearcher initialised for collection '%s'", self.collection_name)
-        self._load_vocab()
+        self._load_vocab(vocab_file)
 
-    def _load_vocab(self):
-        vocab_path = os.path.join(os.path.dirname(__file__), "vocab_idf.json")
+    def _load_vocab(self, vocab_file: str):
+        vocab_path = os.path.join(os.path.dirname(__file__), vocab_file)
         try:
             with open(vocab_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
@@ -123,7 +123,10 @@ class QdrantSearcher:
                 {
                     "score": round(hit.score, 4),
                     "video_id": hit.payload.get("video_id", ""),
+                    "book_name": hit.payload.get("book_name", ""),
+                    "type": hit.payload.get("type", "video"),
                     "start_time": hit.payload.get("start_time", 0),
+                    "page_number": hit.payload.get("page_number", 0),
                     "duration": hit.payload.get("duration", 0),
                     "marathi_raw": hit.payload.get("marathi_raw", ""),
                 }

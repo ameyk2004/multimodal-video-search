@@ -1,11 +1,14 @@
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Optional
 
 class SearchResultItem(BaseModel):
-    video_id: str
     marathi_raw: str
-    start_time: float
     score: float
+    type: str = "video"  # "video" or "book"
+    video_id: Optional[str] = None
+    start_time: Optional[float] = None
+    book_name: Optional[str] = None
+    page_number: Optional[int] = None
 
 class RelatedQueryItem(BaseModel):
     query: str

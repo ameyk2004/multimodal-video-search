@@ -21,3 +21,4 @@ boto3==1.43.13
 # Utilities
 python-dotenv
 tenacity
+PyMuPDF>=1.23.0

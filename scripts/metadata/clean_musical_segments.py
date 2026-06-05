@@ -341,7 +341,7 @@ def clean_item(item):
 
     return changed
 
-def clean_local_files(directory="data_pipeline/enriched_metadata", dry_run=False):
+def clean_local_files(directory="data_pipeline/videos/enriched_metadata", dry_run=False):
     """
     Reads all local JSON files, applies deletions/renames/corrections, and rewrites them if changed.
     """

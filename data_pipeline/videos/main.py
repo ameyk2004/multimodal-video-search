@@ -201,13 +201,13 @@ if __name__ == "__main__":
     
     print("Initializing YouTube transcript fetching pipeline...")
     
-    manager = YouTubeTranscriptManager(output_dir="data_pipeline/output")
+    manager = YouTubeTranscriptManager(output_dir="data_pipeline/videos/output")
     raw_transcripts, fetch_stats = manager.process_videos(video_ids)
     
     print("Saving fine-grained raw transcripts...")
     
     for video_id, raw_data in raw_transcripts.items():
-        output_path = f"data_pipeline/output/{video_id}.json"
+        output_path = f"data_pipeline/videos/output/{video_id}.json"
         
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(raw_data, f, indent=4, ensure_ascii=False)
@@ -215,8 +215,8 @@ if __name__ == "__main__":
 
     # Calculate total existing JSON files in output directory
     total_existing = 0
-    if os.path.exists("data_pipeline/output"):
-        total_existing = len([f for f in os.listdir("data_pipeline/output") if f.endswith('.json')])
+    if os.path.exists("data_pipeline/videos/output"):
+        total_existing = len([f for f in os.listdir("data_pipeline/videos/output") if f.endswith('.json')])
     
     print("\n" + "="*50)
     print("🎬 PIPELINE EXECUTION SUMMARY")

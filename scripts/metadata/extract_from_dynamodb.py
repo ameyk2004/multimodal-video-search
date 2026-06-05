@@ -1,7 +1,7 @@
 """
 DynamoDB Extractor Script.
 Reverse of dynamo_uploader.py — pulls all items from the DynamoDB content table
-and writes them back to data_pipeline/enriched_metadata/ as <video_id>_meta.json files.
+and writes them back to data_pipeline/videos/enriched_metadata/ as <video_id>_meta.json files.
 
 To run:
     source venv/bin/activate

@@ -22,11 +22,21 @@ The project is built with a modular, service-oriented architecture:
 
 ## Usage
 
-To run the data ingestion pipeline (Module 1):
+### 1. Videos Pipeline
+To run the data ingestion pipeline for YouTube videos:
 ```bash
-python data_pipeline/main.py
+python data_pipeline/videos/main.py
 ```
-This will read a list of YouTube URLs and automatically fetch the auto-generated Marathi transcripts directly from YouTube, saving them into clean JSON files in the `data_pipeline/output/` directory.
+This will read a list of YouTube URLs and automatically fetch the auto-generated Marathi transcripts directly from YouTube, saving them into clean JSON files in the `data_pipeline/videos/output/` directory.
+
+### 2. Books Pipeline
+To run the data extraction pipeline for PDF books:
+```bash
+python data_pipeline/books/books_main.py
+```
+Place your PDF books in `data_pipeline/books/input_books/` before running. This parses PDFs, chunks them with page mapping, and enriches them via Gemini.
+
+*Note: For the full end-to-end processing including embeddings and Qdrant database upload, see `data_pipeline/colab/pipeline.ipynb`.*
 
 ## Current Modules
 - **Module 1**: Audio Ingestion Pipeline (See `docs/01-data-pipeline.md`)

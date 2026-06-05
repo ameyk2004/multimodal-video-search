@@ -4,7 +4,7 @@ Runs ONCE per video over the full concatenated transcript to extract structured
 metadata (topics, queries, stories, actionable practices, quoted verses) using the Gemini LLM.
 
 The enrichment artefact is saved to:
-    data_pipeline/enriched_metadata/<video_id>_meta.json
+    data_pipeline/videos/enriched_metadata/<video_id>_meta.json
 
 This step is idempotent: if the artefact already exists the video is skipped.
 
@@ -90,8 +90,8 @@ class VideoEnricher:
 
     def __init__(
         self,
-        input_dir: str = "data_pipeline/output",
-        output_dir: str = "data_pipeline/enriched_metadata",
+        input_dir: str = "data_pipeline/videos/output",
+        output_dir: str = "data_pipeline/videos/enriched_metadata",
     ):
         self.input_dir = input_dir
         self.output_dir = output_dir
@@ -377,8 +377,8 @@ if __name__ == "__main__":
     )
     
     enricher = VideoEnricher(
-        input_dir="data_pipeline/output",
-        output_dir="data_pipeline/enriched_metadata",
+        input_dir="data_pipeline/videos/output",
+        output_dir="data_pipeline/videos/enriched_metadata",
     )
     
     if args.manual and args.video_id:

@@ -45,7 +45,8 @@ CORS_HEADERS = {
 
 # ─── Global Instances (reused across warm invocations) ───────────────────────
 _embedder: HuggingFaceEmbedder | None = None
-_searcher: QdrantSearcher | None = None
+_video_searcher: QdrantSearcher | None = None
+_book_searcher: QdrantSearcher | None = None
 
 def _get_embedder() -> HuggingFaceEmbedder:
     global _embedder
@@ -53,11 +54,17 @@ def _get_embedder() -> HuggingFaceEmbedder:
         _embedder = HuggingFaceEmbedder(api_key=HF_API_KEY)
     return _embedder
 
-def _get_searcher() -> QdrantSearcher:
-    global _searcher
-    if _searcher is None:
-        _searcher = QdrantSearcher(url=QDRANT_URL, api_key=QDRANT_API_KEY, collection_name=COLLECTION_NAME)
-    return _searcher
+def _get_video_searcher() -> QdrantSearcher:
+    global _video_searcher
+    if _video_searcher is None:
+        _video_searcher = QdrantSearcher(url=QDRANT_URL, api_key=QDRANT_API_KEY, collection_name=COLLECTION_NAME, vocab_file="vocab_idf.json")
+    return _video_searcher
+
+def _get_book_searcher() -> QdrantSearcher:
+    global _book_searcher
+    if _book_searcher is None:
+        _book_searcher = QdrantSearcher(url=QDRANT_URL, api_key=QDRANT_API_KEY, collection_name="sadhananandadeep-books", vocab_file="vocab_idf_books.json")
+    return _book_searcher
 
 # ─── Helper utilities ────────────────────────────────────────────────────────
 
@@ -119,11 +126,12 @@ def lambda_handler(event: dict, context: Any) -> dict:
     # ── Extract query ────────────────────────────────────────────────────
     params = event.get("queryStringParameters") or {}
     query = params.get("q", "").strip()
+    search_type = params.get("type", "video").strip().lower()
 
     if not query:
         return _build_response(400, {"error": "Missing required query parameter 'q'."})
 
-    logger.info("Processing query: %s", query)
+    logger.info("Processing query: %s, type: %s", query, search_type)
     
     # ── Step 0: Translate Query ──────────────────────────────────────────────
     processed_query, translation_error = translate_to_marathi(query)
@@ -135,15 +143,30 @@ def lambda_handler(event: dict, context: Any) -> dict:
         logger.info("Embedding generated (%d dimensions)", len(vector))
 
         # ── Step 2: Semantic search ──────────────────────────────────────
-        searcher = _get_searcher()
-        results = searcher.search(vector, query_text=processed_query, top_k=5)
+        results = []
+        if search_type == "video" or search_type == "combined":
+            video_searcher = _get_video_searcher()
+            vid_res = video_searcher.search(vector, query_text=processed_query, top_k=5)
+            results.extend(vid_res)
+            
+        if search_type == "book" or search_type == "combined":
+            book_searcher = _get_book_searcher()
+            book_res = book_searcher.search(vector, query_text=processed_query, top_k=5)
+            results.extend(book_res)
+            
+        # Sort combined results by score descending and take top 5 overall if combined
+        results.sort(key=lambda x: x.get("score", 0), reverse=True)
+        if search_type == "combined":
+            results = results[:5]
+            
         logger.info("Found %d results", len(results))
 
         # ── Step 3: Fetch Related Queries using Qdrant (3:1:1 Exploration Mix) ──
         related_queries_structured = []
         try:
+            video_searcher = _get_video_searcher() # we use video searcher client to fetch queries
             # Fetch top 20 nearest neighbors
-            queries_response = searcher.client.query_points(
+            queries_response = video_searcher.client.query_points(
                 collection_name="sadhananandadeep-queries",
                 query=vector,
                 limit=20,
@@ -176,7 +199,7 @@ def lambda_handler(event: dict, context: Any) -> dict:
             # Generate random vector to jump out of the local cluster
             import random
             random_vector = [random.uniform(-1.0, 1.0) for _ in range(1024)]
-            wildcard_response = searcher.client.query_points(
+            wildcard_response = video_searcher.client.query_points(
                 collection_name="sadhananandadeep-queries",
                 query=random_vector,
                 limit=5, # Fetch a few in case top is a duplicate
@@ -197,11 +220,14 @@ def lambda_handler(event: dict, context: Any) -> dict:
         
         search_results = [
             SearchResultItem(
-                video_id=r["video_id"],
+                type=r.get("type", "video"),
+                video_id=r.get("video_id"),
+                book_name=r.get("book_name"),
+                page_number=r.get("page_number"),
                 marathi_raw=r.get("marathi_raw", ""),
-                start_time=r.get("start_time", 0.0),
+                start_time=r.get("start_time"),
                 score=r.get("score", 0.0)
-            ) for r in results if "video_id" in r
+            ) for r in results
         ]
 
         # Use structured related queries
