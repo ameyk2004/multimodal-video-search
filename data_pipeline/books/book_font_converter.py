@@ -28,11 +28,12 @@ class BookFontConverter:
         )
         self._model_name = "gemini-2.5-flash"
         
-        self.prompt_template = """The following text is Marathi encoded in a legacy ASCII font (like Shivaji or Kruti Dev).
-Please translate this text back into standard Unicode Devanagari Marathi.
-Output ONLY the translated Devanagari text. Do not add any conversational text or formatting. If the text is empty or just English numbers/punctuation, return it as is.
+        self.prompt_template = """The following JSON array contains pages of Marathi text encoded in a legacy ASCII font (like Shivaji or Kruti Dev).
+Please translate the "text" field of each object back into standard Unicode Devanagari Marathi.
+Return the exact same JSON array structure, but with the "text" fields translated. Do not alter the "page_number" or "book_name" fields.
+Output ONLY valid JSON. Do not add any conversational text or markdown blocks.
 
-Text to convert:
+JSON to convert:
 {text}"""
 
     def process_all(self):
@@ -75,18 +76,16 @@ Text to convert:
         for i in range(0, len(pages), batch_size):
             batch = pages[i:i+batch_size]
             
-            # Combine batch into one prompt separated by a strict delimiter
-            delimiter = "\n\n---PAGE_BREAK---\n\n"
-            combined_text = delimiter.join(p.get("text", "") for p in batch)
+            # Use JSON directly to preserve boundaries
+            batch_json = json.dumps(batch, ensure_ascii=False)
             
-            if not combined_text.strip().replace("---PAGE_BREAK---", ""):
-                # All empty
+            # Check if all pages are empty
+            if all(not p.get("text", "").strip() for p in batch):
                 for p in batch:
-                    p["text"] = ""
                     converted_pages.append(p)
                 continue
                 
-            prompt = self.prompt_template.format(text=combined_text)
+            prompt = self.prompt_template.format(text=batch_json)
             
             success = False
             for attempt in range(1, 4):
@@ -96,22 +95,20 @@ Text to convert:
                         contents=prompt,
                     )
                     translated = response.text.strip()
+                    if translated.startswith("```json"):
+                        translated = translated[7:]
+                    if translated.startswith("```"):
+                        translated = translated[3:]
+                    if translated.endswith("```"):
+                        translated = translated[:-3]
+                        
+                    translated_batch = json.loads(translated.strip())
                     
-                    # Split back out
-                    translated_parts = translated.split("---PAGE_BREAK---")
-                    
-                    # Fallback if model dropped the delimiters
-                    if len(translated_parts) != len(batch):
-                        logger.warning(f"Delimiter mismatch in {book_name} (Expected {len(batch)}, got {len(translated_parts)}). Falling back to splitting evenly or skipping.")
-                        # If mismatch, we just shove it all into the first page of the batch and leave the rest empty
-                        batch[0]["text"] = translated.replace("---PAGE_BREAK---", "\n")
-                        for p in batch[1:]:
-                            p["text"] = ""
-                    else:
-                        for p, translated_text in zip(batch, translated_parts):
-                            p["text"] = translated_text.strip()
-                            
-                    for p in batch:
+                    if len(translated_batch) != len(batch):
+                        logger.warning(f"Length mismatch in {book_name} (Expected {len(batch)}, got {len(translated_batch)}).")
+                        raise ValueError("JSON length mismatch")
+                        
+                    for p in translated_batch:
                         converted_pages.append(p)
                         
                     success = True
