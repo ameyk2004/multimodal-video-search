@@ -110,12 +110,13 @@ def main():
     total_items_unchanged = 0
     total_items_failed = 0
 
-    for meta_path in meta_files:
+    for idx, meta_path in enumerate(meta_files, 1):
         video_id = os.path.basename(meta_path).replace("_meta.json", "")
+        print(f"[{idx}/{len(meta_files)}] Scanning {video_id}...", end="\r", flush=True)
         raw_path = os.path.join(RAW_DIR, f"{video_id}.json")
 
         if not os.path.exists(raw_path):
-            logger.warning(f"⚠️  No raw transcript for {video_id} — skipping")
+            logger.warning(f"\n⚠️  No raw transcript for {video_id} — skipping")
             continue
 
         with open(raw_path, encoding="utf-8") as f:

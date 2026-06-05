@@ -4,6 +4,7 @@ To run: python data_pipeline/books_main.py
 """
 import logging
 from data_pipeline.books.book_processor import BookProcessor
+from data_pipeline.books.book_font_converter import BookFontConverter
 from data_pipeline.books.book_chunk_processor import process_directory as process_chunks
 from data_pipeline.books.book_enricher import BookEnricher
 
@@ -13,6 +14,10 @@ if __name__ == "__main__":
     print("=== Phase 1: PDF Extraction ===")
     processor = BookProcessor()
     processor.process_all()
+    
+    print("\n=== Phase 1.5: Legacy Font Conversion ===")
+    font_converter = BookFontConverter()
+    font_converter.process_all()
     
     print("\n=== Phase 2: Semantic Chunking (with precise page mapping) ===")
     process_chunks(input_dir="data_pipeline/books/books_output", output_dir="data_pipeline/books/processed_books_chunks")
