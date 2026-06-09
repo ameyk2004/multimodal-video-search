@@ -40,25 +40,29 @@ class BookProcessor:
         
         try:
             doc = fitz.open(filepath)
-            for page_num in range(len(doc)):
+            total_pages = len(doc)
+            
+            # Helper function for parallel processing
+            def process_single_page(page_num):
                 page = doc.load_page(page_num)
-                # Render to high resolution image for OCR
-                pix = page.get_pixmap(dpi=300)
+                pix = page.get_pixmap(dpi=250) # Slightly reduced dpi for speed without losing accuracy
                 img_data = pix.tobytes("png")
                 pil_image = Image.open(io.BytesIO(img_data))
                 
-                # Perform local OCR
                 text = pytesseract.image_to_string(pil_image, lang='mar').strip()
-                
-                # Keep even empty pages to maintain accurate page number mapping
-                pages_data.append({
-                    "page_number": page_num + 1,  # 1-indexed
+                return {
+                    "page_number": page_num + 1,
                     "text": text,
                     "book_name": book_name
-                })
+                }
+
+            import concurrent.futures
+            # Tesseract spawns separate processes, so ThreadPoolExecutor bypasses the GIL
+            with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+                # Map preserves order
+                results = list(executor.map(process_single_page, range(total_pages)))
                 
-                if (page_num + 1) % 10 == 0:
-                    logger.info(f"  Processed {page_num + 1}/{len(doc)} pages...")
+            pages_data.extend(results)
                 
             with open(out_path, "w", encoding="utf-8") as f:
                 json.dump(pages_data, f, ensure_ascii=False, indent=2)
