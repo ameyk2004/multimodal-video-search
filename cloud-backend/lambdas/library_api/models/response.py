@@ -45,3 +45,27 @@ class MusicalSegmentItem(BaseModel):
 
 class MusicListResponse(BaseModel):
     segments: List[MusicalSegmentItem]
+
+# For GET /books
+class LibraryBookSummary(BaseModel):
+    video_id: str
+    title: str = "अज्ञात पुस्तक"
+    author: str = "अज्ञात"
+    topics: List[str] = Field(default_factory=list)
+    question_count: int = 0
+    mood: str = ""
+
+class BooksListResponse(BaseModel):
+    books: List[LibraryBookSummary]
+
+class BookDetailResponse(BaseModel):
+    video_id: str
+    title: str = "अज्ञात पुस्तक"
+    author: str = "अज्ञात"
+    summary: str = ""
+    for_whom: str = ""
+    mood: str = ""
+    structure_type: str = ""
+    topics: List[str] = Field(default_factory=list)
+    questions: List[str] = Field(default_factory=list)
+    key_learnings: List[str] = Field(default_factory=list)

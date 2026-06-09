@@ -22,7 +22,8 @@ class DecimalEncoder(json.JSONEncoder):
 
 from models.response import (
     LibraryVideoSummary, VideosListResponse, VerseItem, 
-    StorySummary, VideoDetailResponse, MusicalSegmentItem, MusicListResponse
+    StorySummary, VideoDetailResponse, MusicalSegmentItem, MusicListResponse,
+    LibraryBookSummary, BooksListResponse, BookDetailResponse
 )
 
 class TopicListModel(BaseModel):
@@ -55,8 +56,49 @@ def lambda_handler(event, context):
         
         path_parameters = event.get('pathParameters') or {}
         video_id = path_parameters.get('videoId')
+        book_id = path_parameters.get('bookId')
 
-        if path == '/music':
+        if path == '/books' or path.startswith('/books/'):
+            if book_id:
+                response = table.get_item(Key={'video_id': book_id})
+                item = response.get('Item')
+                if not item or item.get('type') != 'book':
+                    return _build_response(404, {"error": "Book not found"})
+                
+                detail_model = BookDetailResponse(
+                    video_id=book_id,
+                    title=item.get("title", "अज्ञात पुस्तक"),
+                    author=item.get("author", "अज्ञात"),
+                    summary=item.get("summary", ""),
+                    for_whom=item.get("for_whom", ""),
+                    mood=item.get("mood", ""),
+                    structure_type=item.get("structure_type", ""),
+                    topics=item.get("topics", []),
+                    questions=item.get("questions", []),
+                    key_learnings=item.get("key_learnings", [])
+                )
+                return _build_response(200, detail_model)
+            else:
+                response = table.scan()
+                items = response.get('Items', [])
+                while 'LastEvaluatedKey' in response:
+                    response = table.scan(ExclusiveStartKey=response['LastEvaluatedKey'])
+                    items.extend(response.get('Items', []))
+                
+                book_summaries = []
+                for item in items:
+                    if item.get("type") == "book":
+                        book_summaries.append(LibraryBookSummary(
+                            video_id=item.get("video_id"),
+                            title=item.get("title", "अज्ञात पुस्तक"),
+                            author=item.get("author", "अज्ञात"),
+                            topics=item.get("topics", []),
+                            question_count=len(item.get("questions", [])),
+                            mood=item.get("mood", "")
+                        ))
+                return _build_response(200, BooksListResponse(books=book_summaries))
+
+        elif path == '/music':
             # Handle GET /music
             # Scan DB and extract all musical segments globally
             response = table.scan()
@@ -137,6 +179,8 @@ def lambda_handler(event, context):
             
             video_summaries = []
             for item in items:
+                if item.get("type") == "book":
+                    continue
                 v_id = item.get("video_id")
                 topics = item.get("topics", [])
                 queries = item.get("queries", [])

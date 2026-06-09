@@ -5,6 +5,8 @@ import ResultCard from './components/ResultCard';
 import StoryCard from './components/StoryCard';
 import VideoLibraryCard from './components/VideoLibraryCard';
 import CinematicVideoPanel from './components/CinematicVideoPanel';
+import BookLibraryCard from './components/BookLibraryCard';
+import CinematicBookPanel from './components/CinematicBookPanel';
 import HomePage from './components/HomePage';
 import SearchPage from './components/SearchPage';
 import StoriesBanner from './components/StoriesBanner';
@@ -72,6 +74,7 @@ export default function App() {
   
   const [allStories, setAllStories] = useState([]);
   const [allVideos, setAllVideos] = useState([]);
+  const [allBooks, setAllBooks] = useState([]);
   const [dataLoading, setDataLoading] = useState(false);
   const [hasFetchedData, setHasFetchedData] = useState(false);
   const [storySearchQuery, setStorySearchQuery] = useState('');
@@ -109,6 +112,10 @@ export default function App() {
   const [isListening, setIsListening] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [selectedVideoTitle, setSelectedVideoTitle] = useState('');
+  
+  const [libraryTabActive, setLibraryTabActive] = useState('videos');
+  const [selectedBook, setSelectedBook] = useState(null);
+  const [selectedBookTitle, setSelectedBookTitle] = useState('');
 
   const startVoiceSearch = async (setQueryState) => {
     if (!window.isSecureContext) {
@@ -187,11 +194,13 @@ export default function App() {
       
       Promise.all([
         api.getStories().catch(e => { console.error(e); return { stories: [] }; }),
-        api.getVideos().catch(e => { console.error(e); return { videos: [] }; })
+        api.getVideos().catch(e => { console.error(e); return { videos: [] }; }),
+        api.getBooks().catch(e => { console.error(e); return { books: [] }; })
       ])
-      .then(([storiesData, videosData]) => {
+      .then(([storiesData, videosData, booksData]) => {
         if (storiesData.stories) setAllStories(storiesData.stories);
         if (videosData.videos) setAllVideos(videosData.videos);
+        if (booksData.books) setAllBooks(booksData.books);
       })
       .finally(() => setDataLoading(false));
     }
@@ -227,6 +236,7 @@ export default function App() {
             results: data.results || [],
             metadata: data.metadata || {},
             related_queries: data.related_queries || [],
+            error: data.translation_error ? (lang === 'mr' ? 'आमची अनुवाद सेवा सध्या व्यस्त आहे. कृपया तुमचा प्रश्न थेट शुद्ध मराठीत टाइप करा.' : 'Our translation service is currently busy. Please type your query in pure Marathi.') : null,
             loading: false
           };
         }
@@ -477,21 +487,42 @@ export default function App() {
                   </div>
                 ) : (
                   <>
-                    {/* Simple Grid of all videos from /videos */}
-                    <div className="library-shelves-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '24px', padding: '20px 0' }}>
-                      {allVideos.filter(v => {
-                        if (libraryActiveFilter === 'सर्व') return true;
-                        return (v.topics && v.topics.includes(libraryActiveFilter)) || (v.key_topics && v.key_topics.includes(libraryActiveFilter));
-                      }).map((v, i) => (
-                        <VideoLibraryCard 
-                          key={`${v.video_id}-${i}`} 
-                          video={v} 
-                          onClick={(title) => {
-                            setSelectedVideo(v);
-                            setSelectedVideoTitle(title || "Teaching Module");
-                          }} 
-                        />
-                      ))}
+                    <div className="library-shelf" style={{ marginBottom: '60px' }}>
+                      <h2 className="library-shelf-title">Literature (पुस्तके)</h2>
+                      <div className="library-shelves-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '24px', padding: '10px 0' }}>
+                        {allBooks.filter(b => {
+                          if (libraryActiveFilter === 'सर्व') return true;
+                          return (b.topics && b.topics.includes(libraryActiveFilter));
+                        }).map((b, i) => (
+                          <BookLibraryCard 
+                            key={`${b.video_id}-${i}`} 
+                            book={b} 
+                            onClick={(title) => {
+                              setSelectedBook(b);
+                              setSelectedBookTitle(title || "पुस्तक");
+                            }} 
+                          />
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="library-shelf">
+                      <h2 className="library-shelf-title">Discourses (प्रवचने)</h2>
+                      <div className="library-shelves-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '24px', padding: '10px 0' }}>
+                        {allVideos.filter(v => {
+                          if (libraryActiveFilter === 'सर्व') return true;
+                          return (v.topics && v.topics.includes(libraryActiveFilter)) || (v.key_topics && v.key_topics.includes(libraryActiveFilter));
+                        }).map((v, i) => (
+                          <VideoLibraryCard 
+                            key={`${v.video_id}-${i}`} 
+                            video={v} 
+                            onClick={(title) => {
+                              setSelectedVideo(v);
+                              setSelectedVideoTitle(title || "Teaching Module");
+                            }} 
+                          />
+                        ))}
+                      </div>
                     </div>
                   </>
                 )}
@@ -509,6 +540,19 @@ export default function App() {
                     onStoryClick={(story) => {
                       setSelectedVideo(null);
                       navigate('/stories', { state: { openStoryTitle: story.title } });
+                    }}
+                  />
+                )}
+
+                {selectedBook && (
+                  <CinematicBookPanel 
+                    bookSummary={selectedBook} 
+                    initialTitle={selectedBookTitle}
+                    lang={lang}
+                    onClose={() => setSelectedBook(null)} 
+                    onSearch={(q) => {
+                      setSelectedBook(null);
+                      handleSearch(q);
                     }}
                   />
                 )}

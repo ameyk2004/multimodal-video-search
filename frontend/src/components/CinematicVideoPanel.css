@@ -400,3 +400,80 @@
   background: rgba(230, 81, 0, 0.1);
   transform: translateY(-1px);
 }
+
+/* Cinematic Book Panel Extensions */
+.book-panel-container {
+  max-width: 1200px;
+}
+
+.book-layout {
+  /* No changes */
+}
+
+.book-cover-section {
+  flex: 4;
+  background: linear-gradient(180deg, #1f140e 0%, #000 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.cinematic-book-large-cover {
+  text-align: center;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-40px);
+}
+
+.book-large-icon {
+  font-size: 6rem;
+  margin-bottom: 24px;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));
+}
+
+.book-author-large {
+  font-size: 1.2rem;
+  color: rgba(255,255,255,0.6);
+  margin-top: 12px;
+}
+
+.book-meta-info {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.book-mood-badge, .book-structure-badge {
+  background: rgba(255,255,255,0.1);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  color: #E65100;
+  border: 1px solid rgba(230, 81, 0, 0.3);
+}
+
+.book-summary-text, .book-for-whom-text {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.7;
+}
+
+.questions-helper {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.9rem;
+  margin-top: -16px;
+  margin-bottom: 24px;
+}
+
+.primary-query {
+  font-weight: bold;
+  color: #E65100;
+}
+
+.primary-badge {
+  color: #FFD700;
+}
