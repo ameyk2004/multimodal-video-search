@@ -14,13 +14,12 @@ if __name__ == "__main__":
     processor = BookProcessor()
     processor.process_all()
     
-    
-    print("\n=== Phase 2: Semantic Chunking (with precise page mapping) ===")
-    process_chunks(input_dir="data_pipeline/books/books_output", output_dir="data_pipeline/books/processed_books_chunks")
-    
-    print("\n=== Phase 3: Metadata Enrichment (Gemini LLM) ===")
+    print("\n=== Phase 2: Metadata Enrichment (Gemini LLM) ===")
     enricher = BookEnricher()
     enricher.process_all()
+    
+    print("\n=== Phase 3: Semantic Chunking (with contextual heuristics) ===")
+    process_chunks(input_dir="data_pipeline/books/books_output", output_dir="data_pipeline/books/processed_books_chunks")
     
     print("\nPipeline complete. Next steps:")
     print("1. Generate embeddings for processed_books_chunks using Colab or HuggingFace API.")

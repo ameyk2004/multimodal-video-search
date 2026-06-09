@@ -1,18 +1,20 @@
 """
-BookChunkProcessor — Zero-Drift Page Mapping Engine.
+BookChunkProcessor — Contextual Hierarchical Chunking Engine.
 
 Responsibilities:
   1. Stitch raw PDF pages into one continuous string.
-  2. Build an absolute char_to_page_map (character index → Page number).
-  3. Split the stitched text into semantic chunks via LangChain with
-     add_start_index=True so every chunk carries its exact origin offset.
-  4. Resolve exact page numbers for chunks via binary search (bisect).
+  2. Load LLM structural metadata (structure_type, topics).
+  3. Dynamically slice the book into Chapters/Essays based on structure_type heuristics.
+  4. Split those sections into semantic 1000-character chunks via LangChain.
+  5. Prepend the rich Context Prefix to every single chunk.
+  6. Resolve exact page numbers for chunks via binary search (bisect).
 """
 
 import bisect
 import json
 import logging
 import os
+import re
 from typing import Any
 
 from langchain_core.documents import Document
@@ -21,8 +23,8 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 logger = logging.getLogger(__name__)
 
 class BookChunkProcessor:
-    _SEPARATORS = ["\n\n", "\n", "॥", "।", ".", "?", "!", " "]
-    _CHUNK_SIZE = 700
+    _SEPARATORS = ["\n\n", "॥", "।", "\n", ".", "?", "!", " "]
+    _CHUNK_SIZE = 1000
     _CHUNK_OVERLAP = 150
 
     def __init__(self) -> None:
@@ -39,33 +41,98 @@ class BookChunkProcessor:
         if book_name is None:
             book_name = os.path.splitext(os.path.basename(filepath))[0]
 
+        # 1. Load raw PDF pages
         with open(filepath, encoding="utf-8") as f:
             pages = json.load(f)
 
         full_text, char_map = self._stitch(pages)
         logger.info("Stitched %d pages → %d chars.", len(pages), len(full_text))
 
-        doc = Document(page_content=full_text, metadata={"book_name": book_name})
-        lc_chunks = self._splitter.split_documents([doc])
-        logger.info("LangChain produced %d chunks.", len(lc_chunks))
+        # 2. Load enriched metadata from LLM step
+        meta_path = os.path.join("data_pipeline/books/books_enriched_metadata", f"{book_name}_meta.json")
+        metadata = {}
+        if os.path.exists(meta_path):
+            with open(meta_path, "r", encoding="utf-8") as f:
+                metadata = json.load(f)
+        else:
+            logger.warning("No metadata found for %s! Falling back to continuous_text.", book_name)
 
-        chunks = self._resolve_chunk_pages(lc_chunks, char_map, book_name)
+        structure_type = metadata.get("structure_type", "continuous_text")
+        topics = ", ".join(metadata.get("topics", []))
+        
+        # 3. Dynamically slice into sections
+        sections = self._split_sections(full_text, structure_type)
+        logger.info("Split into %d sections based on type '%s'", len(sections), structure_type)
+
+        # 4. Process each section and add context
+        chunks = []
+        for sec_title, sec_text, sec_offset in sections:
+            doc = Document(page_content=sec_text, metadata={"section_title": sec_title})
+            lc_chunks = self._splitter.split_documents([doc])
+            
+            for chunk in lc_chunks:
+                text = chunk.page_content.strip()
+                if not text:
+                    continue
+
+                # Calculate absolute character index across the entire stitched book
+                char_idx = sec_offset + chunk.metadata.get("start_index", 0)
+                page_num = self.get_page_from_index(char_idx, char_map)
+
+                # Inject Context Prefix
+                context_prefix = f"पुस्तक: {book_name} | प्रकार: {structure_type}\n"
+                if topics:
+                    context_prefix += f"विषय: {topics}\n"
+                context_prefix += f"भाग/लेख: {sec_title}\n\n"
+                
+                final_text = context_prefix + text
+
+                chunks.append({
+                    "video_id": book_name,  # reusing field name for compatibility
+                    "book_name": book_name,
+                    "page_number": page_num,
+                    "char_index": char_idx,
+                    "marathi_raw": final_text,
+                    "type": "book",
+                    "embedding_vector": [],
+                })
+
+        logger.info("Generated %d contextual chunks for %s.", len(chunks), book_name)
         return chunks, char_map, full_text
 
-    def resolve_story_page(
-        self,
-        exact_start_text: str,
-        char_map: list[tuple[int, int, int]],
-        full_text: str,
-    ) -> int | None:
-        char_idx = full_text.find(exact_start_text)
-        if char_idx == -1:
-            snippet = exact_start_text.strip()[:20]
-            char_idx = full_text.find(snippet)
-            if char_idx == -1:
-                return None
-
-        return self.get_page_from_index(char_idx, char_map)
+    def _split_sections(self, full_text: str, structure_type: str) -> list[tuple[str, str, int]]:
+        """Returns list of (section_title, section_text, absolute_start_index)"""
+        sections = []
+        
+        if structure_type == "numbered_essays":
+            # Matches "२७. स्वतःशी तसं इतरांशी" at start of line
+            pattern = r"(?m)^(?:\d+|[१२३४५६७८९०]+)\.\s+(.+)$"
+        elif structure_type == "chapters":
+            # Matches "अध्याय १" or "प्रकरण ५" at start of line
+            pattern = r"(?m)^(?:अध्याय|प्रकरण)\s+(.+)$"
+        else:
+            return [("संपूर्ण पुस्तक", full_text, 0)]
+            
+        matches = list(re.finditer(pattern, full_text))
+        if not matches:
+            return [("संपूर्ण पुस्तक", full_text, 0)]
+            
+        # Add the front-matter (Preface, Index) before the first chapter
+        if matches[0].start() > 0:
+            sections.append(("प्रस्तावना / अनुक्रमणिका", full_text[:matches[0].start()], 0))
+            
+        for i in range(len(matches)):
+            start_idx = matches[i].start()
+            # The title is the full matched line
+            title = matches[i].group(0).strip()
+            if len(title) > 100: 
+                title = title[:100] + "..."
+            
+            end_idx = matches[i+1].start() if i + 1 < len(matches) else len(full_text)
+            section_text = full_text[start_idx:end_idx]
+            sections.append((title, section_text, start_idx))
+            
+        return sections
 
     @staticmethod
     def _stitch(
@@ -88,7 +155,8 @@ class BookChunkProcessor:
             text_len = len(text)
             
             char_map.append((current_char_length, page_num, text_len))
-            full_text += text + " "
+            # Use double newline to preserve page breaks/paragraph breaks during Langchain splitting
+            full_text += text + "\n\n"
 
         return full_text, char_map
 
@@ -107,34 +175,6 @@ class BookChunkProcessor:
         _, page_num, _ = char_map[pos]
         return page_num
 
-    def _resolve_chunk_pages(
-        self,
-        lc_chunks: list[Document],
-        char_map: list[tuple[int, int, int]],
-        book_name: str,
-    ) -> list[dict[str, Any]]:
-        resolved: list[dict[str, Any]] = []
-        for chunk in lc_chunks:
-            text = chunk.page_content.strip()
-            if not text:
-                continue
-
-            char_idx = chunk.metadata.get("start_index", 0)
-            page_num = self.get_page_from_index(char_idx, char_map)
-
-            resolved.append(
-                {
-                    "video_id": book_name,  # reusing field name for compatibility later if needed, but semantically book_name
-                    "book_name": book_name,
-                    "page_number": page_num,
-                    "char_index": char_idx,
-                    "marathi_raw": text,
-                    "type": "book",
-                    "embedding_vector": [],
-                }
-            )
-
-        return resolved
 
 def process_directory(
     input_dir: str = "data_pipeline/books/books_output",
@@ -144,21 +184,22 @@ def process_directory(
     os.makedirs(output_dir, exist_ok=True)
     processor = BookChunkProcessor()
 
-    for filepath in glob.glob(os.path.join(input_dir, "*.json")):
+    raw_files = glob.glob(os.path.join(input_dir, "*.json"))
+    if not raw_files:
+        logger.info("No files found in %s", input_dir)
+        return
+
+    for filepath in raw_files:
         book_name = os.path.splitext(os.path.basename(filepath))[0]
         out_path = os.path.join(output_dir, f"{book_name}_chunks.json")
 
-        if os.path.exists(out_path):
-            logger.info("Skipping %s — chunks already exist.", book_name)
-            continue
-
-        logger.info("Processing %s …", book_name)
+        logger.info("Contextual Chunking %s …", book_name)
         chunks, _, _ = processor.process_file(filepath, book_name)
 
         with open(out_path, "w", encoding="utf-8") as f:
             json.dump(chunks, f, ensure_ascii=False, indent=2)
 
-        logger.info("Saved %d chunks → %s", len(chunks), out_path)
+        logger.info("Saved %d smart chunks → %s", len(chunks), out_path)
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")

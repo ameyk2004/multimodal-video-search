@@ -41,6 +41,10 @@ _SYSTEM_PROMPT = """तू एक अत्यंत ज्ञानी आध�
 ७. topics: पुस्तकात खरोखर चर्चिलेले विषय — फक्त खालील यादीतून निवडा, जे लागू होतात तेच:
 ["अध्यात्म आणि भक्ती", "सद्गुरू आणि संत चरित्र", "मनःशांती आणि आनंद", "प्रपंच आणि परमार्थ", "अहंकार आणि विकार", "आत्मज्ञान आणि मुक्ती", "कर्म आणि प्रारब्ध", "साधना आणि ध्यान", "संस्कार आणि मानवी मूल्ये", "तत्त्वज्ञान आणि विचार", "अंधश्रद्धा आणि गैरसमज", "इतर"]
 
+८. structure_type: पुस्तकाची रचना ओळखा. फक्त खालीलपैकी एक प्रकार निवडा: 
+["numbered_essays", "verses", "q_and_a", "chapters", "continuous_text"]
+(उदा. जर लेख १., २७. असे सुरू होत असतील तर "numbered_essays", जर ओव्या असतील तर "verses").
+
 उत्तर फक्त खालील JSON format मध्ये दे. JSON च्या बाहेर काहीही लिहू नकोस:
 {
   "author": "string",
@@ -56,7 +60,8 @@ _SYSTEM_PROMPT = """तू एक अत्यंत ज्ञानी आध�
   "key_learnings": ["string"],
   "for_whom": "string",
   "mood": "string",
-  "topics": ["string"]
+  "topics": ["string"],
+  "structure_type": "string"
 }"""
 
 
@@ -78,7 +83,7 @@ class BookEnricher:
             api_key=api_key,
             http_options={"timeout": 60000},
         )
-        self._model_name = "gemini-2.5-flash"
+        self._model_name = "gemini-3.5-flash"
         self._gen_config = types.GenerateContentConfig(
             system_instruction=_SYSTEM_PROMPT,
             response_mime_type="application/json",
