@@ -22,3 +22,5 @@ boto3==1.43.13
 python-dotenv
 tenacity
 PyMuPDF>=1.23.0
+pytesseract>=0.3.10
+Pillow>=10.0.0

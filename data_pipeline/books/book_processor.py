@@ -3,12 +3,16 @@ import json
 import logging
 import glob
 import fitz  # PyMuPDF
+import io
+from PIL import Image
+import pytesseract
 
 logger = logging.getLogger(__name__)
 
 class BookProcessor:
     """
     Reads PDFs from input_books directory and extracts text page-by-page.
+    Uses Tesseract OCR to correctly extract legacy Marathi font text.
     Outputs JSON files to books_output directory.
     """
     def __init__(self, input_dir="data_pipeline/books/input_books", output_dir="data_pipeline/books/books_output"):
@@ -31,14 +35,20 @@ class BookProcessor:
             logger.info(f"Skipping {book_name} - output already exists.")
             return
             
-        logger.info(f"Processing PDF: {book_name}")
+        logger.info(f"Processing PDF via OCR: {book_name}")
         pages_data = []
         
         try:
             doc = fitz.open(filepath)
             for page_num in range(len(doc)):
                 page = doc.load_page(page_num)
-                text = page.get_text("text").strip()
+                # Render to high resolution image for OCR
+                pix = page.get_pixmap(dpi=300)
+                img_data = pix.tobytes("png")
+                pil_image = Image.open(io.BytesIO(img_data))
+                
+                # Perform local OCR
+                text = pytesseract.image_to_string(pil_image, lang='mar').strip()
                 
                 # Keep even empty pages to maintain accurate page number mapping
                 pages_data.append({
@@ -46,6 +56,9 @@ class BookProcessor:
                     "text": text,
                     "book_name": book_name
                 })
+                
+                if (page_num + 1) % 10 == 0:
+                    logger.info(f"  Processed {page_num + 1}/{len(doc)} pages...")
                 
             with open(out_path, "w", encoding="utf-8") as f:
                 json.dump(pages_data, f, ensure_ascii=False, indent=2)
