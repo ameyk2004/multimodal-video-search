@@ -50,6 +50,10 @@ class BookProcessor:
                 pil_image = Image.open(io.BytesIO(img_data))
                 
                 text = pytesseract.image_to_string(pil_image, lang='mar').strip()
+                
+                if (page_num + 1) % 10 == 0:
+                    logger.info(f"  Processed page {page_num + 1}/{total_pages}...")
+                    
                 return {
                     "page_number": page_num + 1,
                     "text": text,
