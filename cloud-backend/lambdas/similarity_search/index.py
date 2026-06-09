@@ -125,6 +125,46 @@ def lambda_handler(event: dict, context: Any) -> dict:
 
     # ── Extract query ────────────────────────────────────────────────────
     params = event.get("queryStringParameters") or {}
+    action = params.get("action", "search").strip().lower()
+
+    if action == "next_chunk":
+        book_name = params.get("book_name")
+        chunk_index = params.get("chunk_index")
+        if book_name is None or chunk_index is None:
+            return _build_response(400, {"error": "Missing book_name or chunk_index"})
+        
+        try:
+            from qdrant_client.http import models
+            chunk_index = int(chunk_index)
+            book_searcher = _get_book_searcher()
+            
+            response = book_searcher.client.scroll(
+                collection_name="sadhananandadeep-books",
+                scroll_filter=models.Filter(
+                    must=[
+                        models.FieldCondition(key="book_name", match=models.MatchValue(value=book_name)),
+                        models.FieldCondition(key="chunk_index", match=models.MatchValue(value=chunk_index))
+                    ]
+                ),
+                limit=1,
+                with_payload=True,
+                with_vectors=False
+            )
+            
+            points = response[0]
+            if not points:
+                return _build_response(404, {"error": "Chunk not found"})
+                
+            payload = points[0].payload
+            return _build_response(200, {
+                "chunk_index": payload.get("chunk_index"),
+                "marathi_raw": payload.get("marathi_raw"),
+                "page_number": payload.get("page_number")
+            })
+        except Exception as e:
+            logger.exception("Failed to fetch next chunk")
+            return _build_response(500, {"error": str(e)})
+
     query = params.get("q", "").strip()
     search_type = params.get("type", "video").strip().lower()
 
@@ -226,7 +266,8 @@ def lambda_handler(event: dict, context: Any) -> dict:
                 page_number=r.get("page_number"),
                 marathi_raw=r.get("marathi_raw", ""),
                 start_time=r.get("start_time"),
-                score=r.get("score", 0.0)
+                score=r.get("score", 0.0),
+                chunk_index=r.get("chunk_index")
             ) for r in results
         ]
 

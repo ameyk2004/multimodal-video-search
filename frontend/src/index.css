@@ -1458,3 +1458,134 @@ body {
   background: rgba(255, 255, 255, 0.05);
   color: #fff;
 }
+
+/* Book Result Card Styles */
+.book-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.book-card-inner {
+  display: flex;
+  flex-direction: row;
+}
+
+.book-cover-section {
+  width: 260px; /* Match video card width */
+  background: var(--bg-deep);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid var(--glass-border);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.book-cover-blur-bg {
+  position: absolute;
+  top: -10%; left: -10%;
+  width: 120%; height: 120%;
+  background-size: cover;
+  background-position: center;
+  filter: blur(25px) brightness(0.3);
+  z-index: 0;
+}
+
+.book-cover-img {
+  position: relative;
+  z-index: 1;
+  width: 140px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 4px 8px 30px rgba(0,0,0,0.8), -1px 0 2px rgba(255,255,255,0.15);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.book-card:hover .book-cover-img {
+  transform: translateY(-4px) scale(1.03);
+}
+
+.book-cover-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  text-align: center;
+}
+
+.book-content-section {
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.highlight-book {
+  background: var(--saffron) !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+.book-text-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+  margin-bottom: 20px;
+}
+
+.book-paragraph {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.95);
+  text-align: justify;
+}
+
+.read-more-book-btn {
+  align-self: flex-start;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.read-more-book-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.read-more-book-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.end-of-book {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 16px;
+  font-style: italic;
+}
+
+@media (max-width: 600px) {
+  .book-card-inner {
+    flex-direction: column;
+  }
+  .book-cover-section {
+    width: 100%;
+    height: 260px;
+    border-right: none;
+    border-bottom: 1px solid var(--glass-border);
+    padding: 0;
+  }
+  .book-cover-img {
+    width: 130px;
+  }
+}

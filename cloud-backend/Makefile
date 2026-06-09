@@ -17,15 +17,15 @@ deploy: build
 
 release: build
 	@echo "🚀 Releasing $(STACK_NAME)..."
-	@ACCOUNT_ID=$$(python3.12 ../scripts/aws_helper.py --action get_account 2>/dev/null || echo "") ; \
+	@ACCOUNT_ID=$$(python3.12 ../scripts/deploy/aws_helper.py --action get_account 2>/dev/null || echo "") ; \
 	if [ -n "$$ACCOUNT_ID" ] && [ "$$ACCOUNT_ID" != "None" ]; then \
 		ARTIFACTS_BUCKET="sadhananandadeep-artifacts-$$ACCOUNT_ID" ; \
 		echo "📦 Creating/verifying Artifacts Bucket: $$ARTIFACTS_BUCKET" ; \
-		python3.12 ../scripts/aws_helper.py --action create_bucket --bucket $$ARTIFACTS_BUCKET ; \
+		python3.12 ../scripts/deploy/aws_helper.py --action create_bucket --bucket $$ARTIFACTS_BUCKET ; \
 		echo "📦 Building Frontend..." ; \
 		cd ../frontend && npm install && npm run build && cd ../cloud-backend ; \
 		echo "☁️ Uploading Frontend to Artifacts Bucket..." ; \
-		python3.12 ../scripts/aws_helper.py --action upload --bucket $$ARTIFACTS_BUCKET --source ../frontend/dist ; \
+		python3.12 ../scripts/deploy/aws_helper.py --action upload --bucket $$ARTIFACTS_BUCKET --source ../frontend/dist ; \
 		echo "🔄 Updating SAM config with UiArtifactsBucket=$$ARTIFACTS_BUCKET..." ; \
 		python3 -c "import sys; sys.path.insert(0,'../scripts'); from package_release import load_env, update_samconfig; update_samconfig(load_env('../.env'), {'UiArtifactsBucket': '$$ARTIFACTS_BUCKET'})" ; \
 	else \
@@ -35,30 +35,30 @@ release: build
 	@if sam deploy --no-confirm-changeset --no-fail-on-empty-changeset 2>/dev/null; then \
 		echo ""; \
 		echo "✅ Stack updated successfully!"; \
-		UI_BUCKET=$$(python3.12 ../scripts/aws_helper.py --action get_stack_output --stack $(STACK_NAME) --logical_id UiBucketName 2>/dev/null || echo ""); \
-		CF_URL=$$(python3.12 ../scripts/aws_helper.py --action get_stack_output --stack $(STACK_NAME) --logical_id CloudFrontURL 2>/dev/null || echo ""); \
+		UI_BUCKET=$$(python3.12 ../scripts/deploy/aws_helper.py --action get_stack_output --stack $(STACK_NAME) --logical_id UiBucketName 2>/dev/null || echo ""); \
+		CF_URL=$$(python3.12 ../scripts/deploy/aws_helper.py --action get_stack_output --stack $(STACK_NAME) --logical_id CloudFrontURL 2>/dev/null || echo ""); \
 		REGION=$$(python3 -c "import boto3; print(boto3.session.Session().region_name or 'us-east-1')" 2>/dev/null || echo "us-east-1"); \
 		echo "🎉 Frontend (HTTP only) is live at: http://$$UI_BUCKET.s3-website-$$REGION.amazonaws.com"; \
 		echo "🚀 Secure Frontend (HTTPS/Mobile Ready) is live at: $$CF_URL"; \
 		sam list stack-outputs --stack-name $(STACK_NAME); \
 	else \
 		echo "Stack not found or credentials missing. Generating Quick Create link..."; \
-		python3 ../scripts/package_release.py; \
+		python3 ../scripts/deploy/package_release.py; \
 	fi
 
 teardown:
 	@echo "Tearing down AWS CloudFormation stack..."
-	@UI_BUCKET=$$(python3.12 ../scripts/aws_helper.py --action get_stack_bucket --stack $(STACK_NAME) --logical_id SadhanaNandadeepUiBucket 2>/dev/null || echo ""); \
+	@UI_BUCKET=$$(python3.12 ../scripts/deploy/aws_helper.py --action get_stack_bucket --stack $(STACK_NAME) --logical_id SadhanaNandadeepUiBucket 2>/dev/null || echo ""); \
 	if [ -n "$$UI_BUCKET" ] && [ "$$UI_BUCKET" != "None" ]; then \
 		echo "🧹 Emptying UI Bucket $$UI_BUCKET before deletion..."; \
-		python3.12 ../scripts/aws_helper.py --action empty_bucket --bucket $$UI_BUCKET || true; \
+		python3.12 ../scripts/deploy/aws_helper.py --action empty_bucket --bucket $$UI_BUCKET || true; \
 	fi
-	@ACCOUNT_ID=$$(python3.12 ../scripts/aws_helper.py --action get_account 2>/dev/null || echo ""); \
+	@ACCOUNT_ID=$$(python3.12 ../scripts/deploy/aws_helper.py --action get_account 2>/dev/null || echo ""); \
 	if [ -n "$$ACCOUNT_ID" ] && [ "$$ACCOUNT_ID" != "None" ]; then \
 		ARTIFACTS_BUCKET="sadhananandadeep-artifacts-$$ACCOUNT_ID"; \
 		echo "🧹 Emptying Artifacts Bucket $$ARTIFACTS_BUCKET before deletion..."; \
-		python3.12 ../scripts/aws_helper.py --action empty_bucket --bucket $$ARTIFACTS_BUCKET || true; \
-		python3.12 ../scripts/aws_helper.py --action delete_bucket --bucket $$ARTIFACTS_BUCKET || true; \
+		python3.12 ../scripts/deploy/aws_helper.py --action empty_bucket --bucket $$ARTIFACTS_BUCKET || true; \
+		python3.12 ../scripts/deploy/aws_helper.py --action delete_bucket --bucket $$ARTIFACTS_BUCKET || true; \
 	fi
 	sam delete --stack-name $(STACK_NAME) --no-prompts
 	@$(MAKE) clean
@@ -71,7 +71,7 @@ clean:
 refresh:
 	@echo "🔄 Refreshing Backend..."
 	@echo "🔄 Syncing .env to samconfig.toml..."
-	@python3 -c "import sys; sys.path.insert(0,'../scripts'); from package_release import load_env, update_samconfig; update_samconfig(load_env('../.env'))"
+	@python3 -c "import sys; sys.path.insert(0,'../scripts/deploy'); from package_release import load_env, update_samconfig; update_samconfig(load_env('../.env'))"
 	@echo "🔨 Building SAM Application..."; \
 	sam build -t $(TEMPLATE_FILE) && \
 	echo "☁️ Deploying SAM Application..."; \
@@ -79,19 +79,21 @@ refresh:
 	@$(MAKE) upload_ui
 
 upload_ui:
+	@echo "📸 Extracting Book Thumbnails..."
+	@if [ -f "../venv/bin/python" ]; then ../venv/bin/python ../data_pipeline/books/extract_thumbnails.py; else python3 ../data_pipeline/books/extract_thumbnails.py; fi || true
 	@echo "📦 Building Frontend..."; \
 	cd ../frontend && npm install && npm run build && cd ../cloud-backend; \
-	UI_BUCKET=$$(python3.12 ../scripts/aws_helper.py --action get_stack_output --stack $(STACK_NAME) --logical_id UiBucketName 2>/dev/null || echo ""); \
+	UI_BUCKET=$$(python3.12 ../scripts/deploy/aws_helper.py --action get_stack_output --stack $(STACK_NAME) --logical_id UiBucketName 2>/dev/null || echo ""); \
 	if [ -n "$$UI_BUCKET" ]; then \
 		echo "☁️ Pushing Frontend directly to UI Bucket: $$UI_BUCKET"; \
-		python3.12 ../scripts/aws_helper.py --action upload --bucket $$UI_BUCKET --source ../frontend/dist; \
+		python3.12 ../scripts/deploy/aws_helper.py --action upload --bucket $$UI_BUCKET --source ../frontend/dist; \
 	fi; \
-	CF_DIST_ID=$$(python3.12 ../scripts/aws_helper.py --action get_stack_output --stack $(STACK_NAME) --logical_id CloudFrontDistributionId 2>/dev/null || echo ""); \
+	CF_DIST_ID=$$(python3.12 ../scripts/deploy/aws_helper.py --action get_stack_output --stack $(STACK_NAME) --logical_id CloudFrontDistributionId 2>/dev/null || echo ""); \
 	if [ -n "$$CF_DIST_ID" ]; then \
 		echo "🧹 Invalidating CloudFront Cache ($$CF_DIST_ID)..."; \
-		python3.12 ../scripts/aws_helper.py --action invalidate --distribution_id $$CF_DIST_ID; \
+		python3.12 ../scripts/deploy/aws_helper.py --action invalidate --distribution_id $$CF_DIST_ID; \
 	fi; \
-	CF_URL=$$(python3.12 ../scripts/aws_helper.py --action get_stack_output --stack $(STACK_NAME) --logical_id CloudFrontURL 2>/dev/null || echo ""); \
+	CF_URL=$$(python3.12 ../scripts/deploy/aws_helper.py --action get_stack_output --stack $(STACK_NAME) --logical_id CloudFrontURL 2>/dev/null || echo ""); \
 	REGION=$$(python3 -c "import boto3; print(boto3.session.Session().region_name or 'us-east-1')" 2>/dev/null || echo "us-east-1"); \
 	echo "🎉 UI Upload Complete!"; \
 	echo "   HTTP URL: http://$$UI_BUCKET.s3-website-$$REGION.amazonaws.com"; \

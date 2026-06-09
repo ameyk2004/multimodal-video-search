@@ -54,5 +54,6 @@ export const api = {
   getVideos: () => apiClient(`/videos`),
   getVideoDetails: (videoId) => apiClient(`/videos/${videoId}`),
   getMusic: () => apiClient(`/music`),
+  getNextChunk: (bookName, chunkIndex) => apiClient(`/search?action=next_chunk&book_name=${encodeURIComponent(bookName)}&chunk_index=${chunkIndex}`),
   getConfig: fetchConfig
 };

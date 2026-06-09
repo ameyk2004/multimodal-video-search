@@ -9,6 +9,7 @@ class SearchResultItem(BaseModel):
     start_time: Optional[float] = None
     book_name: Optional[str] = None
     page_number: Optional[int] = None
+    chunk_index: Optional[int] = None
 
 class RelatedQueryItem(BaseModel):
     query: str

@@ -98,7 +98,7 @@ def main():
             data = json.load(f)
 
         points = []
-        for row in data:
+        for idx, row in enumerate(data):
             embedding = row.get('embedding_vector')
             text = row.get('marathi_raw', '')
             if not embedding or not text:
@@ -129,7 +129,8 @@ def main():
                 "book_name": book_name,
                 "type": "book",
                 "marathi_raw": text,
-                "page_number": page_number
+                "page_number": page_number,
+                "chunk_index": idx
             }
 
             sparse_vector = models.SparseVector(indices=indices, values=values)
