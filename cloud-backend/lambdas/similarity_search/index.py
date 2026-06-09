@@ -194,10 +194,8 @@ def lambda_handler(event: dict, context: Any) -> dict:
             book_res = book_searcher.search(vector, query_text=processed_query, top_k=5)
             results.extend(book_res)
             
-        # Sort combined results by score descending and take top 5 overall if combined
+        # Sort combined results by score descending
         results.sort(key=lambda x: x.get("score", 0), reverse=True)
-        if search_type == "combined":
-            results = results[:5]
             
         logger.info("Found %d results", len(results))
 

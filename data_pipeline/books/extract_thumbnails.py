@@ -2,8 +2,10 @@ import os
 import glob
 import fitz  # PyMuPDF
 
-INPUT_DIR = "data_pipeline/books/input_books"
-OUTPUT_DIR = "frontend/public/books"
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+WORKSPACE_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, "..", ".."))
+INPUT_DIR = os.path.join(SCRIPT_DIR, "input_books")
+OUTPUT_DIR = os.path.join(WORKSPACE_ROOT, "frontend", "public", "books")
 
 def extract_thumbnails():
     os.makedirs(OUTPUT_DIR, exist_ok=True)

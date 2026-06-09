@@ -65,7 +65,6 @@ const CONTENT = {
 export default function App() {
   const [lang, setLang] = useState('mr');
   const [query, setQuery] = useState('');
-  const [searchType, setSearchType] = useState('combined');
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
@@ -198,31 +197,56 @@ export default function App() {
     }
   }, [hasFetchedData]);
 
-  const handleSearch = async (q, typeOverride = null) => {
+  const handleSearch = async (q) => {
     const searchQuery = (q || query).trim();
     if (!searchQuery || loading) return;
     setQuery('');
     setLoading(true);
     navigate('/search');
 
-    const typeToUse = typeOverride || searchType;
+    const sessionId = Date.now();
+    setSessions(prev => [...prev, {
+      id: sessionId,
+      query: searchQuery,
+      results: [],
+      metadata: {},
+      related_queries: [],
+      error: null,
+      loading: true,
+      selectedFilter: 'combined'
+    }]);
 
     try {
-      const data = await api.search(searchQuery, typeToUse);
+      const data = await api.search(searchQuery, 'combined');
       
-      setSessions(prev => [...prev, { 
-        query: data.translated_query && data.translated_query !== searchQuery ? `${searchQuery} (${data.translated_query})` : searchQuery, 
-        results: data.results || [], 
-        metadata: data.metadata || {},
-        related_queries: data.related_queries || [],
-        error: null 
-      }]);
+      setSessions(prev => prev.map(s => {
+        if (s.id === sessionId) {
+          return {
+            ...s,
+            query: data.translated_query && data.translated_query !== searchQuery ? `${searchQuery} (${data.translated_query})` : searchQuery,
+            results: data.results || [],
+            metadata: data.metadata || {},
+            related_queries: data.related_queries || [],
+            loading: false
+          };
+        }
+        return s;
+      }));
     } catch (err) {
-      setSessions(prev => [...prev, { query: searchQuery, results: [], metadata: {}, related_queries: [], error: err.message }]);
+      setSessions(prev => prev.map(s => {
+        if (s.id === sessionId) {
+          return { ...s, error: err.message, loading: false };
+        }
+        return s;
+      }));
     } finally {
       setLoading(false);
       setTimeout(() => inputRef.current?.focus(), 100);
     }
+  };
+
+  const updateSessionFilter = (sessionId, newFilter) => {
+    setSessions(prev => prev.map(s => s.id === sessionId ? { ...s, selectedFilter: newFilter } : s));
   };
 
   const filteredStories = allStories.filter(s => {
@@ -501,10 +525,9 @@ export default function App() {
                 t={t} 
                 query={query} 
                 setQuery={setQuery} 
-                searchType={searchType}
-                setSearchType={setSearchType}
                 sessions={sessions} 
                 setSessions={setSessions} 
+                updateSessionFilter={updateSessionFilter}
                 loading={loading} 
                 setLoading={setLoading}
                 isListening={isListening} 

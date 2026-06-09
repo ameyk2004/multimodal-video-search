@@ -34,10 +34,11 @@ export default function BookResultCard({ result, isMarathi, style }) {
       }
     } catch (e) {
       console.error(e);
-      if (e.message.includes("404") || e.message.includes("not found")) {
+      console.error(e);
+      if (e.message.includes("Chunk not found")) {
         setNoMoreContent(true);
       } else {
-        alert("Failed to load next paragraph.");
+        alert(`Failed to load next paragraph: ${e.message}`);
       }
     } finally {
       setLoadingNext(false);

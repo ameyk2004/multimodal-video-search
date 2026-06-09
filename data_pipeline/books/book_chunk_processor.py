@@ -66,6 +66,7 @@ class BookChunkProcessor:
 
         # 4. Process each section and add context
         chunks = []
+        chunk_idx = 0
         for sec_title, sec_text, sec_offset in sections:
             doc = Document(page_content=sec_text, metadata={"section_title": sec_title})
             lc_chunks = self._splitter.split_documents([doc])
@@ -92,10 +93,12 @@ class BookChunkProcessor:
                     "book_name": book_name,
                     "page_number": page_num,
                     "char_index": char_idx,
+                    "chunk_index": chunk_idx,
                     "marathi_raw": final_text,
                     "type": "book",
                     "embedding_vector": [],
                 })
+                chunk_idx += 1
 
         logger.info("Generated %d contextual chunks for %s.", len(chunks), book_name)
         return chunks, char_map, full_text

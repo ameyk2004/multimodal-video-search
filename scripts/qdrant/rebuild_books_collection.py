@@ -87,6 +87,18 @@ def main():
             "bm25": models.SparseVectorParams()
         }
     )
+    
+    print("Creating payload indices for fast filtering...")
+    client.create_payload_index(
+        collection_name=COLLECTION_NAME,
+        field_name="book_name",
+        field_schema=models.PayloadSchemaType.KEYWORD
+    )
+    client.create_payload_index(
+        collection_name=COLLECTION_NAME,
+        field_name="chunk_index",
+        field_schema=models.PayloadSchemaType.INTEGER
+    )
 
     print("\n=== PASS 3: Uploading Dense + Sparse Vectors ===")
     batch_size = 100

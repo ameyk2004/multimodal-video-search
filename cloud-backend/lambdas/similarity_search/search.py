@@ -129,6 +129,7 @@ class QdrantSearcher:
                     "page_number": hit.payload.get("page_number", 0),
                     "duration": hit.payload.get("duration", 0),
                     "marathi_raw": hit.payload.get("marathi_raw", ""),
+                    "chunk_index": hit.payload.get("chunk_index"),
                 }
             )
 

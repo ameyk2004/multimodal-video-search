@@ -8,8 +8,8 @@ import { api } from '../utils/api';
 export default function SearchPage({ 
   lang, t, 
   query, setQuery, 
-  searchType, setSearchType,
   sessions, setSessions, 
+  updateSessionFilter,
   loading, setLoading,
   isListening, setIsListening,
   handleSearch, startVoiceSearch,
@@ -41,7 +41,7 @@ export default function SearchPage({
         const isLatest = si === sessions.length - 1;
 
         return (
-          <div key={si} className="chat-thread" ref={isLatest ? latestSessionRef : null}>
+          <div key={session.id || si} className="chat-thread" ref={isLatest ? latestSessionRef : null}>
             <div className="user-bubble-row">
               <div className="user-bubble">{session.query}</div>
             </div>
@@ -50,24 +50,68 @@ export default function SearchPage({
               <div className="error-box">⚠ {session.error}</div>
             )}
 
-            {session.results.length > 0 && (
+            {session.loading ? (
+              <div className="loading-wrapper">
+                <div className="energy-ring" />
+                <span className="loading-text">{t.loading}</span>
+              </div>
+            ) : session.results.length > 0 && (
               <div>
+                <div className="inline-filter-wrap">
+                  <div className="search-type-toggle inline-toggle">
+                    <button 
+                      className={`toggle-btn ${session.selectedFilter === 'video' ? 'active' : ''}`}
+                      onClick={() => updateSessionFilter(session.id, 'video')}
+                    >
+                      {lang === 'mr' ? 'प्रवचने (Videos)' : 'Videos'}
+                    </button>
+                    <button 
+                      className={`toggle-btn ${session.selectedFilter === 'book' ? 'active' : ''}`}
+                      onClick={() => updateSessionFilter(session.id, 'book')}
+                    >
+                      {lang === 'mr' ? 'पुस्तके (Books)' : 'Books'}
+                    </button>
+                    <button 
+                      className={`toggle-btn ${session.selectedFilter === 'combined' ? 'active' : ''}`}
+                      onClick={() => updateSessionFilter(session.id, 'combined')}
+                    >
+                      {lang === 'mr' ? 'सर्व (Combined)' : 'Combined'}
+                    </button>
+                  </div>
+                </div>
+
                 <div className="results-header">
-                  <span>✧ {lang === 'mr' ? `${session.results.length} ${t.found}` : `${session.results.length} ${t.found}`}</span>
+                  <span>✧ {lang === 'mr' ? `येथे काही उत्तरे आहेत` : `Here are some answers`}</span>
                 </div>
                 <div className="results-list">
-                  {session.results.map((r, i) => (
-                    <ResultCard
-                      key={`${r.video_id}-${r.start_time}-${i}`}
-                      result={r}
-                      rank={i + 1}
-                      isMarathi={lang === 'mr'}
-                      onSearch={handleSearch}
-                      style={{ animationDelay: `${i * 0.08}s` }}
-                      playingVideoId={playingVideoId}
-                      setPlayingVideoId={setPlayingVideoId}
-                    />
-                  ))}
+                  {(() => {
+                    let displayResults = session.results;
+                    if (session.selectedFilter === 'video') {
+                      displayResults = session.results.filter(r => r.type === 'video').slice(0, 5);
+                    } else if (session.selectedFilter === 'book') {
+                      displayResults = session.results.filter(r => r.type === 'book').slice(0, 5);
+                    } else {
+                      // Combined: sort by score, top 5 total
+                      displayResults = [...session.results].sort((a, b) => (b.score || 0) - (a.score || 0)).slice(0, 5);
+                    }
+
+                    if (displayResults.length === 0) {
+                      return <div className="no-filter-results">{lang === 'mr' ? 'या विभागात काही आढळले नाही.' : 'Nothing found in this category.'}</div>;
+                    }
+
+                    return displayResults.map((r, i) => (
+                      <ResultCard
+                        key={`${r.video_id || r.book_name}-${r.start_time || r.page_number}-${i}`}
+                        result={r}
+                        rank={i + 1}
+                        isMarathi={lang === 'mr'}
+                        onSearch={handleSearch}
+                        style={{ animationDelay: `${i * 0.08}s` }}
+                        playingVideoId={playingVideoId}
+                        setPlayingVideoId={setPlayingVideoId}
+                      />
+                    ));
+                  })()}
                 </div>
                 
                 <RelatedQuestions 
@@ -81,41 +125,9 @@ export default function SearchPage({
         );
       })}
 
-      {loading && (
-        <div className="chat-thread">
-          <div className="user-bubble-row">
-            <div className="user-bubble" style={{ opacity: 0.7 }}>...</div>
-          </div>
-          <div className="loading-wrapper">
-            <div className="energy-ring" />
-            <span className="loading-text">{t.loading}</span>
-          </div>
-        </div>
-      )}
-      <div ref={bottomRef} />
-
       {/* Floating Search Bar for SearchPage */}
+      <div ref={bottomRef} />
       <div className="search-bar-wrap">
-        <div className="search-type-toggle">
-          <button 
-            className={`toggle-btn ${searchType === 'video' ? 'active' : ''}`}
-            onClick={() => setSearchType('video')}
-          >
-            {lang === 'mr' ? 'प्रवचने (Videos)' : 'Videos'}
-          </button>
-          <button 
-            className={`toggle-btn ${searchType === 'book' ? 'active' : ''}`}
-            onClick={() => setSearchType('book')}
-          >
-            {lang === 'mr' ? 'पुस्तके (Books)' : 'Books'}
-          </button>
-          <button 
-            className={`toggle-btn ${searchType === 'combined' ? 'active' : ''}`}
-            onClick={() => setSearchType('combined')}
-          >
-            {lang === 'mr' ? 'सर्व (Combined)' : 'Combined'}
-          </button>
-        </div>
         <div className="search-form">
           <input
             ref={inputRef}
