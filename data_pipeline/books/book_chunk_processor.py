@@ -80,7 +80,7 @@ class BookChunkProcessor:
                 page_num = self.get_page_from_index(char_idx, char_map)
 
                 # Inject Context Prefix
-                context_prefix = f"पुस्तक: {book_name} | प्रकार: {structure_type}\n"
+                context_prefix = f"पुस्तक: {book_name}\n"
                 if topics:
                     context_prefix += f"विषय: {topics}\n"
                 context_prefix += f"भाग/लेख: {sec_title}\n\n"
