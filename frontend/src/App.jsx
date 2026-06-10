@@ -206,6 +206,53 @@ export default function App() {
     }
   }, [hasFetchedData]);
 
+  const handleFetchPageSearch = async ({ bookName, pageNumber, chapterTitle }) => {
+    setQuery('');
+    setLoading(true);
+    navigate('/search');
+
+    const sessionId = Date.now();
+    const displayQuery = `${bookName} - ${chapterTitle}`;
+    setSessions(prev => [...prev, {
+      id: sessionId,
+      query: displayQuery,
+      results: [],
+      metadata: {},
+      related_queries: [],
+      error: null,
+      loading: true,
+      selectedFilter: 'book'
+    }]);
+
+    try {
+      const data = await api.fetchBookPage(bookName, pageNumber);
+      
+      setSessions(prev => prev.map(s => {
+        if (s.id === sessionId) {
+          return {
+            ...s,
+            results: [{
+               ...data,
+               type: 'book',
+               score: 1.0 // Force top score since it's an exact page match
+            }],
+            loading: false
+          };
+        }
+        return s;
+      }));
+    } catch (err) {
+      setSessions(prev => prev.map(s => {
+        if (s.id === sessionId) {
+          return { ...s, error: err.message, loading: false };
+        }
+        return s;
+      }));
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSearch = async (q) => {
     const searchQuery = (q || query).trim();
     if (!searchQuery || loading) return;
@@ -550,9 +597,13 @@ export default function App() {
                     initialTitle={selectedBookTitle}
                     lang={lang}
                     onClose={() => setSelectedBook(null)} 
-                    onSearch={(q) => {
+                    onSearch={(payload) => {
                       setSelectedBook(null);
-                      handleSearch(q);
+                      if (payload && payload.type === 'fetch_page') {
+                        handleFetchPageSearch(payload);
+                      } else {
+                        handleSearch(payload);
+                      }
                     }}
                   />
                 )}

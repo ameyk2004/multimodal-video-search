@@ -165,6 +165,46 @@ def lambda_handler(event: dict, context: Any) -> dict:
             logger.exception("Failed to fetch next chunk")
             return _build_response(500, {"error": str(e)})
 
+    if action == "fetch_page":
+        book_name = params.get("book_name")
+        page_number = params.get("page_number")
+        if book_name is None or page_number is None:
+            return _build_response(400, {"error": "Missing book_name or page_number"})
+        
+        try:
+            from qdrant_client.http import models
+            page_number = int(page_number)
+            book_searcher = _get_book_searcher()
+            
+            response = book_searcher.client.scroll(
+                collection_name="sadhananandadeep-books",
+                scroll_filter=models.Filter(
+                    must=[
+                        models.FieldCondition(key="book_name", match=models.MatchValue(value=book_name)),
+                        models.FieldCondition(key="page_number", match=models.MatchValue(value=page_number))
+                    ]
+                ),
+                limit=1,
+                with_payload=True,
+                with_vectors=False
+            )
+            
+            points = response[0]
+            if not points:
+                # Fallback: sometimes page_number might be off by 1 or 2, but let's stick to exact match first
+                return _build_response(404, {"error": "Page not found in index"})
+                
+            payload = points[0].payload
+            return _build_response(200, {
+                "chunk_index": payload.get("chunk_index"),
+                "marathi_raw": payload.get("marathi_raw"),
+                "page_number": payload.get("page_number"),
+                "book_name": payload.get("book_name")
+            })
+        except Exception as e:
+            logger.exception("Failed to fetch page")
+            return _build_response(500, {"error": str(e)})
+
     query = params.get("q", "").strip()
     search_type = params.get("type", "video").strip().lower()
 

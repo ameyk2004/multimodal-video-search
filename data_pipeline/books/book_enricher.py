@@ -47,6 +47,12 @@ _SYSTEM_PROMPT = """तू एक अत्यंत ज्ञानी आध�
 ["numbered_essays", "verses", "q_and_a", "chapters", "continuous_text"]
 (उदा. जर लेख १., २७. असे सुरू होत असतील तर "numbered_essays", जर ओव्या असतील तर "verses").
 
+१०. table_of_contents: पुस्तकाची अनुक्रमणिका (Index). नियम:
+   - जर पुस्तकाच्या सुरुवातीला छापील अनुक्रमणिका दिली असेल, तर ती जशीच्या तशी काढा (विषय आणि पान क्रमांक).
+   - जर छापील अनुक्रमणिका नसेल, तर तू स्वतः पुस्तकाचे महत्त्वाचे भाग किंवा अध्याय ओळखून एक अनुक्रमणिका तयार कर.
+   - आउटपुट हे JSON array असावे: [{"title": "अध्याय १ / विषय", "page": 12}, {"title": "...", "page": ...}]
+   - पान क्रमांक (page) हा Number असावा.
+
 उत्तर फक्त खालील JSON format मध्ये दे. JSON च्या बाहेर काहीही लिहू नकोस:
 {
   "author": "string",
@@ -55,16 +61,19 @@ _SYSTEM_PROMPT = """तू एक अत्यंत ज्ञानी आध�
   "questions": [
     "string (मध्यवर्ती प्रश्न — पहिला)",
     "string",
-    "string",
-    "string",
-    "string",
     "string"
   ],
   "key_learnings": ["string"],
   "for_whom": "string",
   "mood": "string",
   "topics": ["string"],
-  "structure_type": "string"
+  "structure_type": "string",
+  "table_of_contents": [
+    {
+      "title": "string",
+      "page": 0
+    }
+  ]
 }"""
 
 

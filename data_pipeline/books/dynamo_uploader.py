@@ -63,7 +63,8 @@ def upload_book_metadata(input_dir: str, table_name: str = "sadhananandadeep-con
                     "for_whom": data.get("for_whom", ""),
                     "mood": data.get("mood", ""),
                     "topics": data.get("topics", []),
-                    "structure_type": data.get("structure_type", "")
+                    "structure_type": data.get("structure_type", ""),
+                    "table_of_contents": data.get("table_of_contents", [])
                 }
                 
                 batch.put_item(Item=item)
