@@ -3,9 +3,12 @@ import { api } from '../utils/api';
 
 export default function BookResultCard({ result, isMarathi, style }) {
   const [paragraphs, setParagraphs] = useState([result.marathi_raw]);
-  const [currentChunkIndex, setCurrentChunkIndex] = useState(result.chunk_index);
+  const [topChunkIndex, setTopChunkIndex] = useState(result.chunk_index);
+  const [bottomChunkIndex, setBottomChunkIndex] = useState(result.chunk_index);
   const [loadingNext, setLoadingNext] = useState(false);
-  const [noMoreContent, setNoMoreContent] = useState(false);
+  const [loadingPrev, setLoadingPrev] = useState(false);
+  const [noMoreBottom, setNoMoreBottom] = useState(false);
+  const [noMoreTop, setNoMoreTop] = useState(false);
 
   const lang = isMarathi ? 'mr' : 'en';
   const pct = Math.round((result.score || 0) * 100);
@@ -18,30 +21,60 @@ export default function BookResultCard({ result, isMarathi, style }) {
   };
 
   const handleReadMore = async () => {
-    if (currentChunkIndex === undefined || currentChunkIndex === null) {
+    if (bottomChunkIndex === undefined || bottomChunkIndex === null) {
       alert("This chunk does not have an index (might be an older upload).");
       return;
     }
     setLoadingNext(true);
     try {
-      const nextIdx = currentChunkIndex + 1;
+      const nextIdx = bottomChunkIndex + 1;
       const data = await api.getNextChunk(result.book_name, nextIdx);
       if (data && data.marathi_raw) {
         setParagraphs(prev => [...prev, data.marathi_raw]);
-        setCurrentChunkIndex(nextIdx);
+        setBottomChunkIndex(nextIdx);
       } else {
-        setNoMoreContent(true);
+        setNoMoreBottom(true);
       }
     } catch (e) {
       console.error(e);
-      console.error(e);
       if (e.message.includes("Chunk not found")) {
-        setNoMoreContent(true);
+        setNoMoreBottom(true);
       } else {
         alert(`Failed to load next paragraph: ${e.message}`);
       }
     } finally {
       setLoadingNext(false);
+    }
+  };
+
+  const handleReadPrevious = async () => {
+    if (topChunkIndex === undefined || topChunkIndex === null) {
+      alert("This chunk does not have an index (might be an older upload).");
+      return;
+    }
+    if (topChunkIndex <= 0) {
+      setNoMoreTop(true);
+      return;
+    }
+    setLoadingPrev(true);
+    try {
+      const prevIdx = topChunkIndex - 1;
+      const data = await api.getNextChunk(result.book_name, prevIdx);
+      if (data && data.marathi_raw) {
+        setParagraphs(prev => [data.marathi_raw, ...prev]);
+        setTopChunkIndex(prevIdx);
+      } else {
+        setNoMoreTop(true);
+      }
+    } catch (e) {
+      console.error(e);
+      if (e.message.includes("Chunk not found")) {
+        setNoMoreTop(true);
+      } else {
+        alert(`Failed to load previous paragraph: ${e.message}`);
+      }
+    } finally {
+      setLoadingPrev(false);
     }
   };
 
@@ -84,29 +117,43 @@ export default function BookResultCard({ result, isMarathi, style }) {
           </div>
 
           <div className="book-text-flow">
+            {!noMoreTop && topChunkIndex > 0 && (
+              <button 
+                className="read-more-book-btn" 
+                onClick={handleReadPrevious}
+                disabled={loadingPrev}
+                style={{ alignSelf: 'center', marginBottom: '16px', fontSize: '0.85rem', padding: '6px 16px' }}
+              >
+                {loadingPrev 
+                  ? (isMarathi ? 'लोड होत आहे...' : 'Loading...') 
+                  : (isMarathi ? '↑ मागील परिच्छेद' : '↑ Read Previous')}
+              </button>
+            )}
+
             {paragraphs.map((p, idx) => (
               <p key={idx} className="marathi-text book-paragraph">
                 {cleanText(p)}
               </p>
             ))}
-          </div>
 
-          {!noMoreContent && (
-            <button 
-              className="read-more-book-btn" 
-              onClick={handleReadMore}
-              disabled={loadingNext}
-            >
-              {loadingNext 
-                ? (isMarathi ? 'लोड होत आहे...' : 'Loading...') 
-                : (isMarathi ? 'पुढील परिच्छेद वाचा ➔' : 'Read Next Paragraph ➔')}
-            </button>
-          )}
-          {noMoreContent && (
-            <div className="end-of-book">
-              {isMarathi ? '— पाठाचा शेवट —' : '— End of passage —'}
-            </div>
-          )}
+            {!noMoreBottom && (
+              <button 
+                className="read-more-book-btn" 
+                onClick={handleReadMore}
+                disabled={loadingNext}
+                style={{ alignSelf: 'center', marginTop: '16px', fontSize: '0.85rem', padding: '6px 16px' }}
+              >
+                {loadingNext 
+                  ? (isMarathi ? 'लोड होत आहे...' : 'Loading...') 
+                  : (isMarathi ? 'पुढील परिच्छेद ↓' : 'Read Next ↓')}
+              </button>
+            )}
+            {noMoreBottom && (
+              <div className="end-of-book" style={{ marginTop: '16px' }}>
+                {isMarathi ? '— पाठाचा शेवट —' : '— End of passage —'}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

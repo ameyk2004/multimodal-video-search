@@ -56,6 +56,7 @@ def upload_book_metadata(input_dir: str, table_name: str = "sadhananandadeep-con
                     "type": "book",
                     "title": book_name,
                     "author": data.get("author", "अज्ञात"),
+                    "date_written": data.get("date_written", "अज्ञात"),
                     "summary": data.get("summary", ""),
                     "questions": data.get("questions", []),
                     "key_learnings": data.get("key_learnings", []),
