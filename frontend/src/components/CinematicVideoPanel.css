@@ -39,25 +39,28 @@
   position: absolute;
   top: 24px;
   right: 24px;
-  background: rgba(255,255,255,0.1);
-  border: none;
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   color: #fff;
   font-size: 32px;
   width: 48px;
   height: 48px;
   border-radius: 50%;
   cursor: pointer;
-  z-index: 10;
+  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.6);
 }
 
 .cinematic-close-btn:hover {
   background: #E65100;
+  border-color: #E65100;
   transform: scale(1.1);
+  box-shadow: 0 4px 20px rgba(230, 81, 0, 0.6);
 }
 
 /* Dual Pane Layout */
@@ -410,7 +413,7 @@
   /* No changes */
 }
 
-.book-cover-section {
+.book-panel-container .book-cover-section {
   flex: 4;
   background: linear-gradient(180deg, #1f140e 0%, #000 100%);
   display: flex;
@@ -476,4 +479,28 @@
 
 .primary-badge {
   color: #FFD700;
+}
+
+/* ─── Book Panel Entrance Animation ───────────────── */
+.book-panel-entrance {
+  background: rgba(10, 8, 5, 0);
+  animation: none;
+  transition: background 0.6s ease;
+}
+
+.book-panel-entrance.entered {
+  background: rgba(10, 8, 5, 0.95);
+}
+
+.book-panel-container {
+  transform: perspective(1500px) rotateY(-60deg) scale(0.7);
+  transform-origin: left center;
+  opacity: 0;
+  transition: transform 0.7s cubic-bezier(0.22, 0.68, 0, 1.1),
+              opacity 0.5s ease;
+}
+
+.book-panel-container.panel-entered {
+  transform: perspective(1500px) rotateY(0deg) scale(1);
+  opacity: 1;
 }

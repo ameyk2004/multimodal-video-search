@@ -140,6 +140,18 @@ Resources:
             Path: /music
             Method: get
             RestApiId: !Ref SadhanaNandadeepApi
+        GetBooksApi:
+          Type: Api
+          Properties:
+            Path: /books
+            Method: get
+            RestApiId: !Ref SadhanaNandadeepApi
+        GetBookDetailsApi:
+          Type: Api
+          Properties:
+            Path: /books/{bookId}
+            Method: get
+            RestApiId: !Ref SadhanaNandadeepApi
 
   SadhanaNandadeepApi:
     Type: AWS::Serverless::Api

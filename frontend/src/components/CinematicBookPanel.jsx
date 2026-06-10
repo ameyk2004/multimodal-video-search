@@ -6,8 +6,19 @@ const CinematicBookPanel = ({ bookSummary, initialTitle, onClose, onSearch, lang
   const [details, setDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('summary');
+  const [imageError, setImageError] = useState(false);
+  const [entered, setEntered] = useState(false);
 
   const bookId = bookSummary.video_id;
+  const initialTitleStr = initialTitle || bookSummary.title || "साहित्य";
+  const coverUrl = `/books/${initialTitleStr}.jpg`;
+
+  useEffect(() => {
+    // Trigger entrance animation after mount
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => setEntered(true));
+    });
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -23,17 +34,29 @@ const CinematicBookPanel = ({ bookSummary, initialTitle, onClose, onSearch, lang
   }, [bookId]);
 
   return (
-    <div className="cinematic-overlay" onClick={onClose}>
-      <div className="cinematic-panel-container book-panel-container" onClick={e => e.stopPropagation()}>
+    <div className={`cinematic-overlay book-panel-entrance ${entered ? 'entered' : ''}`} onClick={onClose}>
+      <div className={`cinematic-panel-container book-panel-container ${entered ? 'panel-entered' : ''}`} onClick={e => e.stopPropagation()}>
         <button className="cinematic-close-btn" onClick={onClose}>×</button>
         <div className="cinematic-layout book-layout">
           
           {/* LEFT: Book Cover / Info Display */}
           <div className="cinematic-player-section book-cover-section">
-            <div className="cinematic-book-large-cover">
-              <span className="book-large-icon">📖</span>
-              <h1 className="cinematic-title">{initialTitle || "साहित्य"}</h1>
-              <p className="book-author-large">{details?.author || bookSummary.author || "अज्ञात"}</p>
+            <div className="cinematic-book-large-cover" style={!imageError ? { padding: 0, height: '100%', width: '100%' } : {}}>
+              {!imageError && (
+                <img 
+                  src={coverUrl} 
+                  alt={initialTitleStr} 
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                  onError={() => setImageError(true)}
+                />
+              )}
+              {imageError && (
+                <>
+                  <span className="book-large-icon">📖</span>
+                  <h1 className="cinematic-title">{initialTitleStr}</h1>
+                  <p className="book-author-large">{details?.author || bookSummary.author || "अज्ञात"}</p>
+                </>
+              )}
             </div>
             <div className="cinematic-player-info book-meta-info">
                {details?.mood && <span className="book-mood-badge">{details.mood}</span>}

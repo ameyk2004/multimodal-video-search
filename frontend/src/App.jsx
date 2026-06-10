@@ -489,7 +489,7 @@ export default function App() {
                   <>
                     <div className="library-shelf" style={{ marginBottom: '60px' }}>
                       <h2 className="library-shelf-title">Literature (पुस्तके)</h2>
-                      <div className="library-shelves-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '24px', padding: '10px 0' }}>
+                      <div className="books-shelf-container">
                         {allBooks.filter(b => {
                           if (libraryActiveFilter === 'सर्व') return true;
                           return (b.topics && b.topics.includes(libraryActiveFilter));
