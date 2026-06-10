@@ -117,37 +117,40 @@ export default function BookResultCard({ result, isMarathi, style }) {
           </div>
 
           <div className="book-text-flow">
-            {!noMoreTop && topChunkIndex > 0 && (
-              <button 
-                className="read-more-book-btn" 
-                onClick={handleReadPrevious}
-                disabled={loadingPrev}
-                style={{ alignSelf: 'center', marginBottom: '16px', fontSize: '0.85rem', padding: '6px 16px' }}
-              >
-                {loadingPrev 
-                  ? (isMarathi ? 'लोड होत आहे...' : 'Loading...') 
-                  : (isMarathi ? '↑ मागील परिच्छेद' : '↑ Read Previous')}
-              </button>
-            )}
-
             {paragraphs.map((p, idx) => (
               <p key={idx} className="marathi-text book-paragraph">
                 {cleanText(p)}
               </p>
             ))}
 
-            {!noMoreBottom && (
-              <button 
-                className="read-more-book-btn" 
-                onClick={handleReadMore}
-                disabled={loadingNext}
-                style={{ alignSelf: 'center', marginTop: '16px', fontSize: '0.85rem', padding: '6px 16px' }}
-              >
-                {loadingNext 
-                  ? (isMarathi ? 'लोड होत आहे...' : 'Loading...') 
-                  : (isMarathi ? 'पुढील परिच्छेद ↓' : 'Read Next ↓')}
-              </button>
-            )}
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-start', marginTop: '16px', flexWrap: 'wrap' }}>
+              {!noMoreTop && topChunkIndex > 0 && (
+                <button 
+                  className="read-more-book-btn" 
+                  onClick={handleReadPrevious}
+                  disabled={loadingPrev}
+                  style={{ fontSize: '0.85rem', padding: '6px 16px' }}
+                >
+                  {loadingPrev 
+                    ? (isMarathi ? 'लोड होत आहे...' : 'Loading...') 
+                    : (isMarathi ? '↑ मागील परिच्छेद' : '↑ Read Previous')}
+                </button>
+              )}
+
+              {!noMoreBottom && (
+                <button 
+                  className="read-more-book-btn" 
+                  onClick={handleReadMore}
+                  disabled={loadingNext}
+                  style={{ fontSize: '0.85rem', padding: '6px 16px' }}
+                >
+                  {loadingNext 
+                    ? (isMarathi ? 'लोड होत आहे...' : 'Loading...') 
+                    : (isMarathi ? 'पुढील परिच्छेद ↓' : 'Read Next ↓')}
+                </button>
+              )}
+            </div>
+            
             {noMoreBottom && (
               <div className="end-of-book" style={{ marginTop: '16px' }}>
                 {isMarathi ? '— पाठाचा शेवट —' : '— End of passage —'}
