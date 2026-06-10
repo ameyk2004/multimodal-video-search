@@ -57,5 +57,6 @@ export const api = {
   getBookDetails: (bookId) => apiClient(`/books/${bookId}`),
   getMusic: () => apiClient(`/music`),
   getNextChunk: (bookName, chunkIndex) => apiClient(`/search?action=next_chunk&book_name=${encodeURIComponent(bookName)}&chunk_index=${chunkIndex}`),
+  fetchBookPage: (bookName, pageNumber) => apiClient(`/search?action=fetch_page&book_name=${encodeURIComponent(bookName)}&page_number=${pageNumber}`),
   getConfig: fetchConfig
 };

@@ -69,13 +69,15 @@ def lambda_handler(event, context):
                     video_id=book_id,
                     title=item.get("title", "अज्ञात पुस्तक"),
                     author=item.get("author", "अज्ञात"),
+                    date_written=item.get("date_written", "अज्ञात"),
                     summary=item.get("summary", ""),
                     for_whom=item.get("for_whom", ""),
                     mood=item.get("mood", ""),
                     structure_type=item.get("structure_type", ""),
                     topics=item.get("topics", []),
                     questions=item.get("questions", []),
-                    key_learnings=item.get("key_learnings", [])
+                    key_learnings=item.get("key_learnings", []),
+                    table_of_contents=item.get("table_of_contents", [])
                 )
                 return _build_response(200, detail_model)
             else:

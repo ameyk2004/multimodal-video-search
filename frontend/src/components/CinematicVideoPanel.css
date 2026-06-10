@@ -504,3 +504,45 @@
   transform: perspective(1500px) rotateY(0deg) scale(1);
   opacity: 1;
 }
+
+/* Book Index List */
+.book-index-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.book-index-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.05rem;
+  transition: all 0.2s;
+  border-left: 3px solid transparent;
+}
+
+.book-index-item.clickable {
+  cursor: pointer;
+}
+
+.book-index-item.clickable:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-left: 3px solid #E65100;
+  transform: translateX(4px);
+}
+
+.book-index-title {
+  font-weight: 500;
+}
+
+.book-index-page {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.9rem;
+}

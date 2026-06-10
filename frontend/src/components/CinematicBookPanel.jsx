@@ -68,7 +68,7 @@ const CinematicBookPanel = ({ bookSummary, initialTitle, onClose, onSearch, lang
           <div className="cinematic-knowledge-panel">
             <div className="knowledge-tabs">
               <button className={`k-tab ${activeTab === 'summary' ? 'active' : ''}`} onClick={() => setActiveTab('summary')}>Summary & Learnings</button>
-              <button className={`k-tab ${activeTab === 'index' ? 'active' : ''}`} onClick={() => setActiveTab('index')}>अनुक्रमणिका (Index)</button>
+              <button className={`k-tab ${activeTab === 'index' ? 'active' : ''}`} onClick={() => setActiveTab('index')}>Index</button>
               <button className={`k-tab ${activeTab === 'questions' ? 'active' : ''}`} onClick={() => setActiveTab('questions')}>Questions</button>
               <button className={`k-tab ${activeTab === 'topics' ? 'active' : ''}`} onClick={() => setActiveTab('topics')}>Topics</button>
             </div>
@@ -116,14 +116,13 @@ const CinematicBookPanel = ({ bookSummary, initialTitle, onClose, onSearch, lang
 
                   {activeTab === 'index' && (
                     <section className="knowledge-section">
-                      <h2>अनुक्रमणिका (Table of Contents)</h2>
+                      <h2>Index</h2>
                       <p className="questions-helper">विशिष्ट अध्यायावर जाण्यासाठी खालीलपैकी एकावर क्लिक करा.</p>
-                      <ul className="knowledge-query-list" style={{ listStyle: 'none', paddingLeft: 0 }}>
+                      <ul className="book-index-list">
                         {details?.table_of_contents?.map((item, i) => (
                           <li 
                             key={i} 
-                            className={`knowledge-query-item clickable`}
-                            style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 16px', background: 'rgba(255,255,255,0.05)', marginBottom: '8px', borderRadius: '8px' }}
+                            className="book-index-item clickable"
                             onClick={() => { 
                               if (onSearch) {
                                 onSearch({
@@ -135,8 +134,8 @@ const CinematicBookPanel = ({ bookSummary, initialTitle, onClose, onSearch, lang
                               }
                             }}
                           >
-                            <span style={{ fontWeight: '500' }}>{item.title}</span>
-                            <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.9rem' }}>पान {item.page}</span>
+                            <span className="book-index-title">{item.title}</span>
+                            <span className="book-index-page">पान {item.page}</span>
                           </li>
                         ))}
                         {(!details?.table_of_contents || details.table_of_contents.length === 0) && (

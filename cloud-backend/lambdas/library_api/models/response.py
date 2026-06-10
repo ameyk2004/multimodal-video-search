@@ -62,6 +62,7 @@ class BookDetailResponse(BaseModel):
     video_id: str
     title: str = "अज्ञात पुस्तक"
     author: str = "अज्ञात"
+    date_written: str = "अज्ञात"
     summary: str = ""
     for_whom: str = ""
     mood: str = ""
@@ -69,3 +70,4 @@ class BookDetailResponse(BaseModel):
     topics: List[str] = Field(default_factory=list)
     questions: List[str] = Field(default_factory=list)
     key_learnings: List[str] = Field(default_factory=list)
+    table_of_contents: list = Field(default_factory=list)

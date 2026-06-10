@@ -99,6 +99,11 @@ def main():
         field_name="chunk_index",
         field_schema=models.PayloadSchemaType.INTEGER
     )
+    client.create_payload_index(
+        collection_name=COLLECTION_NAME,
+        field_name="page_number",
+        field_schema=models.PayloadSchemaType.INTEGER
+    )
 
     print("\n=== PASS 3: Uploading Dense + Sparse Vectors ===")
     batch_size = 100

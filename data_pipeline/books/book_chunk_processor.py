@@ -45,7 +45,7 @@ class BookChunkProcessor:
         with open(filepath, encoding="utf-8") as f:
             pages = json.load(f)
 
-        full_text, char_map = self._stitch(pages)
+        full_text, char_map = self._stitch(pages, book_name)
         logger.info("Stitched %d pages → %d chars.", len(pages), len(full_text))
 
         # 2. Load enriched metadata from LLM step
@@ -140,6 +140,7 @@ class BookChunkProcessor:
     @staticmethod
     def _stitch(
         pages: list[dict],
+        book_name: str = ""
     ) -> tuple[str, list[tuple[int, int, int]]]:
         """
         char_to_page_map is a list of:
@@ -152,6 +153,14 @@ class BookChunkProcessor:
             text = (page.get("text") or "").strip()
             if not text:
                 continue
+                
+            # --- CLEANUP HEADERS/FOOTERS ---
+            # Remove specific known annoying headers (e.g., Vishnusahasranaam)
+            text = re.sub(r'(?:नव्य\s*)?श्री विष्णुसहस्रनाम\s*:\s*एक जीवनशैली\s*/\s*[०१२३४५६७८९0-9]+\s*', '', text)
+            
+            # Generic cleanup for standalone numbers at the start or end of the page (common OCR page numbers)
+            text = re.sub(r'^\s*[०१२३४५६७८९0-9]+\s*\n', '', text)
+            text = re.sub(r'\n\s*[०१२३४५६७८९0-9]+\s*$', '', text)
 
             current_char_length = len(full_text)
             page_num = int(page.get("page_number", 0))
