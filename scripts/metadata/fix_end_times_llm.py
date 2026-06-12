@@ -341,8 +341,10 @@ class EndTextFixer:
             )
             music_fixed += 1
 
+        status = "updated" if (stories_fixed + music_fixed) > 0 else "no_changes"
+
         # Write to DynamoDB (unless dry-run)
-        if not self.dry_run and (stories_fixed > 0 or music_fixed > 0):
+        if not self.dry_run and status != "error":
             # Convert all numeric values to Decimal for DynamoDB
             def decimalize(obj):
                 if isinstance(obj, float):
@@ -357,29 +359,34 @@ class EndTextFixer:
 
             self._table.update_item(
                 Key={'video_id': video_id},
-                UpdateExpression="SET stories = :s, musical_segments = :m",
+                UpdateExpression="SET stories = :s, musical_segments = :m, llm_end_times_fixed = :fixed",
                 ExpressionAttributeValues={
                     ':s': decimalize(stories),
-                    ':m': decimalize(music)
+                    ':m': decimalize(music),
+                    ':fixed': True
                 }
             )
 
         return {
             "video_id": video_id,
-            "status": "updated" if (stories_fixed + music_fixed) > 0 else "no_changes",
+            "status": status,
             "stories_fixed": stories_fixed,
             "music_fixed": music_fixed,
             "details": details
         }
 
-    def run(self, concurrency: int = 2):
-        """Scan DynamoDB and process all videos, 2 at a time."""
+    def run(self, concurrency: int = 2, start_from: str = None, resume: bool = False):
+        """Scan DynamoDB and process videos."""
         print(f"\n{'='*60}")
         print(f"🔧 End Text Fixer {'(DRY RUN)' if self.dry_run else '(LIVE MODE)'}")
         print(f"{'='*60}")
         print(f"Table: {self._table_name}")
         print(f"Raw transcripts: {self._raw_dir}")
         print(f"Concurrency: {concurrency}")
+        if resume:
+            print("Resume Mode: ON (skipping already fixed videos)")
+        if start_from:
+            print(f"Start From: {start_from}")
         print(f"{'='*60}\n")
 
         # Scan DynamoDB
@@ -395,10 +402,26 @@ class EndTextFixer:
             vid = item.get("video_id")
             if not vid or item.get("type") == "book":
                 continue
+                
+            # If resume is enabled, skip items that already have the fix flag
+            if resume and item.get("llm_end_times_fixed") is True:
+                continue
+                
             stories = item.get("stories", [])
             music = item.get("musical_segments", [])
             if stories or music:
                 video_items.append((vid, stories, music))
+
+        # Sort alphabetically by video_id so --start-from is predictable
+        video_items.sort(key=lambda x: x[0])
+        
+        if start_from:
+            idx = next((i for i, v in enumerate(video_items) if v[0] == start_from), -1)
+            if idx != -1:
+                video_items = video_items[idx:]
+                print(f"⏩ Fast-forwarded to {start_from}. Processing {len(video_items)} videos.")
+            else:
+                print(f"⚠️ Warning: --start-from {start_from} not found in pending videos. Processing all {len(video_items)}.")
 
         print(f"Found {len(video_items)} videos with stories/music to process.\n")
 
@@ -461,13 +484,17 @@ def main():
                         help="Preview changes without writing to DynamoDB")
     parser.add_argument("--concurrency", type=int, default=2,
                         help="Number of videos to process in parallel (default: 2)")
+    parser.add_argument("--resume", action="store_true",
+                        help="Skip videos that have already been fixed by this script")
+    parser.add_argument("--start-from", type=str,
+                        help="Start processing from this specific video_id (sorted alphabetically)")
     args = parser.parse_args()
 
     from dotenv import load_dotenv
     load_dotenv()
 
     fixer = EndTextFixer(dry_run=args.dry_run)
-    fixer.run(concurrency=args.concurrency)
+    fixer.run(concurrency=args.concurrency, start_from=args.start_from, resume=args.resume)
 
 
 if __name__ == "__main__":
