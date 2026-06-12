@@ -63,14 +63,14 @@ def _resolve_end_times(items: list, full_text: str, char_to_time_map: list):
                     chars_into = target_index - frag_char_start
                     ratio = min(max(chars_into / frag_text_len, 0.0), 1.0) if frag_text_len > 0 else 0.0
                     interpolated = frag_start_time + (frag_duration * ratio)
-                    item["end_time_seconds"] = round(interpolated, 3)
+                    item["end_time_seconds"] = int(interpolated)
                     updated = True
                 else:
-                    item["end_time_seconds"] = item.get("start_time_seconds", 0.0)
+                    item["end_time_seconds"] = int(item.get("start_time_seconds", 0))
             else:
-                item["end_time_seconds"] = item.get("start_time_seconds", 0.0)
+                item["end_time_seconds"] = int(item.get("start_time_seconds", 0))
         else:
-            item["end_time_seconds"] = item.get("start_time_seconds", 0.0)
+            item["end_time_seconds"] = int(item.get("start_time_seconds", 0))
             
     return updated
 
