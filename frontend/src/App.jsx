@@ -108,6 +108,7 @@ export default function App() {
 
   const [topicFilter, setTopicFilter] = useState('सर्व');
   const [saintFilter, setSaintFilter] = useState('सर्व');
+  const [durationFilter, setDurationFilter] = useState(20); // max 20 mins
   const [libraryActiveFilter, setLibraryActiveFilter] = useState('सर्व');
   const [isListening, setIsListening] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -322,7 +323,15 @@ export default function App() {
     const topicMatch = topicFilter === 'सर्व' ? true : (s.associated_topics && s.associated_topics.includes(topicFilter));
     const saintMatch = saintFilter === 'सर्व' ? true : (s.normalized_saint_name === saintFilter || s.character_or_saint === saintFilter);
     
-    return queryMatch && topicMatch && saintMatch;
+    let durationMatch = true;
+    if (durationFilter < 20) {
+      const durationSeconds = s.end_time_seconds > s.start_time_seconds ? s.end_time_seconds - s.start_time_seconds : 0;
+      const durationMin = durationSeconds / 60;
+      // If duration is 0 (unknown end time), we still show it, or we could hide it. Let's show if unknown.
+      durationMatch = durationSeconds === 0 || durationMin <= durationFilter;
+    }
+    
+    return queryMatch && topicMatch && saintMatch && durationMatch;
   });
 
   return (
@@ -448,11 +457,30 @@ export default function App() {
                             ))}
                           </select>
                         </div>
+
+                        <div className="filter-group">
+                          <label style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span>Max Duration (वेळ)</span>
+                            <span style={{ color: 'var(--saffron)' }}>{durationFilter === 20 ? 'Any' : `Up to ${durationFilter} min`}</span>
+                          </label>
+                          <input 
+                            type="range" 
+                            min="1" 
+                            max="20" 
+                            value={durationFilter} 
+                            onChange={(e) => setDurationFilter(parseInt(e.target.value))}
+                            style={{ width: '100%', accentColor: 'var(--saffron)' }}
+                          />
+                          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: 'var(--text-dim)', marginTop: '4px' }}>
+                            <span>1 min</span>
+                            <span>20+ min</span>
+                          </div>
+                        </div>
                         
                         <div className="filter-actions">
                           <button 
                             className="filter-reset-btn" 
-                            onClick={() => { setTopicFilter('सर्व'); setSaintFilter('सर्व'); setStorySearchQuery(''); }}
+                            onClick={() => { setTopicFilter('सर्व'); setSaintFilter('सर्व'); setDurationFilter(20); setStorySearchQuery(''); }}
                           >
                             Reset All
                           </button>
@@ -480,7 +508,7 @@ export default function App() {
                         <p style={{ fontSize: '1.2rem', marginBottom: '12px', color: '#fff' }}>No stories found.</p>
                         <p style={{ marginBottom: '24px' }}>It looks like your current filters are hiding everything.</p>
                         <button 
-                          onClick={() => { setTopicFilter('सर्व'); setSaintFilter('सर्व'); setStorySearchQuery(''); }}
+                          onClick={() => { setTopicFilter('सर्व'); setSaintFilter('सर्व'); setDurationFilter(20); setStorySearchQuery(''); }}
                           style={{ background: 'var(--saffron)', color: '#fff', border: 'none', padding: '10px 24px', borderRadius: '999px', fontSize: '1rem', cursor: 'pointer', fontWeight: '500' }}
                         >
                           Clear All Filters

@@ -12,6 +12,7 @@ class StoryItem(BaseModel):
     associated_topics: List[str] = Field(default_factory=list)
     exact_start_text: Optional[str] = ""
     start_time_seconds: int = 0
+    end_time_seconds: int = 0
     thumbnail_url: str
     youtube_url: str
 

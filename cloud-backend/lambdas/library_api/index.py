@@ -116,6 +116,8 @@ def lambda_handler(event, context):
                 for seg in raw_segments:
                     raw_start = seg.get("start_time_seconds", 0)
                     start_time = int(raw_start) if raw_start else 0
+                    raw_end = seg.get("end_time_seconds", 0)
+                    end_time = int(raw_end) if raw_end else 0
                     all_segments.append(MusicalSegmentItem(
                         video_id=v_id,
                         type=seg.get("type", "bhajan"),
@@ -124,7 +126,8 @@ def lambda_handler(event, context):
                         saint=seg.get("saint", ""),
                         saint_english=seg.get("saint_english", ""),
                         exact_start_text=seg.get("exact_start_text", ""),
-                        start_time_seconds=start_time
+                        start_time_seconds=start_time,
+                        end_time_seconds=end_time
                     ))
             
             return _build_response(200, MusicListResponse(segments=all_segments))
@@ -150,11 +153,14 @@ def lambda_handler(event, context):
                 for story in raw_stories:
                     raw_start = story.get("start_time_seconds", 0)
                     start_time = int(raw_start) if raw_start else 0
+                    raw_end = story.get("end_time_seconds", 0)
+                    end_time = int(raw_end) if raw_end else 0
                     stories.append(StorySummary(
                         title=story.get("title", "प्रवचन"),
                         title_english=story.get("title_english", ""),
                         moral=story.get("moral", ""),
-                        start_time_seconds=start_time
+                        start_time_seconds=start_time,
+                        end_time_seconds=end_time
                     ))
                 
                 detail_model = VideoDetailResponse(

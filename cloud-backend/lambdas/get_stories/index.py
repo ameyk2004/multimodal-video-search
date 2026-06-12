@@ -69,6 +69,12 @@ def lambda_handler(event, context):
                     start_time = int(raw_start)
                 else:
                     start_time = int(raw_start) if raw_start else 0
+                    
+                raw_end = story.get("end_time_seconds", 0)
+                if isinstance(raw_end, decimal.Decimal):
+                    end_time = int(raw_end)
+                else:
+                    end_time = int(raw_end) if raw_end else 0
 
                 all_stories.append(StoryItem(
                     video_id=video_id,
@@ -81,6 +87,7 @@ def lambda_handler(event, context):
                     moral=moral,
                     exact_start_text=start_text,
                     start_time_seconds=start_time,
+                    end_time_seconds=end_time,
                     thumbnail_url=f"https://img.youtube.com/vi/{video_id}/hqdefault.jpg",
                     youtube_url=f"https://www.youtube.com/watch?v={video_id}&t={start_time}s"
                 ))

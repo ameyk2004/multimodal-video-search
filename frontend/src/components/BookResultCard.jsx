@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { api } from '../utils/api';
 
-export default function BookResultCard({ result, isMarathi, style }) {
+export default function BookResultCard({ result, isMarathi, style, query }) {
   const [paragraphs, setParagraphs] = useState([result.marathi_raw]);
   const [topChunkIndex, setTopChunkIndex] = useState(result.chunk_index);
   const [bottomChunkIndex, setBottomChunkIndex] = useState(result.chunk_index);
@@ -113,6 +113,26 @@ export default function BookResultCard({ result, isMarathi, style }) {
               <span className="book-name-badge highlight-book">
                 {result.book_name} {lang === 'mr' ? `(पान ${result.page_number})` : `(Page ${result.page_number})`}
               </span>
+              <button 
+                className="share-action-btn" 
+                title={isMarathi ? 'शेअर करा' : 'Share'}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  // Truncate the text if it's too long for a URL
+                  const chunkText = paragraphs.map(p => cleanText(p)).join('\n\n');
+                  const snippet = chunkText.length > 500 ? chunkText.substring(0, 500) + '...' : chunkText;
+                  const text = `Check out this answer to "${query}":\n\n"${snippet}"\n\n- ${result.book_name}, Page ${result.page_number}`;
+                  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+                }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="18" cy="5" r="3"></circle>
+                  <circle cx="6" cy="12" r="3"></circle>
+                  <circle cx="18" cy="19" r="3"></circle>
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                </svg>
+              </button>
             </div>
           </div>
 

@@ -22,6 +22,7 @@ class StorySummary(BaseModel):
     title_english: Optional[str] = ""
     moral: Optional[str] = ""
     start_time_seconds: int = 0
+    end_time_seconds: int = 0
 
 class VideoDetailResponse(BaseModel):
     video_id: str
@@ -42,6 +43,7 @@ class MusicalSegmentItem(BaseModel):
     saint_english: Optional[str] = ""
     exact_start_text: Optional[str] = ""
     start_time_seconds: int = 0
+    end_time_seconds: int = 0
 
 class MusicListResponse(BaseModel):
     segments: List[MusicalSegmentItem]

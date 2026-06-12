@@ -81,14 +81,6 @@ const CinematicBookPanel = ({ bookSummary, initialTitle, onClose, onSearch, lang
                   {activeTab === 'summary' && (
                     <>
                       <section className="knowledge-section">
-                        <h2>माहिती (Information)</h2>
-                        <ul className="knowledge-practice-list" style={{ listStyle: 'none', paddingLeft: 0, fontSize: '1.05rem', color: 'rgba(255,255,255,0.85)' }}>
-                          <li style={{ marginBottom: '8px' }}><strong>लेखक/संकलक:</strong> {details?.author || bookSummary.author || "अज्ञात"}</li>
-                          <li><strong>काळ/वर्ष:</strong> {details?.date_written || "अज्ञात"}</li>
-                        </ul>
-                      </section>
-
-                      <section className="knowledge-section">
                         <h2>सारांश (Summary)</h2>
                         <p className="book-summary-text">{details?.summary || "No summary available."}</p>
                       </section>
@@ -110,6 +102,12 @@ const CinematicBookPanel = ({ bookSummary, initialTitle, onClose, onSearch, lang
                             <span className="knowledge-empty">No key learnings found.</span>
                           )}
                         </ul>
+                      </section>
+                      
+                      <section className="knowledge-section" style={{ marginTop: '20px', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '15px' }}>
+                        <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.95rem' }}>
+                          <strong>लेखक/संकलक:</strong> {details?.author || bookSummary.author || "अज्ञात"}
+                        </p>
                       </section>
                     </>
                   )}

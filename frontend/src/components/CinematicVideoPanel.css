@@ -546,3 +546,46 @@
   color: rgba(255, 255, 255, 0.5);
   font-size: 0.9rem;
 }
+
+/* Responsive styles for Book Panel */
+@media (max-width: 1024px) {
+  .book-panel-container .book-cover-section {
+    flex: none;
+    height: 35vh;
+  }
+}
+
+@media (max-width: 768px) {
+  .book-panel-container {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    border: none;
+    margin: 0;
+  }
+
+  .cinematic-book-large-cover {
+    transform: translateY(0);
+    padding: 20px;
+  }
+
+  .book-large-icon {
+    font-size: 4rem;
+    margin-bottom: 12px;
+  }
+
+  .book-author-large {
+    font-size: 1rem;
+    margin-top: 8px;
+  }
+  
+  .book-meta-info {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .book-mood-badge, .book-structure-badge {
+    padding: 4px 12px;
+    font-size: 0.8rem;
+  }
+}
