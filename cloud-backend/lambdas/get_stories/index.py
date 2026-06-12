@@ -44,9 +44,13 @@ def lambda_handler(event, context):
         table_name = os.environ.get("DYNAMODB_TABLE", "sadhananandadeep-content")
         table = dynamodb.Table(table_name)
         
-        # Scan the table
+        # Scan the table with pagination to avoid 1MB limit
         response = table.scan()
         items = response.get('Items', [])
+        
+        while 'LastEvaluatedKey' in response:
+            response = table.scan(ExclusiveStartKey=response['LastEvaluatedKey'])
+            items.extend(response.get('Items', []))
         
         all_stories = []
         for item in items:

@@ -46,7 +46,7 @@ const MusicModal = ({ track, onClose, lang }) => {
             </div>
           )}
           <iframe
-            src={`https://www.youtube.com/embed/${video_id}?autoplay=1&start=${Math.floor(start_time_seconds || 0)}`}
+            src={`https://www.youtube.com/embed/${video_id}?autoplay=1&start=${Math.floor(start_time_seconds || 0)}${track.end_time_seconds > start_time_seconds ? `&end=${Math.ceil(track.end_time_seconds)}` : ''}`}
             title="YouTube video player"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen

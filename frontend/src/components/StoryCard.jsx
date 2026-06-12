@@ -46,7 +46,7 @@ const StoryModal = ({ story, onClose, lang }) => {
             </div>
           )}
           <iframe
-            src={`https://www.youtube.com/embed/${video_id}?autoplay=1&start=${Math.floor(start_time_seconds || 0)}`}
+            src={`https://www.youtube.com/embed/${video_id}?autoplay=1&start=${Math.floor(start_time_seconds || 0)}${story.end_time_seconds > start_time_seconds ? `&end=${Math.ceil(story.end_time_seconds)}` : ''}`}
             title="YouTube video player"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
@@ -154,28 +154,24 @@ const StoryCard = ({ story, autoOpen, lang }) => {
         </div>
 
         <div className="story-card-center">
-          <div className="story-card-top-row">
+          <div className="story-card-top-row" style={{ marginBottom: '12px' }}>
             <div className="story-card-meta">
               {displaySaint && <span className="saint-tag">{displaySaint}</span>}
-              {start_time_seconds > 0 && (
-                <span className="time-tag">Starts at {formatTime(start_time_seconds)}</span>
-              )}
-              {durationSeconds > 0 && (
-                <span className="time-tag" style={{ background: 'rgba(255, 170, 0, 0.2)', border: '1px solid rgba(255, 170, 0, 0.4)' }}>
-                  Duration: {formatTime(durationSeconds)}
+              {(start_time_seconds > 0 || durationSeconds > 0) && (
+                <span className="sleek-time">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '4px'}}>
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  {start_time_seconds > 0 ? formatTime(start_time_seconds) : '0:00'}
+                  {durationSeconds > 0 && <span style={{ opacity: 0.6, marginLeft: '6px' }}>• {formatTime(durationSeconds)}</span>}
                 </span>
               )}
             </div>
             
-            {associated_topics && associated_topics.length > 0 && (
-              <div className="story-card-topics" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '4px' }}>
-                {associated_topics.map((t, i) => <span key={i} className="story-topic-tag">{t}</span>)}
-              </div>
-            )}
-            
             <div className="story-card-actions" onClick={(e) => e.stopPropagation()}>
               <button className="btn-inline-play" onClick={() => setIsModalOpen(true)}>
-                ▶ Play Story
+                ▶ Play
               </button>
               <button 
                 className="share-action-btn" 
@@ -200,6 +196,12 @@ const StoryCard = ({ story, autoOpen, lang }) => {
           </div>
           
           <h3 className="story-card-title">{displayTitle}</h3>
+          
+          {associated_topics && associated_topics.length > 0 && (
+            <div className="story-card-topics" style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '8px', marginBottom: '4px' }}>
+              {associated_topics.map((t, i) => <span key={i} className="story-topic-tag">{t}</span>)}
+            </div>
+          )}
           
           {moral && (
             <div className="story-card-moral">

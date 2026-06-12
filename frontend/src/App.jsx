@@ -108,7 +108,8 @@ export default function App() {
 
   const [topicFilter, setTopicFilter] = useState('सर्व');
   const [saintFilter, setSaintFilter] = useState('सर्व');
-  const [durationFilter, setDurationFilter] = useState(20); // max 20 mins
+  const [minDurationFilter, setMinDurationFilter] = useState(0);
+  const [maxDurationFilter, setMaxDurationFilter] = useState(20);
   const [libraryActiveFilter, setLibraryActiveFilter] = useState('सर्व');
   const [isListening, setIsListening] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -324,11 +325,14 @@ export default function App() {
     const saintMatch = saintFilter === 'सर्व' ? true : (s.normalized_saint_name === saintFilter || s.character_or_saint === saintFilter);
     
     let durationMatch = true;
-    if (durationFilter < 20) {
+    if (maxDurationFilter < 20 || minDurationFilter > 0) {
       const durationSeconds = s.end_time_seconds > s.start_time_seconds ? s.end_time_seconds - s.start_time_seconds : 0;
       const durationMin = durationSeconds / 60;
-      // If duration is 0 (unknown end time), we still show it, or we could hide it. Let's show if unknown.
-      durationMatch = durationSeconds === 0 || durationMin <= durationFilter;
+      if (durationSeconds === 0) {
+        durationMatch = minDurationFilter === 0;
+      } else {
+        durationMatch = durationMin >= minDurationFilter && durationMin <= maxDurationFilter;
+      }
     }
     
     return queryMatch && topicMatch && saintMatch && durationMatch;
@@ -460,27 +464,38 @@ export default function App() {
 
                         <div className="filter-group">
                           <label style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <span>Max Duration (वेळ)</span>
-                            <span style={{ color: 'var(--saffron)' }}>{durationFilter === 20 ? 'Any' : `Up to ${durationFilter} min`}</span>
+                            <span>Min Duration (किमान वेळ)</span>
+                            <span style={{ color: 'var(--saffron)' }}>{minDurationFilter} min</span>
+                          </label>
+                          <input 
+                            type="range" 
+                            min="0" 
+                            max="20" 
+                            value={minDurationFilter} 
+                            onChange={(e) => setMinDurationFilter(Math.min(parseInt(e.target.value), maxDurationFilter))}
+                            style={{ width: '100%', accentColor: 'var(--saffron)' }}
+                          />
+                        </div>
+                        
+                        <div className="filter-group" style={{ marginTop: '16px' }}>
+                          <label style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span>Max Duration (कमाल वेळ)</span>
+                            <span style={{ color: 'var(--saffron)' }}>{maxDurationFilter === 20 ? 'Any' : `Up to ${maxDurationFilter} min`}</span>
                           </label>
                           <input 
                             type="range" 
                             min="1" 
                             max="20" 
-                            value={durationFilter} 
-                            onChange={(e) => setDurationFilter(parseInt(e.target.value))}
+                            value={maxDurationFilter} 
+                            onChange={(e) => setMaxDurationFilter(Math.max(parseInt(e.target.value), minDurationFilter))}
                             style={{ width: '100%', accentColor: 'var(--saffron)' }}
                           />
-                          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: 'var(--text-dim)', marginTop: '4px' }}>
-                            <span>1 min</span>
-                            <span>20+ min</span>
-                          </div>
                         </div>
                         
                         <div className="filter-actions">
                           <button 
                             className="filter-reset-btn" 
-                            onClick={() => { setTopicFilter('सर्व'); setSaintFilter('सर्व'); setDurationFilter(20); setStorySearchQuery(''); }}
+                            onClick={() => { setTopicFilter('सर्व'); setSaintFilter('सर्व'); setMinDurationFilter(0); setMaxDurationFilter(20); setStorySearchQuery(''); }}
                           >
                             Reset All
                           </button>
@@ -508,7 +523,7 @@ export default function App() {
                         <p style={{ fontSize: '1.2rem', marginBottom: '12px', color: '#fff' }}>No stories found.</p>
                         <p style={{ marginBottom: '24px' }}>It looks like your current filters are hiding everything.</p>
                         <button 
-                          onClick={() => { setTopicFilter('सर्व'); setSaintFilter('सर्व'); setDurationFilter(20); setStorySearchQuery(''); }}
+                          onClick={() => { setTopicFilter('सर्व'); setSaintFilter('सर्व'); setMinDurationFilter(0); setMaxDurationFilter(20); setStorySearchQuery(''); }}
                           style={{ background: 'var(--saffron)', color: '#fff', border: 'none', padding: '10px 24px', borderRadius: '999px', fontSize: '1rem', cursor: 'pointer', fontWeight: '500' }}
                         >
                           Clear All Filters

@@ -181,9 +181,11 @@ def lambda_handler(event, context):
             
         else:
             # Handle GET /videos
-            # In a real app we'd paginate, but for now we scan
             response = table.scan()
             items = response.get('Items', [])
+            while 'LastEvaluatedKey' in response:
+                response = table.scan(ExclusiveStartKey=response['LastEvaluatedKey'])
+                items.extend(response.get('Items', []))
             
             video_summaries = []
             for item in items:

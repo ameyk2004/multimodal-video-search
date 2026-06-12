@@ -195,6 +195,23 @@ if __name__ == "__main__":
     "https://www.youtube.com/watch?v=vDZcIr0s-do&list=PLS0pq2M-6hSKrNXAl0lkZKQRmKNR2oqwJ&index=187",
     "https://www.youtube.com/watch?v=gLXFdydaS3g&list=PLS0pq2M-6hSKrNXAl0lkZKQRmKNR2oqwJ&index=188",
     "https://www.youtube.com/watch?v=Kif4pohYNGw&list=PLS0pq2M-6hSKrNXAl0lkZKQRmKNR2oqwJ&index=189"
+    "https://www.youtube.com/watch?v=C9WnqKiYyHQ",
+    "https://www.youtube.com/watch?v=NGXIX4KMhyo",
+    "https://www.youtube.com/watch?v=aUuZMFRhHfU",
+    "https://www.youtube.com/watch?v=h-V1vwNYvG8",
+    "https://www.youtube.com/watch?v=nhYSXEtHB4g",
+    "https://www.youtube.com/watch?v=P7WnnqSVqdw",
+    "https://www.youtube.com/watch?v=tgwwJGnCTyo",
+    "https://www.youtube.com/watch?v=IkEtYHGiTbw",
+    "https://www.youtube.com/watch?v=YYj9ICGk3fQ",
+    "https://www.youtube.com/watch?v=Ft5YhDo8P8w",
+    "https://www.youtube.com/watch?v=fooVEK1Kk14",
+    "https://www.youtube.com/watch?v=aW8HTwwHV1Y",
+    "https://www.youtube.com/watch?v=RJsB1ma1z3o",
+    "https://www.youtube.com/watch?v=2A-j7Py69uM",
+    "https://www.youtube.com/watch?v=2bDcCFU5AmY",
+    "https://www.youtube.com/watch?v=aqB9aJKI7W8",
+    "https://www.youtube.com/watch?v=psid81b2Mxw",
 ]
     # Automatically extract IDs from the URLs
     video_ids = [extract_video_id(url) for url in video_urls]

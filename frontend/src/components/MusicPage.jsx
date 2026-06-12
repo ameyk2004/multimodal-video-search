@@ -18,6 +18,8 @@ export default function MusicPage({ lang }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState('सर्व');
   const [saintFilter, setSaintFilter] = useState('सर्व');
+  const [minDurationFilter, setMinDurationFilter] = useState(0);
+  const [maxDurationFilter, setMaxDurationFilter] = useState(20);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   useEffect(() => {
@@ -50,9 +52,18 @@ export default function MusicPage({ lang }) {
         const textToSearch = `${s.name} ${s.name_english || ''} ${s.saint || ''} ${s.saint_english || ''} ${s.exact_start_text || ''}`.toLowerCase();
         if (!textToSearch.includes(searchQuery.toLowerCase())) return false;
       }
+      if (maxDurationFilter < 20 || minDurationFilter > 0) {
+        const durationSeconds = s.end_time_seconds > s.start_time_seconds ? s.end_time_seconds - s.start_time_seconds : 0;
+        const durationMin = durationSeconds / 60;
+        if (durationSeconds === 0) {
+          if (minDurationFilter !== 0) return false;
+        } else {
+          if (durationMin < minDurationFilter || durationMin > maxDurationFilter) return false;
+        }
+      }
       return true;
     });
-  }, [segments, typeFilter, saintFilter, searchQuery]);
+  }, [segments, typeFilter, saintFilter, searchQuery, minDurationFilter, maxDurationFilter]);
 
   const handleOpenPlaylist = (playlist) => {
     setActivePlaylist(playlist);
@@ -159,10 +170,40 @@ export default function MusicPage({ lang }) {
                     </select>
                   </div>
 
+                  <div className="filter-group">
+                    <label style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <span>Min Duration (किमान वेळ)</span>
+                      <span style={{ color: 'var(--saffron)' }}>{minDurationFilter} min</span>
+                    </label>
+                    <input 
+                      type="range" 
+                      min="0" 
+                      max="20" 
+                      value={minDurationFilter} 
+                      onChange={(e) => setMinDurationFilter(Math.min(parseInt(e.target.value), maxDurationFilter))}
+                      style={{ width: '100%', accentColor: 'var(--saffron)' }}
+                    />
+                  </div>
+                  
+                  <div className="filter-group" style={{ marginTop: '16px' }}>
+                    <label style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <span>Max Duration (कमाल वेळ)</span>
+                      <span style={{ color: 'var(--saffron)' }}>{maxDurationFilter === 20 ? 'Any' : `Up to ${maxDurationFilter} min`}</span>
+                    </label>
+                    <input 
+                      type="range" 
+                      min="1" 
+                      max="20" 
+                      value={maxDurationFilter} 
+                      onChange={(e) => setMaxDurationFilter(Math.max(parseInt(e.target.value), minDurationFilter))}
+                      style={{ width: '100%', accentColor: 'var(--saffron)' }}
+                    />
+                  </div>
+
                   <div className="filter-actions">
                     <button
                       className="filter-reset-btn"
-                      onClick={() => { setTypeFilter('सर्व'); setSaintFilter('सर्व'); setSearchQuery(''); }}
+                      onClick={() => { setTypeFilter('सर्व'); setSaintFilter('सर्व'); setMinDurationFilter(0); setMaxDurationFilter(20); setSearchQuery(''); }}
                     >
                       Reset All
                     </button>
@@ -185,7 +226,7 @@ export default function MusicPage({ lang }) {
                 <p style={{ fontSize: '1.2rem', marginBottom: '12px', color: '#fff' }}>No tracks found.</p>
                 <p style={{ marginBottom: '24px' }}>It looks like your current filters are hiding everything.</p>
                 <button 
-                  onClick={() => { setTypeFilter('सर्व'); setSaintFilter('सर्व'); setSearchQuery(''); }}
+                  onClick={() => { setTypeFilter('सर्व'); setSaintFilter('सर्व'); setMinDurationFilter(0); setMaxDurationFilter(20); setSearchQuery(''); }}
                   style={{ background: 'var(--saffron)', color: '#fff', border: 'none', padding: '10px 24px', borderRadius: '999px', fontSize: '1rem', cursor: 'pointer', fontWeight: '500' }}
                 >
                   Clear All Filters
