@@ -153,12 +153,44 @@ Resources:
             Method: get
             RestApiId: !Ref SadhanaNandadeepApi
 
+  SadhanaNandadeepAdminFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../lambdas/admin_api/
+      Handler: index.lambda_handler
+      Description: Admin APIs to edit video metadata
+      Environment:
+        Variables:
+          DYNAMODB_TABLE: !Ref DynamoDbTableName
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DynamoDbTableName
+      Events:
+        GetAdminVideosApi:
+          Type: Api
+          Properties:
+            Path: /admin/videos
+            Method: get
+            RestApiId: !Ref SadhanaNandadeepApi
+        GetAdminVideoDetailsApi:
+          Type: Api
+          Properties:
+            Path: /admin/videos/{videoId}
+            Method: get
+            RestApiId: !Ref SadhanaNandadeepApi
+        PutAdminVideoDetailsApi:
+          Type: Api
+          Properties:
+            Path: /admin/videos/{videoId}
+            Method: put
+            RestApiId: !Ref SadhanaNandadeepApi
+
   SadhanaNandadeepApi:
     Type: AWS::Serverless::Api
     Properties:
       StageName: prod
       Cors:
-        AllowMethods: "'GET,OPTIONS'"
+        AllowMethods: "'GET,PUT,OPTIONS'"
         AllowHeaders: "'Content-Type'"
         AllowOrigin: "'*'"
 

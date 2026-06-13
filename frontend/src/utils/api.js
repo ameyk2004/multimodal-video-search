@@ -58,5 +58,12 @@ export const api = {
   getMusic: () => apiClient(`/music`),
   getNextChunk: (bookName, chunkIndex) => apiClient(`/search?action=next_chunk&book_name=${encodeURIComponent(bookName)}&chunk_index=${chunkIndex}`),
   fetchBookPage: (bookName, pageNumber) => apiClient(`/search?action=fetch_page&book_name=${encodeURIComponent(bookName)}&page_number=${pageNumber}`),
-  getConfig: fetchConfig
+  getConfig: fetchConfig,
+  getAdminVideos: () => apiClient('/admin/videos'),
+  getAdminVideoDetails: (videoId) => apiClient(`/admin/videos/${videoId}`),
+  updateAdminVideo: (videoId, data) => apiClient(`/admin/videos/${videoId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
 };

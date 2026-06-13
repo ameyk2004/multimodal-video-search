@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
-import { Routes, Route, NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route, NavLink, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import ParticleCanvas from './components/ParticleCanvas';
 import ResultCard from './components/ResultCard';
 import StoryCard from './components/StoryCard';
@@ -11,6 +11,7 @@ import HomePage from './components/HomePage';
 import SearchPage from './components/SearchPage';
 import StoriesBanner from './components/StoriesBanner';
 import MusicPage from './components/MusicPage';
+import AdminPanel from './components/AdminPanel';
 import { api } from './utils/api';
 
 const CONTENT = {
@@ -654,6 +655,8 @@ export default function App() {
             } />
 
             <Route path="/music" element={<MusicPage lang={lang} />} />
+            
+            <Route path="/admin" element={<AdminPanel />} />
 
             <Route path="/" element={<HomePage t={t} lang={lang} allVideos={allVideos} onSearch={handleSearch} />} />
             
@@ -677,6 +680,8 @@ export default function App() {
                 inputRef={inputRef}
               />
             } />
+
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
       </div>
