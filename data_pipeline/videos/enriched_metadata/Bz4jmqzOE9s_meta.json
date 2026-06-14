@@ -8,11 +8,12 @@
         "प्रपंच आणि परमार्थ"
       ],
       "exact_end_text": "तुम्हा खात्री करण्यासाठी घंटा वाजवली त्यातला प्रकार आहे",
+      "end_time_seconds": 969,
+      "normalized_saint_name_english": "Shri Pethe Kaka",
+      "title_english": "Bhim Ani Dharmarajachi Dan Denyachi Gosht",
       "title": "भीम आणि धर्मराजाची दान देण्याची गोष्ट",
       "exact_start_text": "तो उद्या दान करणार आहे वगैरे काहीतरी गोष्ट",
-      "moral": "उद्या काय होईल हे कोणालाही माहिती नसते. त्यामुळे सत्कर्म किंवा दान करण्यासाठी उद्याची वाट पाहणे चुकीचे आहे. काळाचा भरवसा नसल्यामुळे प्रत्येक क्षण महत्त्वाचा मानून तात्काळ कृती करावी, हाच या कथेचा मुख्य संदेश आहे.",
-      "title_english": "Bhim Ani Dharmarajachi Dan Denyachi Gosht",
-      "normalized_saint_name_english": "Shri Pethe Kaka"
+      "moral": "उद्या काय होईल हे कोणालाही माहिती नसते. त्यामुळे सत्कर्म किंवा दान करण्यासाठी उद्याची वाट पाहणे चुकीचे आहे. काळाचा भरवसा नसल्यामुळे प्रत्येक क्षण महत्त्वाचा मानून तात्काळ कृती करावी, हाच या कथेचा मुख्य संदेश आहे."
     },
     {
       "normalized_saint_name": "श्री पेठे काका",
@@ -22,11 +23,12 @@
         "कर्म आणि प्रारब्ध"
       ],
       "exact_end_text": "तू इथपर्यंत पोहोचतोस का नाही कारण माझी गाठायची जागा ती होती",
+      "end_time_seconds": 1130,
+      "normalized_saint_name_english": "Shri Pethe Kaka",
+      "title_english": "Raja Ani Mrutyuchi Savali",
       "title": "राजा आणि मृत्यूची सावली",
       "exact_start_text": "रात्री झोपताना ती स्वप्न पडलं आणि त्याला काळाच",
-      "moral": "मृत्यू किंवा काळ हा अटळ आहे. आपण कितीही वेगाने पळालो किंवा जागा बदलली, तरी प्रारब्धाने ठरलेल्या ठिकाणी काळ आपल्याला गाठतोच. काळापासून सुटका नाही, म्हणून सदैव सावध राहून भगवंताचे स्मरण करणे आवश्यक आहे.",
-      "title_english": "Raja Ani Mrutyuchi Savali",
-      "normalized_saint_name_english": "Shri Pethe Kaka"
+      "moral": "मृत्यू किंवा काळ हा अटळ आहे. आपण कितीही वेगाने पळालो किंवा जागा बदलली, तरी प्रारब्धाने ठरलेल्या ठिकाणी काळ आपल्याला गाठतोच. काळापासून सुटका नाही, म्हणून सदैव सावध राहून भगवंताचे स्मरण करणे आवश्यक आहे."
     },
     {
       "normalized_saint_name": "श्री ब्रह्मचैतन्य गोंदवलेकर महाराज",
@@ -36,11 +38,12 @@
         "अध्यात्म आणि भक्ती"
       ],
       "exact_end_text": "त्याची जरा मान लचकली का पहा सर्वजता मोडे म्हटले",
+      "end_time_seconds": 1468,
+      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj",
+      "title_english": "Radanare Bal Ani Maharajanchi Sarvajnyata",
       "title": "रडणारे बाळ आणि महाराजांची सर्वज्ञता",
       "exact_start_text": "रडत होत काही सापड कारण तेव्हा त्या तात्याना विचारल",
-      "moral": "सद्गुरू हे सर्वज्ञ असतात. त्यांना भक्तांच्या अडचणी आणि त्यांच्यावरील संकटे न सांगताही कळतात. त्यांच्या शब्दांवर आणि मार्गदर्शनावर पूर्ण विश्वास ठेवल्यास कठीण प्रसंगातूनही सहज मार्ग निघतो.",
-      "title_english": "Radanare Bal Ani Maharajanchi Sarvajnyata",
-      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj"
+      "moral": "सद्गुरू हे सर्वज्ञ असतात. त्यांना भक्तांच्या अडचणी आणि त्यांच्यावरील संकटे न सांगताही कळतात. त्यांच्या शब्दांवर आणि मार्गदर्शनावर पूर्ण विश्वास ठेवल्यास कठीण प्रसंगातूनही सहज मार्ग निघतो."
     },
     {
       "normalized_saint_name": "श्री रमण महर्षी",
@@ -50,25 +53,27 @@
         "अध्यात्म आणि भक्ती"
       ],
       "exact_end_text": "त्याचा काही प्रश्न त्यांना काय त्या अर्थाने नडत नव्हती",
+      "end_time_seconds": 1533,
+      "normalized_saint_name_english": "Shri Raman Maharshi",
+      "title_english": "Raman Maharshi Ani Tyanche Antarng Bhakt",
       "title": "रमण महर्षी आणि त्यांचे अंतरंग भक्त",
       "exact_start_text": "रमण जहा पडले तेव्हा त्यांचे जे अंतरंग भक्त",
-      "moral": "सद्गुरूंच्या बाह्य शरीराला व्याधी झाल्या तरी त्यांचे अंतरंग नेहमी भगवंताशी जोडलेले असते. त्यांचे अंतरंग भक्त हे त्यांच्या बाह्य स्थितीपेक्षा त्यांच्या आध्यात्मिक उंचीशी एकरूप झालेले असतात आणि त्यांच्या इच्छेचा आदर करतात.",
-      "title_english": "Raman Maharshi Ani Tyanche Antarng Bhakt",
-      "normalized_saint_name_english": "Shri Raman Maharshi"
+      "moral": "सद्गुरूंच्या बाह्य शरीराला व्याधी झाल्या तरी त्यांचे अंतरंग नेहमी भगवंताशी जोडलेले असते. त्यांचे अंतरंग भक्त हे त्यांच्या बाह्य स्थितीपेक्षा त्यांच्या आध्यात्मिक उंचीशी एकरूप झालेले असतात आणि त्यांच्या इच्छेचा आदर करतात."
     }
   ],
   "video_id": "Bz4jmqzOE9s",
   "musical_segments": [
     {
+      "saint_english": "Samarth Ramadas Swami",
       "start_time_seconds": 1609.039,
-      "saint": "संत रामदास",
+      "saint": "समर्थ रामदास स्वामी",
       "exact_end_text": "सखया नाम हरीचे गोड सखया नाम हरीचे",
+      "end_time_seconds": 1748,
+      "name_english": "Nam Hariche God",
       "confidence": "high",
       "name": "नाम हरीचे गोड",
       "type": "bhajan",
-      "exact_start_text": "सखया नाम हरीचे गुण सखया या नाम हरीचे",
-      "name_english": "Nam Hariche God",
-      "saint_english": "Snt Ramadas"
+      "exact_start_text": "सखया नाम हरीचे गुण सखया या नाम हरीचे"
     }
   ],
   "actionable_practices": [

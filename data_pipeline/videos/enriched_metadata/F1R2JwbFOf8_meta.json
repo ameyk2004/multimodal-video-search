@@ -8,11 +8,12 @@
         "संस्कार आणि मानवी मूल्ये"
       ],
       "exact_end_text": "पण तसं नको चांगले गेलेत म्हणून आईस्क्रीमला जावं असं वाटतं हे जो काय आहे",
+      "end_time_seconds": 775,
+      "normalized_saint_name_english": "Shri Pethe Kaka",
+      "title_english": "Vidyarthyachi Parikshechi Bhiti Ani Asatyacha Adhar",
       "title": "विद्यार्थ्याची परीक्षेची भीती आणि असत्याचा आधार",
       "exact_start_text": "एखाद्याचा अभ्यास झाला नसला विद्यार्थ्याचा आणि तो समजा परीक्षेला जाणार असला",
-      "moral": "परीक्षेचा अभ्यास झाला नसेल तर खोटे बोलून तात्पुरता आनंद मिळवण्यापेक्षा सत्य स्वीकारणे जास्त महत्त्वाचे आहे. सत्य स्वीकारल्याने मनातील महिनाभराची भीती नष्ट होते आणि मन शांत होते. असत्याचा आधार घेतल्याने भीती सतत पाठलाग करत राहते.",
-      "title_english": "Vidyarthyachi Parikshechi Bhiti Ani Asatyacha Adhar",
-      "normalized_saint_name_english": "Shri Pethe Kaka"
+      "moral": "परीक्षेचा अभ्यास झाला नसेल तर खोटे बोलून तात्पुरता आनंद मिळवण्यापेक्षा सत्य स्वीकारणे जास्त महत्त्वाचे आहे. सत्य स्वीकारल्याने मनातील महिनाभराची भीती नष्ट होते आणि मन शांत होते. असत्याचा आधार घेतल्याने भीती सतत पाठलाग करत राहते."
     },
     {
       "normalized_saint_name": "श्री पेठे काका",
@@ -22,25 +23,27 @@
         "तत्त्वज्ञान आणि विचार"
       ],
       "exact_end_text": "तो चहा घेऊनच आलेला असतो त्याच्याकडे तेवढी व्यवस्था असते फक्त त्याच्यापेक्षा खूप आपल्याकडे जे काय असतं ते त्याच्याकडे नसतं",
+      "end_time_seconds": 1457,
+      "normalized_saint_name_english": "Shri Pethe Kaka",
+      "title_english": "Chorachi Bhiti Ani Ekakipanacha Svikar",
       "title": "चोराची भीती आणि एकाकीपणाचा स्वीकार",
       "exact_start_text": "त्यामुळे अंतशत्रू बरोबर हे जे काही खरं आहे ते स्वीकाराव असं कारण असंही हे करून ते टळणार",
-      "moral": "जे आपले नाही ते चोरीला गेले तरी दुःख करू नये, कारण ती केवळ एका ठिकाणाहून दुसऱ्या ठिकाणी जाण्याची व्यवस्था आहे. एकाकीपणातही आपला श्वास आपल्यासोबत असतो, जो भगवंताचे प्रतीक आहे. त्यामुळे आपण कधीही एकटे नसतो, हे सत्य स्वीकारल्यास भीती नष्ट होते.",
-      "title_english": "Chorachi Bhiti Ani Ekakipanacha Svikar",
-      "normalized_saint_name_english": "Shri Pethe Kaka"
+      "moral": "जे आपले नाही ते चोरीला गेले तरी दुःख करू नये, कारण ती केवळ एका ठिकाणाहून दुसऱ्या ठिकाणी जाण्याची व्यवस्था आहे. एकाकीपणातही आपला श्वास आपल्यासोबत असतो, जो भगवंताचे प्रतीक आहे. त्यामुळे आपण कधीही एकटे नसतो, हे सत्य स्वीकारल्यास भीती नष्ट होते."
     }
   ],
   "video_id": "F1R2JwbFOf8",
   "musical_segments": [
     {
+      "saint_english": "Saint Tukaram Maharaj",
       "start_time_seconds": 1736.608,
       "saint": "संत तुकाराम महाराज",
       "exact_end_text": "माझी शेवटची विणवणी माझी शेवटची विणवणी",
+      "end_time_seconds": 1874,
+      "name_english": "Saintajani Parisavi Majhi Shevatachi Vinavani",
       "confidence": "high",
       "name": "संतजनी परिसावी माझी शेवटची विनवणी",
       "type": "bhajan",
-      "exact_start_text": "संत जनी परिसावी संत भजनी परिसावी माझी शेवटची विनवणी",
-      "name_english": "Saintajani Parisavi Majhi Shevatachi Vinavani",
-      "saint_english": "Saint Tukaram Maharaj"
+      "exact_start_text": "संत जनी परिसावी संत भजनी परिसावी माझी शेवटची विनवणी"
     }
   ],
   "actionable_practices": [

@@ -158,6 +158,9 @@ class BookChunkProcessor:
             # Remove specific known annoying headers (e.g., Vishnusahasranaam)
             text = re.sub(r'(?:नव्य\s*)?श्री विष्णुसहस्रनाम\s*:\s*एक जीवनशैली\s*/\s*[०१२३४५६७८९0-9]+\s*', '', text)
             
+            # Remove lines containing "(पान XX)" like "Jaag (पान 94)"
+            text = re.sub(r'^.*\(पान\s*[०१२३४५६७८९0-9]+\).*$', '', text, flags=re.MULTILINE)
+            
             # Generic cleanup for standalone numbers at the start or end of the page (common OCR page numbers)
             text = re.sub(r'^\s*[०१२३४५६७८९0-9]+\s*\n', '', text)
             text = re.sub(r'\n\s*[०१२३४५६७८९0-9]+\s*$', '', text)

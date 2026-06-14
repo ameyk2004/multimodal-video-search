@@ -7,26 +7,28 @@
         "प्रपंच आणि परमार्थ",
         "कर्म आणि प्रारब्ध"
       ],
-      "exact_end_text": "असं म्हणायची तयारी असायला दोन्ही बाजूने विचार केला",
+      "exact_end_text": "आपण निदान हा विचार केलेला असावा त्याचा उपयोग आपल्याला होतो",
+      "end_time_seconds": 1407,
+      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj",
+      "title_english": "Vyaparatil Chadha-utar Ani Daginyanche Samarpan",
       "title": "व्यापारातील चढ-उतार आणि दागिन्यांचे समर्पण",
       "exact_start_text": "मागे दागिन्यांचं महाराजांनी जसं त्या पत्नीचं सांगितलं",
-      "moral": "व्यापार किंवा प्रपंचात चढ-उतार हे ठरलेलेच असतात. जेव्हा मंदी येते तेव्हा घरातील स्त्रीने आपले दागिने आनंदाने पतीला भांडवलासाठी दिले पाहिजेत आणि सुबत्ता आल्यावर ते पुन्हा परिधान करावेत. ही समजूतदारपणाची आणि त्यागाची वृत्ती केवळ एका विवेकी, नीतिमान आणि भगवद्भक्त व्यक्तीमध्येच असू शकते, ज्यामुळे कौटुंबिक शांतता टिकून राहते.",
-      "title_english": "Vyaparatil Chadha-utar Ani Daginyanche Samarpan",
-      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj"
+      "moral": "व्यापार किंवा प्रपंचात चढ-उतार हे ठरलेलेच असतात. जेव्हा मंदी येते तेव्हा घरातील स्त्रीने आपले दागिने आनंदाने पतीला भांडवलासाठी दिले पाहिजेत आणि सुबत्ता आल्यावर ते पुन्हा परिधान करावेत. ही समजूतदारपणाची आणि त्यागाची वृत्ती केवळ एका विवेकी, नीतिमान आणि भगवद्भक्त व्यक्तीमध्येच असू शकते, ज्यामुळे कौटुंबिक शांतता टिकून राहते."
     }
   ],
   "video_id": "5dC75vFmm-g",
   "musical_segments": [
     {
+      "saint_english": "Shri Pethe Kaka",
       "start_time_seconds": 1608.872,
       "saint": "श्री पेठे काका",
-      "exact_end_text": "विठ्ठल चरण हृदयी धरू विठ्ठल चरण हृदयी धरू",
+      "exact_end_text": "पुंडलिक वरदा विठ्ठल श्री ज्ञानदेव तुकाराम पंढरीनाथ महाराज की जानकी जीवन स्मरण जय जय राम",
+      "end_time_seconds": 1805,
+      "name_english": "Amha Patita Pavan",
       "confidence": "high",
       "name": "आम्हा पतिता पावन",
       "type": "bhajan",
-      "exact_start_text": "आम्हा पतिता पावन आम्हा पतिता पावन",
-      "name_english": "Amha Patita Pavan",
-      "saint_english": "Shri Pethe Kaka"
+      "exact_start_text": "आम्हा पतिता पावन आम्हा पतिता पावन"
     }
   ],
   "actionable_practices": [

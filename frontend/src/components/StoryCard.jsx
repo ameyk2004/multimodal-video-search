@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { usePlayer, storyToItem } from '../context/PlayerContext';
 import './StoryCard.css';
+import './MiniPlayer.css';
 
 const StoryModal = ({ story, onClose, lang }) => {
   const [iframeLoaded, setIframeLoaded] = useState(false);
@@ -91,9 +93,10 @@ const StoryModal = ({ story, onClose, lang }) => {
 };
 
 const StoryCard = ({ story, autoOpen, lang }) => {
-  const [isModalOpen, setIsModalOpen] = useState(autoOpen || false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const cardRef = useRef(null);
+  const { play, addToQueue } = usePlayer();
 
   useEffect(() => {
     if (autoOpen) {
@@ -151,6 +154,11 @@ const StoryCard = ({ story, autoOpen, lang }) => {
           <div className="story-card-play-hover">
             <div className="story-card-play-btn">▶</div>
           </div>
+          {durationSeconds > 0 && (
+            <div className="story-card-duration-badge" style={{ position: 'absolute', bottom: '8px', right: '8px', background: 'rgba(0,0,0,0.8)', padding: '2px 6px', borderRadius: '4px', fontSize: '11px', fontWeight: 'bold' }}>
+              {formatTime(durationSeconds)}
+            </div>
+          )}
         </div>
 
         <div className="story-card-center">
@@ -170,27 +178,43 @@ const StoryCard = ({ story, autoOpen, lang }) => {
             </div>
             
             <div className="story-card-actions" onClick={(e) => e.stopPropagation()}>
-              <button className="btn-inline-play" onClick={() => setIsModalOpen(true)}>
+              <button className="btn-inline-play" onClick={(e) => { e.stopPropagation(); play(storyToItem(story)); }}>
                 ▶ Play
               </button>
+              {/* Add to Queue */}
+              <button
+                className="queue-action-btn"
+                title={lang === 'mr' ? 'रांगेत जोडा' : 'Add to Queue'}
+                onClick={(e) => { e.stopPropagation(); addToQueue(storyToItem(story)); }}
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M14 10H2v2h12v-2zm0-4H2v2h12V6zm4 8v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM2 16h8v-2H2v2z"/>
+                </svg>
+              </button>
+              {/* Share */}
               <button 
                 className="share-action-btn" 
                 title={lang === 'mr' ? 'शेअर करा' : 'Share'}
                 onClick={(e) => {
                   e.stopPropagation();
+                  const durationText = durationSeconds > 0 ? `\nDuration: ${formatTime(durationSeconds)}` : '';
                   const ytLink = `https://youtu.be/${video_id}?t=${Math.floor(start_time_seconds || 0)}`;
                   const moralText = moral ? `\n\nTeaching: ${moral}` : '';
-                  const text = `Listen to this story: "${displayTitle}"${moralText}\n\n${ytLink}`;
+                  const text = `Listen to this story: "${displayTitle}"${durationText}${moralText}\n\n${ytLink}`;
                   window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
                 }}
               >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" stroke="currentColor">
                   <circle cx="18" cy="5" r="3"></circle>
                   <circle cx="6" cy="12" r="3"></circle>
                   <circle cx="18" cy="19" r="3"></circle>
                   <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
                   <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
                 </svg>
+              </button>
+              {/* Info / transcript modal */}
+              <button className="btn-icon" title="View transcript" onClick={(e) => { e.stopPropagation(); setIsModalOpen(true); }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
               </button>
             </div>
           </div>

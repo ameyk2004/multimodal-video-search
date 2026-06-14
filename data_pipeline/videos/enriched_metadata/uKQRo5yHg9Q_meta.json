@@ -8,36 +8,38 @@
         "अहंकार आणि विकार"
       ],
       "exact_end_text": "पाय आखडून घेतो आता त्यातून केला",
+      "normalized_saint_name_english": "Shri Pethe Kaka",
+      "title_english": "Tatyasahebanchi Paramalinata Ani Namrata",
       "title": "तात्यासाहेबांची परमलीनता आणि नम्रता",
       "exact_start_text": "तात्यासाहेबांच्याला पायाना शेवटी इवर्शन झालं होत",
-      "moral": "सद्गुरू किंवा संतांच्या अंगी अत्यंत परमलीनता असते. लोक चरणावर डोके ठेवतील या भीतीने किंवा नम्रतेपोटी ते आपले पाय आखडून घेत असत. खरी लीनता ही केवळ बाह्य नसून ती अंतःकरणातून प्रकट होते आणि ती व्यक्तीच्या संपूर्ण अस्तित्वातून जाणवते.",
-      "title_english": "Tatyasahebanchi Paramalinata Ani Namrata",
-      "normalized_saint_name_english": "Shri Pethe Kaka"
+      "moral": "सद्गुरू किंवा संतांच्या अंगी अत्यंत परमलीनता असते. लोक चरणावर डोके ठेवतील या भीतीने किंवा नम्रतेपोटी ते आपले पाय आखडून घेत असत. खरी लीनता ही केवळ बाह्य नसून ती अंतःकरणातून प्रकट होते आणि ती व्यक्तीच्या संपूर्ण अस्तित्वातून जाणवते."
     }
   ],
   "video_id": "uKQRo5yHg9Q",
   "musical_segments": [
     {
+      "saint_english": "Shri Pethe Kaka",
       "start_time_seconds": 114.16,
       "saint": "श्री पेठे काका",
       "exact_end_text": "विनविधीन सद्गुरु रावा जीव उद्धरावा",
+      "end_time_seconds": 287,
+      "name_english": "Agamy Sadguru Lilamrut",
       "confidence": "high",
       "name": "अगम्य सद्गुरु लीलामृत",
       "type": "bhajan",
-      "exact_start_text": "अगम्य सद्गुरु लीलामृत निष्ठा असे त्या पावत",
-      "name_english": "Agamy Sadguru Lilamrut",
-      "saint_english": "Shri Pethe Kaka"
+      "exact_start_text": "अगम्य सद्गुरु लीलामृत निष्ठा असे त्या पावत"
     },
     {
+      "saint_english": "Shri Brahmachaitany Gondavalekar Maharaj",
       "start_time_seconds": 1539.6,
       "saint": "श्री ब्रह्मचैतन्य गोंदवलेकर महाराज",
       "exact_end_text": "अभ्यास वैखरी सोडू नका",
+      "end_time_seconds": 1838,
+      "name_english": "Aajvari Tumha Sangitala Mat",
       "confidence": "high",
       "name": "आजवरी तुम्हा सांगितला मात",
       "type": "bhajan",
-      "exact_start_text": "नामाविण हित समजू नका आजवरी तुमहा सांगितली मात",
-      "name_english": "Aajvari Tumha Sangitala Mat",
-      "saint_english": "Shri Brahmachaitany Gondavalekar Maharaj"
+      "exact_start_text": "नामाविण हित समजू नका आजवरी तुमहा सांगितली मात"
     }
   ],
   "actionable_practices": [

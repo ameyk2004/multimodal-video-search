@@ -49,7 +49,12 @@ export const apiClient = async (endpoint, options = {}) => {
 
 // Exported API methods
 export const api = {
-  search: (query, type = 'combined') => apiClient(`/search?q=${encodeURIComponent(query)}&type=${type}`),
+  search: (query, type = 'combined', preferredBook = null, preferredVideo = null) => {
+    let url = `/search?q=${encodeURIComponent(query)}&type=${type}`;
+    if (preferredBook) url += `&preferred_book=${encodeURIComponent(preferredBook)}`;
+    if (preferredVideo) url += `&preferred_video=${encodeURIComponent(preferredVideo)}`;
+    return apiClient(url);
+  },
   getStories: () => apiClient(`/stories`),
   getVideos: () => apiClient(`/videos`),
   getVideoDetails: (videoId) => apiClient(`/videos/${videoId}`),

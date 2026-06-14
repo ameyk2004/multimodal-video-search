@@ -7,12 +7,13 @@
         "कर्म आणि प्रारब्ध",
         "सद्गुरू आणि संत चरित्र"
       ],
-      "exact_end_text": "तेवढ देण घेण झाल्याबरोबर तो विषय संपला",
+      "exact_end_text": "एकदा हा विषय निघाला आणि त्याची परत एकदा आठवण करतो की",
+      "end_time_seconds": 873,
+      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj",
+      "title_english": "Shri Brahmachaitany Gondavalekar Maharajanchya Mulanche Prarabdh Ani Karan Deh",
       "title": "श्री ब्रह्मचैतन्य गोंदवलेकर महाराजांच्या मुलांचे प्रारब्ध आणि कारण देह",
       "exact_start_text": "आता आपल्याला महाराजांचे याच्यात विषयात माहिती चार पाच मुल आहेत",
-      "moral": "जीवाचे जन्माला येण्याचे कारण म्हणजेच त्याचा कारण देह असतो. जेव्हा एखाद्या उच्च जीवाचे थोडेच प्रारब्ध शिल्लक असते, तेव्हा तो संतांच्या किंवा पवित्र घरात जन्माला येतो आणि आपले राहिलेले देणे-घेणे पूर्ण करून लगेच देह सोडतो. अशा वेळी संतांना त्याचे सुख-दुःख नसते, कारण ते केवळ प्रारब्धाचा खेळ म्हणून त्याकडे पाहतात.",
-      "title_english": "Shri Brahmachaitany Gondavalekar Maharajanchya Mulanche Prarabdh Ani Karan Deh",
-      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj"
+      "moral": "जीवाचे जन्माला येण्याचे कारण म्हणजेच त्याचा कारण देह असतो. जेव्हा एखाद्या उच्च जीवाचे थोडेच प्रारब्ध शिल्लक असते, तेव्हा तो संतांच्या किंवा पवित्र घरात जन्माला येतो आणि आपले राहिलेले देणे-घेणे पूर्ण करून लगेच देह सोडतो. अशा वेळी संतांना त्याचे सुख-दुःख नसते, कारण ते केवळ प्रारब्धाचा खेळ म्हणून त्याकडे पाहतात."
     },
     {
       "normalized_saint_name": "श्री पेठे काका",
@@ -21,26 +22,28 @@
         "तत्त्वज्ञान आणि विचार",
         "अंधश्रद्धा आणि गैरसमज"
       ],
-      "exact_end_text": "नैराश्य अस्वासस्थ्य दुःख आताच्या काळात आणखीन पुढे",
+      "exact_end_text": "बंधन नाही म्हणून इथे अशा तृष्णा पुढे त्यांचे वर्णन केले त्यानी काय केले कसे कुठेपर्यंत पोचले",
+      "end_time_seconds": 992,
+      "normalized_saint_name_english": "Shri Pethe Kaka",
+      "title_english": "Kalar Blaindanes Ani Nirgunachi Janiv",
       "title": "कलर ब्लाइंडनेस आणि निर्गुणाची जाणीव",
       "exact_start_text": "आपल्याकडे डोळ्याच्या बाबतीत कलर ब्लाईडनेस असतो माणसाला",
-      "moral": "ज्याप्रमाणे कलर ब्लाइंडनेस असलेल्या व्यक्तीला विशिष्ट रंग दिसत नाही आणि तो त्या रंगाचे अस्तित्व नाकारतो, त्याचप्रमाणे ज्यांच्याकडे आध्यात्मिक दृष्टी नाही त्यांना भगवंताचे (निर्गुणाचे) अस्तित्व जाणवत नाही. अशा 'गॉड ब्लाइंडनेस' असलेल्या लोकांना सहानुभूती दाखवता येते, पण त्यांच्या अज्ञानामुळे त्यांना जीवनात नैराश्य आणि दुःख सहन करावे लागते.",
-      "title_english": "Kalar Blaindanes Ani Nirgunachi Janiv",
-      "normalized_saint_name_english": "Shri Pethe Kaka"
+      "moral": "ज्याप्रमाणे कलर ब्लाइंडनेस असलेल्या व्यक्तीला विशिष्ट रंग दिसत नाही आणि तो त्या रंगाचे अस्तित्व नाकारतो, त्याचप्रमाणे ज्यांच्याकडे आध्यात्मिक दृष्टी नाही त्यांना भगवंताचे (निर्गुणाचे) अस्तित्व जाणवत नाही. अशा 'गॉड ब्लाइंडनेस' असलेल्या लोकांना सहानुभूती दाखवता येते, पण त्यांच्या अज्ञानामुळे त्यांना जीवनात नैराश्य आणि दुःख सहन करावे लागते."
     }
   ],
   "video_id": "8_ExsCzbeSw",
   "musical_segments": [
     {
+      "saint_english": "Shri Brahmachaitany Gondavalekar Maharaj",
       "start_time_seconds": 1628.005,
       "saint": "श्री ब्रह्मचैतन्य गोंदवलेकर महाराज",
-      "exact_end_text": "श्रीराम जानकी स्मरण जय जय राम",
+      "exact_end_text": "श्रीराम जय राम जय जय राम श्रीराम जानकी स्मरण जय जय राम अम्म",
+      "end_time_seconds": 1726,
+      "name_english": "Shriram Jay Ram Jay Jay Ram",
       "confidence": "high",
       "name": "श्रीराम जय राम जय जय राम",
       "type": "namasmarana",
-      "exact_start_text": "श्रीराम जय राम जय जय राम",
-      "name_english": "Shriram Jay Ram Jay Jay Ram",
-      "saint_english": "Shri Brahmachaitany Gondavalekar Maharaj"
+      "exact_start_text": "श्रीराम जय राम जय जय राम"
     }
   ],
   "actionable_practices": [

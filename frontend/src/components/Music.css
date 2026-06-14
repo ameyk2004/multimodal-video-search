@@ -318,8 +318,10 @@
   transition: opacity 0.4s ease;
 }
 
-.ultra-music-card:hover .ultra-play-overlay {
-  opacity: 1;
+@media (hover: hover) {
+  .ultra-music-card:hover .ultra-play-overlay {
+    opacity: 1;
+  }
 }
 
 .ultra-play-button {
@@ -340,12 +342,14 @@
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
-.ultra-play-button:hover {
-  background: #fff;
-  color: #000;
-  transform: scale(1.15);
-  box-shadow: 0 0 40px rgba(255, 255, 255, 0.6);
-  border-color: #fff;
+@media (hover: hover) {
+  .ultra-play-button:hover {
+    background: #fff;
+    color: #000;
+    transform: scale(1.15);
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.6);
+    border-color: #fff;
+  }
 }
 
 /* Right Side Information */

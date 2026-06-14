@@ -9,11 +9,12 @@
         "अहंकार आणि विकार"
       ],
       "exact_end_text": "त्या क्षणी एवढ सुद्धा विस्मरण माया करू शकते",
+      "end_time_seconds": 510,
+      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj",
+      "title_english": "Shri Gondavalekar Maharaj Ani Annasahebancha Chhota Niyam",
       "title": "श्री गोंदवलेकर महाराज आणि अण्णासाहेबांचा छोटा नियम",
       "exact_start_text": "अण्णासाहेबांना ते म्हणाले महाराज छोटा नियम सांगा",
-      "moral": "साधनेमध्ये अगदी सोपा आणि लहान नियम पाळणे देखील मायेच्या प्रभावामुळे कठीण होते. विस्मरण आणि गडबड यांमुळे साधकाचा निश्चय सहज मोडून पडू शकतो. म्हणूनच, साधनेत सतत जागृत राहणे आणि सद्गुरूंच्या शब्दांवर दृढ विश्वास ठेवणे अत्यंत आवश्यक आहे.",
-      "title_english": "Shri Gondavalekar Maharaj Ani Annasahebancha Chhota Niyam",
-      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj"
+      "moral": "साधनेमध्ये अगदी सोपा आणि लहान नियम पाळणे देखील मायेच्या प्रभावामुळे कठीण होते. विस्मरण आणि गडबड यांमुळे साधकाचा निश्चय सहज मोडून पडू शकतो. म्हणूनच, साधनेत सतत जागृत राहणे आणि सद्गुरूंच्या शब्दांवर दृढ विश्वास ठेवणे अत्यंत आवश्यक आहे."
     },
     {
       "normalized_saint_name": "श्री निसर्गदत्त महाराज",
@@ -24,25 +25,27 @@
         "आत्मज्ञान आणि मुक्ती"
       ],
       "exact_end_text": "१४ विद्या ६४ कळा जाणोनी राहे वेगळा प्राकृत ऐसा",
+      "end_time_seconds": 1032,
+      "normalized_saint_name_english": "Shri Nisargadatt Maharaj",
+      "title_english": "Shri Nisargadatt Maharaj Ani Videshi Naty Digdarshak",
       "title": "श्री निसर्गदत्त महाराज आणि विदेशी नाट्य दिग्दर्शक",
       "exact_start_text": "निसर्ग दत्तांच त्यांनी वाचला असेल बारकाईन चरित्रातले",
-      "moral": "मानवी जीवन हे एका नाटकासारखे क्षणभंगुर आहे, जे जन्मापासून मृत्यूपर्यंत विविध अवस्थांमधून जाते. सत्पुरुष या सर्व अवस्थांचे केवळ साक्षीदार असतात. ते स्वतः संसाराच्या खेळापासून अलिप्त राहून अत्यंत साधेपणाने वागतात आणि इतरांना जीवनाचे अंतिम सत्य सहजतेने दाखवून देतात.",
-      "title_english": "Shri Nisargadatt Maharaj Ani Videshi Naty Digdarshak",
-      "normalized_saint_name_english": "Shri Nisargadatt Maharaj"
+      "moral": "मानवी जीवन हे एका नाटकासारखे क्षणभंगुर आहे, जे जन्मापासून मृत्यूपर्यंत विविध अवस्थांमधून जाते. सत्पुरुष या सर्व अवस्थांचे केवळ साक्षीदार असतात. ते स्वतः संसाराच्या खेळापासून अलिप्त राहून अत्यंत साधेपणाने वागतात आणि इतरांना जीवनाचे अंतिम सत्य सहजतेने दाखवून देतात."
     }
   ],
   "video_id": "AHTe92Rggyc",
   "musical_segments": [
     {
+      "saint_english": "Shri Brahmachaitany Gondavalekar Maharaj",
       "start_time_seconds": 1663.919,
       "saint": "श्री ब्रह्मचैतन्य गोंदवलेकर महाराज",
       "exact_end_text": "एक वेळ राम राम बोला",
+      "end_time_seconds": 1828,
+      "name_english": "Bhajanacha Shevat Ala",
       "confidence": "high",
       "name": "भजनाचा शेवट आला",
       "type": "bhajan",
-      "exact_start_text": "भजनाचा शेवट आला भजनाचा शेवट आला",
-      "name_english": "Bhajanacha Shevat Ala",
-      "saint_english": "Shri Brahmachaitany Gondavalekar Maharaj"
+      "exact_start_text": "भजनाचा शेवट आला भजनाचा शेवट आला"
     }
   ],
   "actionable_practices": [

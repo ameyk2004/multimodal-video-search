@@ -7,12 +7,13 @@
         "सद्गुरू आणि संत चरित्र",
         "अहंकार आणि विकार"
       ],
-      "exact_end_text": "बोलविता धनी वेगळा आहे हे लक्षात ठेवून बोलणं वेगळ आहे.",
+      "exact_end_text": "आणि बोलविता धनी वेगळा आहे हे लक्षात ठेवून बोलणं वेगळ आहे",
+      "end_time_seconds": 204,
+      "normalized_saint_name_english": "Shri Tatyasaheb Maharaj",
+      "title_english": "Prophesar Bhanudas Ani Bolavita Dhani",
       "title": "प्रोफेसर भानुदास आणि बोलविता धनी",
       "exact_start_text": "जसं प्रोफेसर भानुनास सांगितलं की आपल्याला ते सगळं माहिती आहे",
-      "moral": "आपण स्वतः काहीतरी करतो किंवा बोलतो हा माणसाचा मोठा अहंकार असतो. परंतु, खरी शक्ती आणि बोलविणारा धनी भगवंतच आहे. जेव्हा आपण हा अहंकार सोडतो आणि सर्व काही भगवंताच्या इच्छेने चालले आहे हे स्वीकारतो, तेव्हाच खऱ्या परमार्थाची सुरुवात होते.",
-      "title_english": "Prophesar Bhanudas Ani Bolavita Dhani",
-      "normalized_saint_name_english": "Shri Tatyasaheb Maharaj"
+      "moral": "आपण स्वतः काहीतरी करतो किंवा बोलतो हा माणसाचा मोठा अहंकार असतो. परंतु, खरी शक्ती आणि बोलविणारा धनी भगवंतच आहे. जेव्हा आपण हा अहंकार सोडतो आणि सर्व काही भगवंताच्या इच्छेने चालले आहे हे स्वीकारतो, तेव्हाच खऱ्या परमार्थाची सुरुवात होते."
     },
     {
       "normalized_saint_name": "स्वामी ब्रह्मानंद महाराज",
@@ -21,12 +22,13 @@
         "अध्यात्म आणि भक्ती",
         "सद्गुरू आणि संत चरित्र"
       ],
-      "exact_end_text": "आपल्याला काय सांगितलं ते करण हे आपलं काम",
+      "exact_end_text": "आपल्याला बाकीच काही माहित नाही त्यानी आपल्याला काय सांगितलं ते करण हे आपलं काम",
+      "end_time_seconds": 1053,
+      "normalized_saint_name_english": "Swami Brahmannd Maharaj",
+      "title_english": "Swami Brahmannd Ani Guruvachanavaril Nishtha",
       "title": "स्वामी ब्रह्मानंद आणि गुरुवचनावरील निष्ठा",
       "exact_start_text": "जे ब्रह्मानंदाने ते वर्तमान पत्र फाडून टाकल त्यातला प्रकार आहे",
-      "moral": "साधकासाठी गुरूंचे शब्द हेच अंतिम सत्य आणि वेदांत असतात. जगातील इतर कोणत्याही मोठ्या घडामोडी किंवा प्रसिद्धीपेक्षा गुरूंच्या आज्ञेचे पालन करणे आणि त्यांच्या वचनावर दृढ विश्वास ठेवणे हेच शिष्याचे परम कर्तव्य आहे.",
-      "title_english": "Swami Brahmannd Ani Guruvachanavaril Nishtha",
-      "normalized_saint_name_english": "Swami Brahmannd Maharaj"
+      "moral": "साधकासाठी गुरूंचे शब्द हेच अंतिम सत्य आणि वेदांत असतात. जगातील इतर कोणत्याही मोठ्या घडामोडी किंवा प्रसिद्धीपेक्षा गुरूंच्या आज्ञेचे पालन करणे आणि त्यांच्या वचनावर दृढ विश्वास ठेवणे हेच शिष्याचे परम कर्तव्य आहे."
     },
     {
       "normalized_saint_name": "श्री पेठे काका",
@@ -35,26 +37,28 @@
         "संस्कार आणि मानवी मूल्ये",
         "अध्यात्म आणि भक्ती"
       ],
-      "exact_end_text": "त्यांना जे हव आहे ते केल्याशिवाय आपलं काम होणार नाही",
+      "exact_end_text": "नको आहे ती आणून देऊ नका आम्हाला जी हवी आहे ती आणून द्या",
+      "end_time_seconds": 1136,
+      "normalized_saint_name_english": "Shri Pethe Kaka",
+      "title_english": "Vruddhashramatil Denagi Ani Khari Bhakti",
       "title": "वृद्धाश्रमातील देणगी आणि खरी भक्ती",
       "exact_start_text": "इथे आश्रमात वृद्धाश्रमात बोर्ड होता त्यानी तो आम्हाला सांगितलं",
-      "moral": "आपल्याला नको असलेल्या किंवा निरुपयोगी गोष्टी देवाला किंवा इतरांना देणे ही खरी सेवा किंवा भक्ती नव्हे. समोरच्याला किंवा भगवंताला नेमके काय हवे आहे, हे ओळखून ते अर्पण करणे हीच खरी भक्ती आणि समर्पणाची भावना आहे.",
-      "title_english": "Vruddhashramatil Denagi Ani Khari Bhakti",
-      "normalized_saint_name_english": "Shri Pethe Kaka"
+      "moral": "आपल्याला नको असलेल्या किंवा निरुपयोगी गोष्टी देवाला किंवा इतरांना देणे ही खरी सेवा किंवा भक्ती नव्हे. समोरच्याला किंवा भगवंताला नेमके काय हवे आहे, हे ओळखून ते अर्पण करणे हीच खरी भक्ती आणि समर्पणाची भावना आहे."
     }
   ],
   "video_id": "4pNO68OkTWA",
   "musical_segments": [
     {
+      "saint_english": "Shri Pethe Kaka",
       "start_time_seconds": 1221.053,
       "saint": "श्री पेठे काका",
-      "exact_end_text": "निर्गुण भक्त राही सगुणी",
+      "exact_end_text": "निर्गुण भक्त राही सगुणी निर्गुण भक्त राही सगुणी निर्गुण भक्त राही सगुणी",
+      "end_time_seconds": 1465,
+      "name_english": "Pak Siddhi Amachyasathi",
       "confidence": "high",
       "name": "पाक सिद्धी आमच्यासाठी",
       "type": "bhajan",
-      "exact_start_text": "पाक सिद्धी आमच्यासाठी काय जाई देवापोटी",
-      "name_english": "Pak Siddhi Amachyasathi",
-      "saint_english": "Shri Pethe Kaka"
+      "exact_start_text": "पाक सिद्धी आमच्यासाठी काय जाई देवापोटी"
     }
   ],
   "actionable_practices": [

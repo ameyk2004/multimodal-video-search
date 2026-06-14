@@ -9,11 +9,12 @@
         "अध्यात्म आणि भक्ती"
       ],
       "exact_end_text": "बैसले मठी जाऊनी आनंदी आनंद भाऊ केला",
+      "end_time_seconds": 1547,
+      "normalized_saint_name_english": "Shri Tukamai Maharaj",
+      "title_english": "Tukamai Ani Vipr Pnktitil Annacha Chamatkar",
       "title": "तुकामाई आणि विप्र पंक्तीतील अन्नाचा चमत्कार",
       "exact_start_text": "जगी तैसे जगी संत वर्तती परी अंतर कोणी न ओळखती",
-      "moral": "संतांच्या बाह्य वर्तनावरून किंवा त्यांच्या विरक्त स्थितीवरून त्यांच्याबद्दल मनात संशय (विकल्प) किंवा निंदाभाव आणू नये. संतांची निंदा केल्यास स्वतःचेच नुकसान होते आणि अन्नासारख्या पवित्र गोष्टीही दूषित होतात. परंतु, संतांकडे नम्रपणे क्षमा मागितल्यास ते दयाळू असल्याने त्वरित क्षमा करतात.",
-      "title_english": "Tukamai Ani Vipr Pnktitil Annacha Chamatkar",
-      "normalized_saint_name_english": "Shri Tukamai Maharaj"
+      "moral": "संतांच्या बाह्य वर्तनावरून किंवा त्यांच्या विरक्त स्थितीवरून त्यांच्याबद्दल मनात संशय (विकल्प) किंवा निंदाभाव आणू नये. संतांची निंदा केल्यास स्वतःचेच नुकसान होते आणि अन्नासारख्या पवित्र गोष्टीही दूषित होतात. परंतु, संतांकडे नम्रपणे क्षमा मागितल्यास ते दयाळू असल्याने त्वरित क्षमा करतात."
     },
     {
       "normalized_saint_name": "श्री रामकृष्ण परमहंस",
@@ -23,25 +24,27 @@
         "संस्कार आणि मानवी मूल्ये"
       ],
       "exact_end_text": "हा भावाचा चमत्कार आहे आणि त्या अर्थाने तो तिथे थेट पोहोचला",
+      "end_time_seconds": 756,
+      "normalized_saint_name_english": "Shri Ramakrushn Paramahns",
+      "title_english": "Arjun Ani Krushnachya Kathevar Radanara Adani Bhavik",
       "title": "अर्जुन आणि कृष्णाच्या कथेवर रडणारा अडाणी भाविक",
       "exact_start_text": "रामकृष्णांच्या आपल्याकडे आठवत असेल तर परत एकदा तर ते पुराणिक सांगत होते",
-      "moral": "केवळ ग्रंथांचे बौद्धिक ज्ञान असण्यापेक्षा मनात खरा भाव असणे अत्यंत महत्त्वाचे आहे. अडाणी माणसाकडे असलेल्या निखळ भावामुळे त्याला प्रत्यक्ष भगवंताचे दर्शन घडते, तर केवळ प्रवचन करणाऱ्याला तो अनुभव मिळत नाही.",
-      "title_english": "Arjun Ani Krushnachya Kathevar Radanara Adani Bhavik",
-      "normalized_saint_name_english": "Shri Ramakrushn Paramahns"
+      "moral": "केवळ ग्रंथांचे बौद्धिक ज्ञान असण्यापेक्षा मनात खरा भाव असणे अत्यंत महत्त्वाचे आहे. अडाणी माणसाकडे असलेल्या निखळ भावामुळे त्याला प्रत्यक्ष भगवंताचे दर्शन घडते, तर केवळ प्रवचन करणाऱ्याला तो अनुभव मिळत नाही."
     }
   ],
   "video_id": "JDDNUTNCbus",
   "musical_segments": [
     {
+      "saint_english": "Snt Nirnjan Maharaj",
       "start_time_seconds": 1744.559,
       "saint": "संत निरंजन महाराज",
       "exact_end_text": "काय होतराई तया सद्गुरूच्या पायी",
+      "end_time_seconds": 1890,
+      "name_english": "Kay Ho Utarai",
       "confidence": "high",
       "name": "काय हो उतराई",
       "type": "bhajan",
-      "exact_start_text": "काय होतराई तया सद्गुरूच्या पाय",
-      "name_english": "Kay Ho Utarai",
-      "saint_english": "Snt Nirnjan Maharaj"
+      "exact_start_text": "काय होतराई तया सद्गुरूच्या पाय"
     }
   ],
   "actionable_practices": [

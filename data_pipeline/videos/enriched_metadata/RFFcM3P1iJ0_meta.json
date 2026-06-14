@@ -8,11 +8,12 @@
         "साधना आणि ध्यान"
       ],
       "exact_end_text": "नेहमी शेंडीचं फळ त्यांच्याकडे ठेवावं उरल आपल्या ते म्हणले म्हणजे ते केव्हाही तिकडून खेचायला त्यांना बरं पडत",
+      "end_time_seconds": 208,
+      "normalized_saint_name_english": "Shri Baba Maharaj",
+      "title_english": "Sadgurunna Naral Arpan Karanyachi Seva Ani Shendichya Phalache Mahattv",
       "title": "सद्गुरूंना नारळ अर्पण करण्याची सेवा आणि शेंडीच्या फळाचे महत्त्व",
       "exact_start_text": "फक्त आपला कासरा त्यांच्याकडे पाहिजे ठेवलेला एवढ बाबा महाराजांना म्हणले",
-      "moral": "आपले सर्वस्व किंवा सर्वोत्तम भाग सद्गुरूंच्या चरणी समर्पित करावा. जेव्हा आपण आपली 'शेंडी' (नियंत्रण) सद्गुरूंच्या हातात देतो, तेव्हा ते आपल्याला कोणत्याही संकटातून किंवा भवसागरातून सहजपणे खेचून काढू शकतात. साधकाने स्वतःची संपूर्ण जबाबदारी गुरूंकडे सोपवावी, जेणेकरून ते योग्य वेळी आपले रक्षण करू शकतील.",
-      "title_english": "Sadgurunna Naral Arpan Karanyachi Seva Ani Shendichya Phalache Mahattv",
-      "normalized_saint_name_english": "Shri Baba Maharaj"
+      "moral": "आपले सर्वस्व किंवा सर्वोत्तम भाग सद्गुरूंच्या चरणी समर्पित करावा. जेव्हा आपण आपली 'शेंडी' (नियंत्रण) सद्गुरूंच्या हातात देतो, तेव्हा ते आपल्याला कोणत्याही संकटातून किंवा भवसागरातून सहजपणे खेचून काढू शकतात. साधकाने स्वतःची संपूर्ण जबाबदारी गुरूंकडे सोपवावी, जेणेकरून ते योग्य वेळी आपले रक्षण करू शकतील."
     },
     {
       "normalized_saint_name": "भगवान श्रीकृष्ण",
@@ -22,25 +23,27 @@
         "तत्त्वज्ञान आणि विचार"
       ],
       "exact_end_text": "हे पुढच मला मानवणार नाही तसं ते ते एक प्रतीक की विश्वरूप हव आहे",
+      "end_time_seconds": 334,
+      "normalized_saint_name_english": "Bhagavan Shrikrushn",
+      "title_english": "Vishvarup Darshan Ani Arjunachi Saumy Rupasathi Prarthana",
       "title": "विश्वरूप दर्शन आणि अर्जुनाची सौम्य रूपासाठी प्रार्थना",
       "exact_start_text": "सरळ आपण विश्वरूप दर्शन योग आठवा अव्या अध्याय शेवटी काय म्हटलं",
-      "moral": "भगवंताची अथांग शक्ती आणि विश्वरूप पेलण्याची ताकद सामान्य मानवी मनात नसते. त्यासाठी चित्ताची विशेष तयारी आणि पात्रता लागते. जोपर्यंत ती पात्रता येत नाही, तोपर्यंत भगवंताचे सगुण आणि सौम्य रूपच साधकासाठी कल्याणकारी आणि सुलभ असते. अती घाई न करता हळूहळू आपली पात्रता वाढवणे आवश्यक आहे.",
-      "title_english": "Vishvarup Darshan Ani Arjunachi Saumy Rupasathi Prarthana",
-      "normalized_saint_name_english": "Bhagavan Shrikrushn"
+      "moral": "भगवंताची अथांग शक्ती आणि विश्वरूप पेलण्याची ताकद सामान्य मानवी मनात नसते. त्यासाठी चित्ताची विशेष तयारी आणि पात्रता लागते. जोपर्यंत ती पात्रता येत नाही, तोपर्यंत भगवंताचे सगुण आणि सौम्य रूपच साधकासाठी कल्याणकारी आणि सुलभ असते. अती घाई न करता हळूहळू आपली पात्रता वाढवणे आवश्यक आहे."
     }
   ],
   "video_id": "RFFcM3P1iJ0",
   "musical_segments": [
     {
+      "saint_english": "Snt Nirnjan Maharaj",
       "start_time_seconds": 1682.96,
       "saint": "संत निरंजन महाराज",
       "exact_end_text": "जानकी जीवन स्मरण जय जय राम राम",
+      "end_time_seconds": 1862,
+      "name_english": "Manuja Ram Sadavadare",
       "confidence": "high",
       "name": "मनुजा राम सदावदरे",
       "type": "bhajan",
-      "exact_start_text": "मनुजा राम सदाव",
-      "name_english": "Manuja Ram Sadavadare",
-      "saint_english": "Snt Nirnjan Maharaj"
+      "exact_start_text": "मनुजा राम सदाव"
     }
   ],
   "actionable_practices": [

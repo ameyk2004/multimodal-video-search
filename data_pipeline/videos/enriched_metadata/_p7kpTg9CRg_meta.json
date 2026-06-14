@@ -9,11 +9,12 @@
         "अध्यात्म आणि भक्ती"
       ],
       "exact_end_text": "आल्यावर म्हले स्वागत केल म्हात बदल झाला काय कस शक्य",
+      "end_time_seconds": 1263,
+      "normalized_saint_name_english": "Saint Tukaram Maharaj",
+      "title_english": "Saint Tukaram Maharaj Ani Tirthayatrecha Gota",
       "title": "संत तुकाराम महाराज आणि तीर्थयात्रेचा गोटा",
       "exact_start_text": "म्हणून तुकोबारा यात्रेला मला काही येण शक्य नाही",
-      "moral": "केवळ शारीरिकदृष्ट्या तीर्थयात्रा केल्याने किंवा बाह्य विधी केल्याने मनात आंतरिक बदल होत नाही. जोपर्यंत मन शुद्ध होत नाही आणि अंतःकरणात खरा भाव निर्माण होत नाही, तोपर्यंत बाह्य साधना निरुपयोगी ठरते, जसा गोटा तीर्थयात्रा करूनही दगडच राहिला.",
-      "title_english": "Saint Tukaram Maharaj Ani Tirthayatrecha Gota",
-      "normalized_saint_name_english": "Saint Tukaram Maharaj"
+      "moral": "केवळ शारीरिकदृष्ट्या तीर्थयात्रा केल्याने किंवा बाह्य विधी केल्याने मनात आंतरिक बदल होत नाही. जोपर्यंत मन शुद्ध होत नाही आणि अंतःकरणात खरा भाव निर्माण होत नाही, तोपर्यंत बाह्य साधना निरुपयोगी ठरते, जसा गोटा तीर्थयात्रा करूनही दगडच राहिला."
     },
     {
       "normalized_saint_name": "श्री पेठे काका",
@@ -23,11 +24,12 @@
         "इतर"
       ],
       "exact_end_text": "कोळ्याच जाळ बघितलं तर थक्क होतो",
+      "end_time_seconds": 2270,
+      "normalized_saint_name_english": "Shri Pethe Kaka",
+      "title_english": "Dattagurunchi Shikanyachi Vrutti Ani २४ Guru",
       "title": "दत्तगुरूंची शिकण्याची वृत्ती आणि २४ गुरू",
       "exact_start_text": "दत्तगृहा हा सोर्स अशासाठी मानला आहे की",
-      "moral": "सृष्टीतील प्रत्येक लहान-मोठ्या गोष्टीकडून, अगदी कोळ्याकडून किंवा कीटकाकडूनही काहीतरी शिकण्यासारखे असते. स्वतःमधील अहंकार बाजूला ठेवून गुणांचे ग्रहण करणे हीच खरी शिकण्याची आणि गुरुत्वाची लक्षणे आहेत.",
-      "title_english": "Dattagurunchi Shikanyachi Vrutti Ani २४ Guru",
-      "normalized_saint_name_english": "Shri Pethe Kaka"
+      "moral": "सृष्टीतील प्रत्येक लहान-मोठ्या गोष्टीकडून, अगदी कोळ्याकडून किंवा कीटकाकडूनही काहीतरी शिकण्यासारखे असते. स्वतःमधील अहंकार बाजूला ठेवून गुणांचे ग्रहण करणे हीच खरी शिकण्याची आणि गुरुत्वाची लक्षणे आहेत."
     },
     {
       "normalized_saint_name": "श्री पेठे काका",
@@ -37,25 +39,27 @@
         "अध्यात्म आणि भक्ती"
       ],
       "exact_end_text": "त्याच्यासाठी तिकडे सुद्धा यायला भगवंत तयार आहे",
+      "end_time_seconds": 2386,
+      "normalized_saint_name_english": "Shri Pethe Kaka",
+      "title_english": "Bhakt Pralhad Ani Narasinh Avatar",
       "title": "भक्त प्रल्हाद आणि नरसिंह अवतार",
       "exact_start_text": "नरसिंहाची स्थापना केली आपण अध्याय वाचलेला आहे",
-      "moral": "भक्ताची निष्ठा आणि भक्ती जर खरी असेल, तर भगवंत सृष्टीचे सर्व नियम मोडूनही त्याच्या रक्षणासाठी धावून येतो. प्रल्हादासारखी अनन्य भक्ती असेल तर प्रपंचातूनही परमेश्वर प्रकट होतो.",
-      "title_english": "Bhakt Pralhad Ani Narasinh Avatar",
-      "normalized_saint_name_english": "Shri Pethe Kaka"
+      "moral": "भक्ताची निष्ठा आणि भक्ती जर खरी असेल, तर भगवंत सृष्टीचे सर्व नियम मोडूनही त्याच्या रक्षणासाठी धावून येतो. प्रल्हादासारखी अनन्य भक्ती असेल तर प्रपंचातूनही परमेश्वर प्रकट होतो."
     }
   ],
   "video_id": "_p7kpTg9CRg",
   "musical_segments": [
     {
+      "saint_english": "Shri Pethe Kaka",
       "start_time_seconds": 4700.96,
       "saint": "श्री पेठे काका",
       "exact_end_text": "जय जय रघुवीर समर्थ विठ्ठल",
+      "end_time_seconds": 4919,
+      "name_english": "Santanchi Aarti",
       "confidence": "high",
       "name": "संतांची आरती",
       "type": "aarti",
-      "exact_start_text": "गाऊ संतांची आरती देव जागा करीती चिंती",
-      "name_english": "Santanchi Aarti",
-      "saint_english": "Shri Pethe Kaka"
+      "exact_start_text": "गाऊ संतांची आरती देव जागा करीती चिंती"
     }
   ],
   "actionable_practices": [

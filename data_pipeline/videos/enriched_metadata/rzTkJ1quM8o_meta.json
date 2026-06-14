@@ -8,11 +8,12 @@
         "प्रपंच आणि परमार्थ"
       ],
       "exact_end_text": "म्हणून मी केली यांना स्वतःला काय त्यांनी काय",
+      "end_time_seconds": 1167,
+      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj",
+      "title_english": "Yelegavacha Pravas Ani Guruncha Shikka",
       "title": "येळेगावचा प्रवास आणि गुरूंचा शिक्का",
       "exact_start_text": "तात्यासाहेबांच्या मधून सांगायचं पण खरं ते ठीक आहे",
-      "moral": "लोकांना उपदेश करण्यासाठी आणि त्यांच्या मनात विश्वास निर्माण करण्यासाठी अधिकृत गुरूंचा शिक्का किंवा दीक्षा आवश्यक असते. स्वतः सिद्ध असूनही लोक कल्याणासाठी संतांना अशा व्यावहारिक गोष्टी कराव्या लागतात.",
-      "title_english": "Yelegavacha Pravas Ani Guruncha Shikka",
-      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj"
+      "moral": "लोकांना उपदेश करण्यासाठी आणि त्यांच्या मनात विश्वास निर्माण करण्यासाठी अधिकृत गुरूंचा शिक्का किंवा दीक्षा आवश्यक असते. स्वतः सिद्ध असूनही लोक कल्याणासाठी संतांना अशा व्यावहारिक गोष्टी कराव्या लागतात."
     },
     {
       "normalized_saint_name": "श्री पेठे काका",
@@ -22,25 +23,27 @@
         "तत्त्वज्ञान आणि विचार"
       ],
       "exact_end_text": "तांब्या भरायला नाही का सादर का बैस",
+      "end_time_seconds": 2032,
+      "normalized_saint_name_english": "Shri Pethe Kaka",
+      "title_english": "Nalakhalil Tambyache Udaharan",
       "title": "नळाखालील तांब्याचे उदाहरण",
       "exact_start_text": "भांड पाणी ओततो ही गोष्ट खरी आहे भांड घेऊन",
-      "moral": "ज्ञान किंवा कृपा ग्रहण करण्यासाठी नम्रता आणि रिकामेपण आवश्यक आहे. जर आपले मन अहंकाराने किंवा पूर्वग्रहाने भरलेले असेल (तांब्या उलटा किंवा वर धरला असेल), तर त्यात सद्गुरूंची कृपा उतरू शकत नाही.",
-      "title_english": "Nalakhalil Tambyache Udaharan",
-      "normalized_saint_name_english": "Shri Pethe Kaka"
+      "moral": "ज्ञान किंवा कृपा ग्रहण करण्यासाठी नम्रता आणि रिकामेपण आवश्यक आहे. जर आपले मन अहंकाराने किंवा पूर्वग्रहाने भरलेले असेल (तांब्या उलटा किंवा वर धरला असेल), तर त्यात सद्गुरूंची कृपा उतरू शकत नाही."
     }
   ],
   "video_id": "rzTkJ1quM8o",
   "musical_segments": [
     {
+      "saint_english": "Shri Brahmachaitany Gondavalekar Maharaj",
       "start_time_seconds": 2442.382,
       "saint": "श्री ब्रह्मचैतन्य गोंदवलेकर महाराज",
       "exact_end_text": "माझे चित्त सदा करा पायी स्थिर करा",
+      "end_time_seconds": 2629,
+      "name_english": "Majhe Chitta Sada Kara Payi Sthir",
       "confidence": "high",
       "name": "माझे चित्त सदा करा पायी स्थिर",
       "type": "bhajan",
-      "exact_start_text": "अखंड रघुवीर स्मरण राहो अखंड रघुवीर स्मरण",
-      "name_english": "Majhe Chitta Sada Kara Payi Sthir",
-      "saint_english": "Shri Brahmachaitany Gondavalekar Maharaj"
+      "exact_start_text": "अखंड रघुवीर स्मरण राहो अखंड रघुवीर स्मरण"
     }
   ],
   "actionable_practices": [

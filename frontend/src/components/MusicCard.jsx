@@ -1,92 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
+import { usePlayer, trackToItem } from '../context/PlayerContext';
 import './StoryCard.css'; // Reusing the exact same CSS as StoryCard
 import './Music.css';
-
-const MusicModal = ({ track, onClose, lang }) => {
-  const [iframeLoaded, setIframeLoaded] = useState(false);
-  const { video_id, start_time_seconds, name, name_english, type, saint, saint_english, exact_start_text } = track;
-
-  const displayName = lang === 'en' && name_english ? name_english : name;
-  const displaySaint = lang === 'en' && saint_english ? saint_english : saint;
-
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.body.style.overflow = 'auto';
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [onClose]);
-
-  const [thumbSrc, setThumbSrc] = useState(`https://img.youtube.com/vi/${video_id}/hqdefault.jpg`);
-
-  return (
-    <div className="story-modal-overlay" onClick={onClose}>
-      <div className="story-modal-content" onClick={e => e.stopPropagation()}>
-        <button className="story-modal-close" onClick={onClose}>×</button>
-        
-        <div className="story-modal-video">
-          {!iframeLoaded && (
-            <div className="video-loading-placeholder" style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#000', overflow: 'hidden' }}>
-              <img 
-                src={thumbSrc} 
-                alt="Loading..." 
-                style={{ width: '100%', height: '100%', objectFit: 'cover', transform: 'scale(1.35)', position: 'absolute' }} 
-                onError={() => {
-                  if (thumbSrc.includes('hqdefault')) setThumbSrc(`https://img.youtube.com/vi/${video_id}/mqdefault.jpg`);
-                  else if (thumbSrc.includes('mqdefault')) setThumbSrc(`https://img.youtube.com/vi/${video_id}/0.jpg`);
-                }}
-              />
-              <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)' }}></div>
-              <div className="energy-ring" style={{ position: 'relative', zIndex: 2, marginBottom: '16px' }}></div>
-              <span style={{ position: 'relative', zIndex: 2, color: '#fff', fontSize: '18px', fontWeight: 600, letterSpacing: '0.5px' }}>व्हिडिओ लोड होत आहे...</span>
-            </div>
-          )}
-          <iframe
-            src={`https://www.youtube.com/embed/${video_id}?autoplay=1&start=${Math.floor(start_time_seconds || 0)}${track.end_time_seconds > start_time_seconds ? `&end=${Math.ceil(track.end_time_seconds)}` : ''}`}
-            title="YouTube video player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            onLoad={() => setIframeLoaded(true)}
-            style={{ opacity: iframeLoaded ? 1 : 0, transition: 'opacity 0.5s ease', width: '100%', height: '100%', position: 'absolute', inset: 0 }}
-          ></iframe>
-        </div>
-
-        <div className="story-modal-info">
-          <div className="story-modal-info-left">
-            <h2 className="story-card-title" style={{ fontSize: '32px', marginBottom: '12px' }}>{displayName}</h2>
-            {displaySaint && <span className="saint-tag">{displaySaint}</span>}
-            <span className="story-topic-tag" style={{ marginLeft: '12px', textTransform: 'capitalize' }}>{type}</span>
-          </div>
-
-          {exact_start_text && (
-            <div className="story-modal-info-right">
-              <div className="modal-section-title">Lyrics / Excerpt</div>
-              <div className="modal-content-text">
-                "{exact_start_text}..."
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
+import './MiniPlayer.css';
 
 const MusicCard = ({ track, lang, badgeText }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  
-  const { 
-    name, 
+  const { play, addToQueue } = usePlayer();
+
+  const {
+    name,
     name_english,
     type,
     saint,
     saint_english,
     exact_start_text,
-    video_id, 
+    video_id,
     start_time_seconds,
     end_time_seconds,
   } = track;
@@ -105,39 +33,61 @@ const MusicCard = ({ track, lang, badgeText }) => {
     return `${m}:${s.toString().padStart(2, '0')}`;
   };
 
-  return (
-    <>
-      <div className="ultra-music-card" onClick={() => setIsModalOpen(true)}>
-        <div className="ultra-music-content">
-          <div className="ultra-music-art-wrapper">
-            <img 
-              src={thumbSrc} 
-              onError={() => {
-                if (thumbSrc.includes('hqdefault')) setThumbSrc(`https://img.youtube.com/vi/${video_id}/mqdefault.jpg`);
-                else if (thumbSrc.includes('mqdefault')) setThumbSrc(`https://img.youtube.com/vi/${video_id}/0.jpg`);
-              }}
-              alt={name} 
-              className="ultra-music-art" 
-            />
-            <div className="ultra-play-overlay">
-              <div className="ultra-play-button">▶</div>
-            </div>
-          </div>
+  const handlePlay = (e) => {
+    e.stopPropagation();
+    play(trackToItem(track));
+  };
 
-          <div className="ultra-music-info">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h3 className="ultra-music-title" style={{ margin: 0 }}>{displayName}</h3>
-              <button 
-                className="share-action-btn" 
+  const handleAddToQueue = (e) => {
+    e.stopPropagation();
+    addToQueue(trackToItem(track));
+  };
+
+  return (
+    <div className="ultra-music-card" onClick={handlePlay}>
+      <div className="ultra-music-content">
+        <div className="ultra-music-art-wrapper">
+          <img
+            src={thumbSrc}
+            onError={() => {
+              if (thumbSrc.includes('hqdefault')) setThumbSrc(`https://img.youtube.com/vi/${video_id}/mqdefault.jpg`);
+              else if (thumbSrc.includes('mqdefault')) setThumbSrc(`https://img.youtube.com/vi/${video_id}/0.jpg`);
+            }}
+            alt={name}
+            className="ultra-music-art"
+          />
+          <div className="ultra-play-overlay">
+            <div className="ultra-play-button">▶</div>
+          </div>
+        </div>
+
+        <div className="ultra-music-info">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <h3 className="ultra-music-title" style={{ margin: 0 }}>{displayName}</h3>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }} onClick={e => e.stopPropagation()}>
+              {/* Add to queue */}
+              <button
+                className="queue-action-btn"
+                title={lang === 'mr' ? 'रांगेत जोडा' : 'Add to Queue'}
+                onClick={handleAddToQueue}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M14 10H2v2h12v-2zm0-4H2v2h12V6zm4 8v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM2 16h8v-2H2v2z"/>
+                </svg>
+              </button>
+              {/* Share */}
+              <button
+                className="share-action-btn"
                 title={lang === 'mr' ? 'शेअर करा' : 'Share'}
                 onClick={(e) => {
                   e.stopPropagation();
+                  const durationText = durationSeconds > 0 ? `\nDuration: ${formatTime(durationSeconds)}` : '';
                   const ytLink = `https://youtu.be/${video_id}?t=${Math.floor(start_time_seconds || 0)}`;
-                  const text = `Listen to this abhang: "${displayName}"\n\n${ytLink}`;
+                  const text = `Listen to this abhang: "${displayName}"${durationText}\n\n${ytLink}`;
                   window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
                 }}
               >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" stroke="currentColor">
                   <circle cx="18" cy="5" r="3"></circle>
                   <circle cx="6" cy="12" r="3"></circle>
                   <circle cx="18" cy="19" r="3"></circle>
@@ -146,38 +96,34 @@ const MusicCard = ({ track, lang, badgeText }) => {
                 </svg>
               </button>
             </div>
-            
-            <div className="ultra-music-meta" style={{ marginTop: '8px' }}>
-              {displaySaint && <span className="ultra-pill">{displaySaint}</span>}
-              <span className="ultra-pill highlight" style={{ textTransform: 'capitalize' }}>{type}</span>
-              {start_time_seconds > 0 && (
-                <span className="ultra-pill" style={{ opacity: 0.8, borderColor: 'transparent', background: 'transparent', padding: '0' }}>Starts at {formatTime(start_time_seconds)}</span>
-              )}
-              {durationSeconds > 0 && (
-                <span className="ultra-pill" style={{ background: 'rgba(255, 170, 0, 0.2)', color: 'var(--saffron)', borderColor: 'var(--saffron)', fontWeight: 'bold' }}>
-                  Duration: {formatTime(durationSeconds)}
-                </span>
-              )}
-              {badgeText && (
-                <span className="ultra-pill" style={{ background: 'linear-gradient(135deg, #FFD700, #FFA500)', color: '#000', fontWeight: 'bold', border: 'none', boxShadow: '0 2px 10px rgba(255,170,0,0.3)', padding: '4px 12px' }}>
-                  {badgeText}
-                </span>
-              )}
-            </div>
-            
-            {exact_start_text && (
-              <div className="ultra-lyrics">
-                "{exact_start_text}..."
-              </div>
+          </div>
+
+          <div className="ultra-music-meta" style={{ marginTop: '8px' }}>
+            {displaySaint && <span className="ultra-pill">{displaySaint}</span>}
+            <span className="ultra-pill highlight" style={{ textTransform: 'capitalize' }}>{type}</span>
+            {start_time_seconds > 0 && (
+              <span className="ultra-pill" style={{ opacity: 0.8, borderColor: 'transparent', background: 'transparent', padding: '0' }}>Starts at {formatTime(start_time_seconds)}</span>
+            )}
+            {durationSeconds > 0 && (
+              <span className="ultra-pill" style={{ background: 'rgba(255, 170, 0, 0.2)', color: 'var(--saffron)', borderColor: 'var(--saffron)', fontWeight: 'bold' }}>
+                Duration: {formatTime(durationSeconds)}
+              </span>
+            )}
+            {badgeText && (
+              <span className="ultra-pill" style={{ background: 'linear-gradient(135deg, #FFD700, #FFA500)', color: '#000', fontWeight: 'bold', border: 'none', boxShadow: '0 2px 10px rgba(255,170,0,0.3)', padding: '4px 12px' }}>
+                {badgeText}
+              </span>
             )}
           </div>
+
+          {exact_start_text && (
+            <div className="ultra-lyrics">
+              "{exact_start_text}..."
+            </div>
+          )}
         </div>
       </div>
-
-      {isModalOpen && (
-        <MusicModal track={track} onClose={() => setIsModalOpen(false)} lang={lang} />
-      )}
-    </>
+    </div>
   );
 };
 

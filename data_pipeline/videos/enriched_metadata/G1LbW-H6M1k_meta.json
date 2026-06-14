@@ -8,11 +8,12 @@
         "प्रपंच आणि परमार्थ"
       ],
       "exact_end_text": "त्याच्यातून तो काहीतरी शिकतो आणि तो पुढे जातो",
+      "end_time_seconds": 639,
+      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj",
+      "title_english": "Sadguruncha Davakhana Ani Ajari Lok",
       "title": "सद्गुरूंचा दवाखाना आणि आजारी लोक",
       "exact_start_text": "महाराजांच्याकडे जाणारी माणसं नाही का म्हणायची",
-      "moral": "ज्याप्रमाणे डॉक्टरांच्या दवाखान्यात आजारी लोकच येतात, त्याचप्रमाणे सद्गुरूंच्या दरबारात काम, क्रोध, लोभ इत्यादी मानसिक आजारांनी ग्रस्त असलेले साधक येतात. सद्गुरू त्यांना नामस्मरण आणि बोधाच्या औषधाने बरे करतात. त्यामुळे त्यांच्या आजूबाजूच्या लोकांच्या दोषांकडे न बघता सद्गुरूंच्या कृपेवर लक्ष ठेवावे.",
-      "title_english": "Sadguruncha Davakhana Ani Ajari Lok",
-      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj"
+      "moral": "ज्याप्रमाणे डॉक्टरांच्या दवाखान्यात आजारी लोकच येतात, त्याचप्रमाणे सद्गुरूंच्या दरबारात काम, क्रोध, लोभ इत्यादी मानसिक आजारांनी ग्रस्त असलेले साधक येतात. सद्गुरू त्यांना नामस्मरण आणि बोधाच्या औषधाने बरे करतात. त्यामुळे त्यांच्या आजूबाजूच्या लोकांच्या दोषांकडे न बघता सद्गुरूंच्या कृपेवर लक्ष ठेवावे."
     },
     {
       "normalized_saint_name": "श्री पेठे काका",
@@ -22,25 +23,27 @@
         "अध्यात्म आणि भक्ती"
       ],
       "exact_end_text": "देणारा आणि त्याचा हेतू लक्षात घेतला एकच आहे",
+      "end_time_seconds": 741,
+      "normalized_saint_name_english": "Shri Pethe Kaka",
+      "title_english": "Maticha Gola Ani Vividh Khelani",
       "title": "मातीचा गोळा आणि विविध खेळणी",
       "exact_start_text": "आपल्याकडे कितीतरी ह्याच्यात मूर्ती बनवतात मातीच्या",
-      "moral": "मुले ज्याप्रमाणे क्ले किंवा मातीपासून अनेक प्रकारची खेळणी बनवतात आणि शेवटी खेळ संपल्यावर सर्व खेळणी एकत्र करून पुन्हा एकच मातीचा गोळा करतात, त्याचप्रमाणे या सृष्टीतील सर्व विविधता शेवटी एकाच परमात्म्यात विलीन होते. बाह्य आकार बदलले तरी मूळ तत्त्व एकच असते.",
-      "title_english": "Maticha Gola Ani Vividh Khelani",
-      "normalized_saint_name_english": "Shri Pethe Kaka"
+      "moral": "मुले ज्याप्रमाणे क्ले किंवा मातीपासून अनेक प्रकारची खेळणी बनवतात आणि शेवटी खेळ संपल्यावर सर्व खेळणी एकत्र करून पुन्हा एकच मातीचा गोळा करतात, त्याचप्रमाणे या सृष्टीतील सर्व विविधता शेवटी एकाच परमात्म्यात विलीन होते. बाह्य आकार बदलले तरी मूळ तत्त्व एकच असते."
     }
   ],
   "video_id": "G1LbW-H6M1k",
   "musical_segments": [
     {
+      "saint_english": "Shri Pethe Kaka",
       "start_time_seconds": 2455.202,
       "saint": "श्री पेठे काका",
       "exact_end_text": "अवधूत चिंतन श्री गुरुदेव दत्त",
+      "end_time_seconds": 2586,
+      "name_english": "Sadguruleelamrut Aarti",
       "confidence": "high",
       "name": "सद्गुरूलीलामृत आरती",
       "type": "aarti",
-      "exact_start_text": "सद्गुरू लीलामृत ग्रंथा जय आद्य चरित्रा हो",
-      "name_english": "Sadguruleelamrut Aarti",
-      "saint_english": "Shri Pethe Kaka"
+      "exact_start_text": "सद्गुरू लीलामृत ग्रंथा जय आद्य चरित्रा हो"
     }
   ],
   "actionable_practices": [

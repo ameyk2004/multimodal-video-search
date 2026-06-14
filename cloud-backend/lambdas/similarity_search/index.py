@@ -207,6 +207,8 @@ def lambda_handler(event: dict, context: Any) -> dict:
 
     query = params.get("q", "").strip()
     search_type = params.get("type", "video").strip().lower()
+    preferred_book = params.get("preferred_book")
+    preferred_video = params.get("preferred_video")
 
     if not query:
         return _build_response(400, {"error": "Missing required query parameter 'q'."})
@@ -234,8 +236,31 @@ def lambda_handler(event: dict, context: Any) -> dict:
             book_res = book_searcher.search(vector, query_text=processed_query, top_k=5)
             results.extend(book_res)
             
+        # ── Targeted Boosting ──
+        boosted_result = None
+        if preferred_book and (search_type == "book" or search_type == "combined"):
+            book_searcher = _get_book_searcher()
+            b_res = book_searcher.search(vector, query_text=processed_query, top_k=1, filter_book=preferred_book)
+            if b_res:
+                boosted_result = b_res[0]
+        elif preferred_video and (search_type == "video" or search_type == "combined"):
+            video_searcher = _get_video_searcher()
+            v_res = video_searcher.search(vector, query_text=processed_query, top_k=1, filter_video=preferred_video)
+            if v_res:
+                boosted_result = v_res[0]
+
         # Sort combined results by score descending
         results.sort(key=lambda x: x.get("score", 0), reverse=True)
+        
+        if boosted_result:
+            # Remove from global list if present to avoid duplicates
+            if boosted_result.get("type") == "video":
+                results = [r for r in results if not (r.get("type") == "video" and r.get("video_id") == boosted_result.get("video_id") and r.get("chunk_index") == boosted_result.get("chunk_index"))]
+            else:
+                results = [r for r in results if not (r.get("type") == "book" and r.get("book_name") == boosted_result.get("book_name") and r.get("chunk_index") == boosted_result.get("chunk_index"))]
+            
+            # Pin to top
+            results.insert(0, boosted_result)
             
         logger.info("Found %d results", len(results))
 

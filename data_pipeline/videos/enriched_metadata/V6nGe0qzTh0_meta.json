@@ -8,11 +8,12 @@
         "प्रपंच आणि परमार्थ"
       ],
       "exact_end_text": "तिथलं काम तिथे ठेवणं हे संतांना जमत",
+      "end_time_seconds": 937,
+      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj",
+      "title_english": "Shri Gondavalekar Maharaj Ani Nndaveshi Yancha Prasng",
       "title": "श्री गोंदवलेकर महाराज आणि नंदवेशी यांचा प्रसंग",
       "exact_start_text": "ज्या नंदवेशी एवढा वेळ ते भांडतायत",
-      "moral": "प्रपंचातील वाद किंवा व्यवहार हे तिथल्या तिथेच ठेवता आले पाहिजेत. व्यवहारातील कटुता भक्तीमध्ये किंवा देवाच्या दरबारात आणू नये. संतांप्रमाणे प्रत्येक काम योग्य वेळी करून ते तिथेच सोडण्याची कला आत्मसात करावी, जेणेकरून मनाची शांती भंग पावत नाही.",
-      "title_english": "Shri Gondavalekar Maharaj Ani Nndaveshi Yancha Prasng",
-      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj"
+      "moral": "प्रपंचातील वाद किंवा व्यवहार हे तिथल्या तिथेच ठेवता आले पाहिजेत. व्यवहारातील कटुता भक्तीमध्ये किंवा देवाच्या दरबारात आणू नये. संतांप्रमाणे प्रत्येक काम योग्य वेळी करून ते तिथेच सोडण्याची कला आत्मसात करावी, जेणेकरून मनाची शांती भंग पावत नाही."
     },
     {
       "normalized_saint_name": "समर्थ रामदास स्वामी",
@@ -22,25 +23,27 @@
         "तत्त्वज्ञान आणि विचार"
       ],
       "exact_end_text": "आयुष्य पुरेना सर्वथा कस पुरेल आयुष्य",
+      "end_time_seconds": 1219,
+      "normalized_saint_name_english": "Samarth Ramadas Swami",
+      "title_english": "Nanashastri Dandavale Ani Shastrancha Abhyas",
       "title": "नानाशास्त्री दांडवळे आणि शास्त्रांचा अभ्यास",
       "exact_start_text": "नानाशास्त्री दांडवळती समर्थ नाही का",
-      "moral": "केवळ अनेक ग्रंथांचा आणि शास्त्रांचा अभ्यास करत बसल्याने आयुष्य संपून जाते, पण प्रत्यक्ष साधना राहून जाते. त्यामुळे अनेक कृती शोधण्यापेक्षा जी सोपी साधना (नामस्मरण) मिळाली आहे, ती प्रत्यक्ष आचरणात आणणे महत्त्वाचे आहे. मिळालेल्या ज्ञानाचा प्रत्यक्ष वापर करणे हाच खरा मार्ग आहे.",
-      "title_english": "Nanashastri Dandavale Ani Shastrancha Abhyas",
-      "normalized_saint_name_english": "Samarth Ramadas Swami"
+      "moral": "केवळ अनेक ग्रंथांचा आणि शास्त्रांचा अभ्यास करत बसल्याने आयुष्य संपून जाते, पण प्रत्यक्ष साधना राहून जाते. त्यामुळे अनेक कृती शोधण्यापेक्षा जी सोपी साधना (नामस्मरण) मिळाली आहे, ती प्रत्यक्ष आचरणात आणणे महत्त्वाचे आहे. मिळालेल्या ज्ञानाचा प्रत्यक्ष वापर करणे हाच खरा मार्ग आहे."
     }
   ],
   "video_id": "V6nGe0qzTh0",
   "musical_segments": [
     {
+      "saint_english": "Shri Pethe Kaka",
       "start_time_seconds": 2104.72,
       "saint": "श्री पेठे काका",
       "exact_end_text": "राम जानकी जीवन स्मरण जय जय राम",
+      "end_time_seconds": 2212,
+      "name_english": "Ram Krushn Hari Namasmaran",
       "confidence": "high",
       "name": "राम कृष्ण हरी नामस्मरण",
       "type": "namasmarana",
-      "exact_start_text": "जय जय राम कृष्ण हरी राम",
-      "name_english": "Ram Krushn Hari Namasmaran",
-      "saint_english": "Shri Pethe Kaka"
+      "exact_start_text": "जय जय राम कृष्ण हरी राम"
     }
   ],
   "actionable_practices": [

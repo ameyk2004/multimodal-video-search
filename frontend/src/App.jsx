@@ -12,6 +12,8 @@ import SearchPage from './components/SearchPage';
 import StoriesBanner from './components/StoriesBanner';
 import MusicPage from './components/MusicPage';
 import AdminPanel from './components/AdminPanel';
+import MiniPlayer from './components/MiniPlayer';
+import { PlayerProvider } from './context/PlayerContext';
 import { api } from './utils/api';
 
 const CONTENT = {
@@ -256,8 +258,8 @@ export default function App() {
     }
   };
 
-  const handleSearch = async (q) => {
-    const searchQuery = (q || query).trim();
+  const handleSearch = async (q, preferredBook = null, preferredVideo = null) => {
+    const searchQuery = (typeof q === 'string' ? q : query).trim();
     if (!searchQuery || loading) return;
     setQuery('');
     setLoading(true);
@@ -276,7 +278,7 @@ export default function App() {
     }]);
 
     try {
-      const data = await api.search(searchQuery, 'combined');
+      const data = await api.search(searchQuery, 'combined', preferredBook, preferredVideo);
       
       setSessions(prev => prev.map(s => {
         if (s.id === sessionId) {
@@ -340,7 +342,7 @@ export default function App() {
   });
 
   return (
-    <>
+    <PlayerProvider>
       <div className="bg-gradient" />
       <ParticleCanvas />
       <div className="app">
@@ -377,7 +379,7 @@ export default function App() {
           </div>
         </header>
 
-        <main className="main">
+        <main className="main" style={{ paddingBottom: '96px' }}>
           <Routes>
             <Route path="/stories" element={
               <div className="stories-page">
@@ -625,8 +627,9 @@ export default function App() {
                     lang={lang}
                     onClose={() => setSelectedVideo(null)} 
                     onSearch={(q) => {
+                      const vId = selectedVideo.video_id;
                       setSelectedVideo(null);
-                      handleSearch(q);
+                      handleSearch(q, null, vId);
                     }}
                     onStoryClick={(story) => {
                       setSelectedVideo(null);
@@ -642,11 +645,15 @@ export default function App() {
                     lang={lang}
                     onClose={() => setSelectedBook(null)} 
                     onSearch={(payload) => {
+                      let bName = selectedBook.video_id || selectedBook.title;
+                      if (bName.startsWith('book_')) {
+                        bName = bName.substring(5);
+                      }
                       setSelectedBook(null);
                       if (payload && payload.type === 'fetch_page') {
                         handleFetchPageSearch(payload);
                       } else {
-                        handleSearch(payload);
+                        handleSearch(payload, bName, null);
                       }
                     }}
                   />
@@ -684,8 +691,9 @@ export default function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
+        <MiniPlayer />
       </div>
-    </>
+    </PlayerProvider>
   );
 }
 

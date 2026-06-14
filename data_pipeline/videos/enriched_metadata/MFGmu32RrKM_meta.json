@@ -8,11 +8,12 @@
         "तत्त्वज्ञान आणि विचार"
       ],
       "exact_end_text": "हळूहळू त्याची वाटचाल इथूनच असते",
+      "end_time_seconds": 850,
+      "normalized_saint_name_english": "Shri Pethe Kaka",
+      "title_english": "Valalelya Panavaril Satpurushanchi Drushti",
       "title": "वाळलेल्या पानावरील सत्पुरुषांची दृष्टी",
       "exact_start_text": "मी मागे एकदा सत्पुरुषांची गोष्ट आपल्याला",
-      "moral": "सृष्टीतील प्रत्येक लहान-मोठ्या गोष्टीमध्ये एकच चैतन्य सामावलेले आहे. वाळलेल्या पानातही तोच जीव आहे जो आपल्यात आहे. त्यामुळे कोणत्याही गोष्टीला निरुपयोगी किंवा क्षुल्लक समजून तिचा अनादर करू नये, तर सर्व घटकांबद्दल आदर आणि संवेदनशीलता बाळगावी.",
-      "title_english": "Valalelya Panavaril Satpurushanchi Drushti",
-      "normalized_saint_name_english": "Shri Pethe Kaka"
+      "moral": "सृष्टीतील प्रत्येक लहान-मोठ्या गोष्टीमध्ये एकच चैतन्य सामावलेले आहे. वाळलेल्या पानातही तोच जीव आहे जो आपल्यात आहे. त्यामुळे कोणत्याही गोष्टीला निरुपयोगी किंवा क्षुल्लक समजून तिचा अनादर करू नये, तर सर्व घटकांबद्दल आदर आणि संवेदनशीलता बाळगावी."
     },
     {
       "normalized_saint_name": "श्री पेठे काका",
@@ -22,25 +23,27 @@
         "प्रपंच आणि परमार्थ"
       ],
       "exact_end_text": "त्यांच्यासाठी ते रोज मी म्हटलं सकाळी",
+      "end_time_seconds": 1522,
+      "normalized_saint_name_english": "Shri Pethe Kaka",
+      "title_english": "Dilli Steshanavaril Saiyad Yanchi Sevavrutti",
       "title": "दिल्ली स्टेशनवरील सैयद यांची सेवावृत्ती",
       "exact_start_text": "दिल्लीच्या स्टेशन वरच्या माणसाची गोष्ट मी",
-      "moral": "आपल्याला मिळालेले जीवन ही ईश्वराची मोठी कृपा आहे. संकटातून किंवा आजारातून वाचल्यानंतर आपले उरलेले आयुष्य इतरांच्या सेवेसाठी आणि कल्याणासाठी समर्पित करावे. निरपेक्ष भावनेने केलेली सेवा हीच खरी ईश्वरभक्ती आहे आणि यामुळे मनातील भेद नष्ट होतात.",
-      "title_english": "Dilli Steshanavaril Saiyad Yanchi Sevavrutti",
-      "normalized_saint_name_english": "Shri Pethe Kaka"
+      "moral": "आपल्याला मिळालेले जीवन ही ईश्वराची मोठी कृपा आहे. संकटातून किंवा आजारातून वाचल्यानंतर आपले उरलेले आयुष्य इतरांच्या सेवेसाठी आणि कल्याणासाठी समर्पित करावे. निरपेक्ष भावनेने केलेली सेवा हीच खरी ईश्वरभक्ती आहे आणि यामुळे मनातील भेद नष्ट होतात."
     }
   ],
   "video_id": "MFGmu32RrKM",
   "musical_segments": [
     {
+      "saint_english": "Shri Pethe Kaka",
       "start_time_seconds": 1776.825,
       "saint": "श्री पेठे काका",
       "exact_end_text": "भेटू सर्वा सौख्य तारू",
+      "end_time_seconds": 1951,
+      "name_english": "Avaghe Jan Bhede Bhare",
       "confidence": "high",
       "name": "अवघे जन भेदे भरे",
       "type": "bhajan",
-      "exact_start_text": "अवघे जन भेदे भरे जो तो",
-      "name_english": "Avaghe Jan Bhede Bhare",
-      "saint_english": "Shri Pethe Kaka"
+      "exact_start_text": "अवघे जन भेदे भरे जो तो"
     }
   ],
   "actionable_practices": [

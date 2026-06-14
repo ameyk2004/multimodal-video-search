@@ -8,11 +8,12 @@
         "मनःशांती आणि आनंद"
       ],
       "exact_end_text": "कोण सुखात कोण आनंदात कसा आहे",
+      "end_time_seconds": 404,
+      "normalized_saint_name_english": "Shri Pethe Kaka",
+      "title_english": "Jag Jinkanare Raje Ani Sukhi Varakari",
       "title": "जग जिंकणारे राजे आणि सुखी वारकरी",
       "exact_start_text": "अगदी आपण जशी ह्या मोठ मोठ्या",
-      "moral": "ज्यांनी संपूर्ण जग जिंकले, अफाट संपत्ती मिळवली, ते शेवटी रिकाम्या हाताने गेले आणि त्यांच्या संपत्तीसाठी कोर्टात वाद सुरू राहिले. याउलट, एक साधा वारकरी अर्धी भाकरी खाऊनही अत्यंत सुखी आणि आनंदात असतो, कारण त्याचे मन भगवंताच्या चरणी लीन असते. खऱ्या सुखाचा संबंध बाह्य संपत्तीशी नसून अंतरीच्या समाधानाशी आणि भगवंताच्या भक्तीशी आहे.",
-      "title_english": "Jag Jinkanare Raje Ani Sukhi Varakari",
-      "normalized_saint_name_english": "Shri Pethe Kaka"
+      "moral": "ज्यांनी संपूर्ण जग जिंकले, अफाट संपत्ती मिळवली, ते शेवटी रिकाम्या हाताने गेले आणि त्यांच्या संपत्तीसाठी कोर्टात वाद सुरू राहिले. याउलट, एक साधा वारकरी अर्धी भाकरी खाऊनही अत्यंत सुखी आणि आनंदात असतो, कारण त्याचे मन भगवंताच्या चरणी लीन असते. खऱ्या सुखाचा संबंध बाह्य संपत्तीशी नसून अंतरीच्या समाधानाशी आणि भगवंताच्या भक्तीशी आहे."
     },
     {
       "normalized_saint_name": "श्री पेठे काका",
@@ -22,25 +23,27 @@
         "साधना आणि ध्यान"
       ],
       "exact_end_text": "यात काही तडजोड होणार नाही",
+      "end_time_seconds": 789,
+      "normalized_saint_name_english": "Shri Pethe Kaka",
+      "title_english": "Dasabodh Lekhan Ani Japachi Tadajod",
       "title": "दासबोध लेखन आणि जपाची तडजोड",
       "exact_start_text": "आपल्याला बाबांचे एक घटना घडलेली",
-      "moral": "भगवंताचे नामस्मरण आणि साधना ही कोणत्याही व्यावहारिक किंवा अगदी पारमार्थिक लेखनापेक्षाही श्रेष्ठ आहे. दासबोधाचे काम लवकर व्हावे म्हणून जपाचा वेळ कमी करण्याची विनंती केली असता, बाबांनी स्पष्ट नकार दिला. साधना आणि जपात कधीही तडजोड करू नये, कारण नामस्मरण हीच मुख्य गोष्ट आहे आणि इतर सर्व उपाधी आहेत, हा महत्त्वाचा धडा यातून मिळतो.",
-      "title_english": "Dasabodh Lekhan Ani Japachi Tadajod",
-      "normalized_saint_name_english": "Shri Pethe Kaka"
+      "moral": "भगवंताचे नामस्मरण आणि साधना ही कोणत्याही व्यावहारिक किंवा अगदी पारमार्थिक लेखनापेक्षाही श्रेष्ठ आहे. दासबोधाचे काम लवकर व्हावे म्हणून जपाचा वेळ कमी करण्याची विनंती केली असता, बाबांनी स्पष्ट नकार दिला. साधना आणि जपात कधीही तडजोड करू नये, कारण नामस्मरण हीच मुख्य गोष्ट आहे आणि इतर सर्व उपाधी आहेत, हा महत्त्वाचा धडा यातून मिळतो."
     }
   ],
   "video_id": "rPdFlBKC6Vg",
   "musical_segments": [
     {
+      "saint_english": "Shri Pethe Kaka",
       "start_time_seconds": 2047.24,
       "saint": "श्री पेठे काका",
       "exact_end_text": "विठ्ठल विठ्ठल सद्गुरु महाराज की जय",
+      "end_time_seconds": 2230,
+      "name_english": "Drushti Pure Prapnchala Jnyan Drushti Paramarthala",
       "confidence": "high",
       "name": "दृष्टी पुरे प्रपंचाला ज्ञान दृष्टी परमार्थाला",
       "type": "bhajan",
-      "exact_start_text": "दृष्टी पुरे प्रपंचाला ज्ञान दृष्टी",
-      "name_english": "Drushti Pure Prapnchala Jnyan Drushti Paramarthala",
-      "saint_english": "Shri Pethe Kaka"
+      "exact_start_text": "दृष्टी पुरे प्रपंचाला ज्ञान दृष्टी"
     }
   ],
   "actionable_practices": [

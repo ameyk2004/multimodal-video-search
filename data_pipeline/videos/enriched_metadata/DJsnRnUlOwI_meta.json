@@ -8,11 +8,12 @@
         "प्रपंच आणि परमार्थ"
       ],
       "exact_end_text": "तसं होत नाही ही गोष्ट त्याच्याबरोबर खरी",
+      "end_time_seconds": 142,
+      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj",
+      "title_english": "Aushadh Ani Acharan",
       "title": "औषध आणि आचरण",
       "exact_start_text": "आता महाराज म्हणले तसं ते पण लक्षात ठेवाव",
-      "moral": "केवळ ग्रंथांचे वाचन करणे किंवा ज्ञान ऐकणे म्हणजे औषध तोंडात ठेवण्यासारखे आहे. जोपर्यंत ते ज्ञान आचरणात आणले जात नाही (म्हणजे औषध पोटात जात नाही), तोपर्यंत त्याचा कोणताही आध्यात्मिक परिणाम साधकाच्या जीवनावर होत नाही.",
-      "title_english": "Aushadh Ani Acharan",
-      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj"
+      "moral": "केवळ ग्रंथांचे वाचन करणे किंवा ज्ञान ऐकणे म्हणजे औषध तोंडात ठेवण्यासारखे आहे. जोपर्यंत ते ज्ञान आचरणात आणले जात नाही (म्हणजे औषध पोटात जात नाही), तोपर्यंत त्याचा कोणताही आध्यात्मिक परिणाम साधकाच्या जीवनावर होत नाही."
     },
     {
       "normalized_saint_name": "श्री पेठे काका",
@@ -22,11 +23,12 @@
         "अध्यात्म आणि भक्ती"
       ],
       "exact_end_text": "स्वच्छ ठेवण हे दुसरं काम स्वच्छ ठेवण",
+      "end_time_seconds": 905,
+      "normalized_saint_name_english": "Shri Pethe Kaka",
+      "title_english": "Ker Kadhanyachi Seva Ani Svachchhata",
       "title": "केर काढण्याची सेवा आणि स्वच्छता",
       "exact_start_text": "केर काढण्याची सेवा आपल्याला कलावधीच आठवल असेल",
-      "moral": "सद्गुरूंची सेवा ही केवळ एक वेळचे काम नसून ती सतत जागरूक राहून करण्याची गोष्ट आहे. बाह्य परिसराची स्वच्छता राखण्यासोबतच आपल्या अंतःकरणाची स्वच्छता राखणे हीच खरी गहन सेवा आहे.",
-      "title_english": "Ker Kadhanyachi Seva Ani Svachchhata",
-      "normalized_saint_name_english": "Shri Pethe Kaka"
+      "moral": "सद्गुरूंची सेवा ही केवळ एक वेळचे काम नसून ती सतत जागरूक राहून करण्याची गोष्ट आहे. बाह्य परिसराची स्वच्छता राखण्यासोबतच आपल्या अंतःकरणाची स्वच्छता राखणे हीच खरी गहन सेवा आहे."
     },
     {
       "normalized_saint_name": "श्री ब्रह्मचैतन्य गोंदवलेकर महाराज",
@@ -36,11 +38,12 @@
         "प्रपंच आणि परमार्थ"
       ],
       "exact_end_text": "उरलेली माती असते ती टाकून देतो",
+      "end_time_seconds": 1383,
+      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj",
+      "title_english": "Sar Ani Asar Vivek",
       "title": "सार आणि असार विवेक",
       "exact_start_text": "आपल्याकडे भोईमूग पेतो भईमुग पेरल्यानंतर शेंगा येतात",
-      "moral": "ज्याप्रमाणे आपण भुईमुगाची टरफले (असार) टाकून देऊन आतील दाणे (सार) खातो, त्याचप्रमाणे जगातील निरुपयोगी गोष्टी सोडून देऊन केवळ चांगल्या आणि उपयुक्त गोष्टींचाच स्वीकार केला पाहिजे.",
-      "title_english": "Sar Ani Asar Vivek",
-      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj"
+      "moral": "ज्याप्रमाणे आपण भुईमुगाची टरफले (असार) टाकून देऊन आतील दाणे (सार) खातो, त्याचप्रमाणे जगातील निरुपयोगी गोष्टी सोडून देऊन केवळ चांगल्या आणि उपयुक्त गोष्टींचाच स्वीकार केला पाहिजे."
     },
     {
       "normalized_saint_name": "श्री पेठे काका",
@@ -50,25 +53,27 @@
         "तत्त्वज्ञान आणि विचार"
       ],
       "exact_end_text": "आता बाकीची भाती आहे माहिती आहे शेवटी",
+      "end_time_seconds": 1460,
+      "normalized_saint_name_english": "Shri Pethe Kaka",
+      "title_english": "Takanyasarakhe Takane Ani Ghenyasarakhe Ghene",
       "title": "टाकण्यासारखे टाकणे आणि घेण्यासारखे घेणे",
       "exact_start_text": "मागे एकदा गांधीजींच्या याच सांगितलं होत ना",
-      "moral": "इतरांनी केलेल्या टीकेमध्ये किंवा वाईट वर्तनामध्ये अडकून न पडता, त्यातील केवळ उपयुक्त भाग (जसे गांधीजींनी पत्रातील टाचणी ठेवून घेतली आणि पत्र टाकून दिले) स्वीकारून बाकीच्या निरर्थक गोष्टी सोडून दिल्या पाहिजेत.",
-      "title_english": "Takanyasarakhe Takane Ani Ghenyasarakhe Ghene",
-      "normalized_saint_name_english": "Shri Pethe Kaka"
+      "moral": "इतरांनी केलेल्या टीकेमध्ये किंवा वाईट वर्तनामध्ये अडकून न पडता, त्यातील केवळ उपयुक्त भाग (जसे गांधीजींनी पत्रातील टाचणी ठेवून घेतली आणि पत्र टाकून दिले) स्वीकारून बाकीच्या निरर्थक गोष्टी सोडून दिल्या पाहिजेत."
     }
   ],
   "video_id": "DJsnRnUlOwI",
   "musical_segments": [
     {
+      "saint_english": "Saint Tukaram Maharaj",
       "start_time_seconds": 1545.76,
       "saint": "संत तुकाराम महाराज",
       "exact_end_text": "राम कृष्ण हरी राम",
+      "end_time_seconds": 1650,
+      "name_english": "Ram Krushn Hari Namasmaran",
       "confidence": "high",
       "name": "राम कृष्ण हरी नामस्मरण",
       "type": "namasmarana",
-      "exact_start_text": "राम कृष्ण हरी राम जय जय",
-      "name_english": "Ram Krushn Hari Namasmaran",
-      "saint_english": "Saint Tukaram Maharaj"
+      "exact_start_text": "राम कृष्ण हरी राम जय जय"
     }
   ],
   "actionable_practices": [

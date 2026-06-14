@@ -8,11 +8,12 @@
         "कर्म आणि प्रारब्ध"
       ],
       "exact_end_text": "दोन गोष्टी वेगळ्या नाहीच आहे",
+      "end_time_seconds": 1412,
+      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj",
+      "title_english": "Mrutyusamayi Ramanam Ghenara Sadhak",
       "title": "मृत्यूसमयी रामनाम घेणारा साधक",
       "exact_start_text": "महाराजांच्याकडे एकदाच रामनाम घेईन म्हणणारे",
-      "moral": "केवळ शेवटच्या क्षणी रामनाम घेईन असे म्हणणे सोपे आहे, पण ते प्रत्यक्षात जमण्यासाठी संपूर्ण आयुष्य सत्य आचरणात घालवावे लागते. ज्याची जीभ आयुष्यात कधीही असत्य बोलली नाही, त्यालाच मृत्यूसमयी ईश्वराचे नाव घेणे शक्य होते. त्यामुळे नामस्मरणाची सतत तयारी आणि सत्य आचरण आवश्यक आहे.",
-      "title_english": "Mrutyusamayi Ramanam Ghenara Sadhak",
-      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj"
+      "moral": "केवळ शेवटच्या क्षणी रामनाम घेईन असे म्हणणे सोपे आहे, पण ते प्रत्यक्षात जमण्यासाठी संपूर्ण आयुष्य सत्य आचरणात घालवावे लागते. ज्याची जीभ आयुष्यात कधीही असत्य बोलली नाही, त्यालाच मृत्यूसमयी ईश्वराचे नाव घेणे शक्य होते. त्यामुळे नामस्मरणाची सतत तयारी आणि सत्य आचरण आवश्यक आहे."
     },
     {
       "normalized_saint_name": "डॉ. कुर्तकोटी",
@@ -23,25 +24,27 @@
         "संस्कार आणि मानवी मूल्ये"
       ],
       "exact_end_text": "त्यासाठी बोलो त्यातून तुम्हाला जर",
+      "end_time_seconds": 1660,
+      "normalized_saint_name_english": "Dr. Kurtakoti",
+      "title_english": "Dr. Kurtakotinchi Guruseva Ani Kanchanatyag",
       "title": "डॉ. कुर्तकोटींची गुरुसेवा आणि कांचनत्याग",
       "exact_start_text": "कृतकोटींना सुद्धा काही कमी ताकतीचे",
-      "moral": "उच्च विद्याविभूषित असूनही अहंकार सोडून गुरूंची सेवा करणे ही खरी विद्या आहे. संपत्ती आणि मोहरांचे ताट समोर आले तरी 'याने मला अमरत्व किंवा मुक्ती मिळणार नाही' असे म्हणून त्याचा त्याग करणे, हे खऱ्या जीवनविद्येचे लक्षण आहे. गुरूंच्या चरणी संपूर्ण शरणागती पत्करून सेवा करणे हाच उद्धाराचा मार्ग आहे.",
-      "title_english": "Dr. Kurtakotinchi Guruseva Ani Kanchanatyag",
-      "normalized_saint_name_english": "Dr. Kurtakoti"
+      "moral": "उच्च विद्याविभूषित असूनही अहंकार सोडून गुरूंची सेवा करणे ही खरी विद्या आहे. संपत्ती आणि मोहरांचे ताट समोर आले तरी 'याने मला अमरत्व किंवा मुक्ती मिळणार नाही' असे म्हणून त्याचा त्याग करणे, हे खऱ्या जीवनविद्येचे लक्षण आहे. गुरूंच्या चरणी संपूर्ण शरणागती पत्करून सेवा करणे हाच उद्धाराचा मार्ग आहे."
     }
   ],
   "video_id": "qQfuo06M7Ec",
   "musical_segments": [
     {
+      "saint_english": "Saint Tukaram Maharaj",
       "start_time_seconds": 2364.16,
       "saint": "संत तुकाराम महाराज",
       "exact_end_text": "चित्ती त्याची घडावी संगती",
+      "end_time_seconds": 2469,
+      "name_english": "Dev Vase Chitti Tyachi Ghadavi Sngati",
       "confidence": "high",
       "name": "देव वसे चित्ती त्याची घडावी संगती",
       "type": "bhajan",
-      "exact_start_text": "देव वसे चित्ती त्याची घडावी",
-      "name_english": "Dev Vase Chitti Tyachi Ghadavi Sngati",
-      "saint_english": "Saint Tukaram Maharaj"
+      "exact_start_text": "देव वसे चित्ती त्याची घडावी"
     }
   ],
   "actionable_practices": [

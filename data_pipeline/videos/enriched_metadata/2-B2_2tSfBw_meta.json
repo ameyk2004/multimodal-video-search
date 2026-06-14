@@ -7,12 +7,13 @@
         "सद्गुरू आणि संत चरित्र",
         "प्रपंच आणि परमार्थ"
       ],
-      "exact_end_text": "त्यामुळे त्यांच्या मागे शिष्य परंपरा या अर्थाने",
+      "exact_end_text": "सूक्ष्माची सत्ता जी आहे ती त्याला नुसती जाणवून दिली तरी सुद्धा त्याच्या लक्षात येतं",
+      "end_time_seconds": 1565,
+      "normalized_saint_name_english": "Shri Annd Sagar Maharaj",
+      "title_english": "Shri Annd Sagar Maharaj Ani Anugrahachi At",
       "title": "श्री आनंद सागर महाराज आणि अनुग्रहाची अट",
       "exact_start_text": "आनंद सागर महाराज आता प्रकृतीचा प्रश्न आला",
-      "moral": "प्रत्येक संताची शिकवण्याची आणि शिष्याची परीक्षा घेण्याची पद्धत वेगळी असते. प्रपंचातील आसक्ती पूर्णपणे सुटल्याशिवाय किंवा तीव्र मुमुक्षुत्व असल्याशिवाय परमार्थाचा खरा अधिकार प्राप्त होत नाही, हेच महाराजांनी कडक शब्दांत सुचवले आहे.",
-      "title_english": "Shri Annd Sagar Maharaj Ani Anugrahachi At",
-      "normalized_saint_name_english": "Shri Annd Sagar Maharaj"
+      "moral": "प्रत्येक संताची शिकवण्याची आणि शिष्याची परीक्षा घेण्याची पद्धत वेगळी असते. प्रपंचातील आसक्ती पूर्णपणे सुटल्याशिवाय किंवा तीव्र मुमुक्षुत्व असल्याशिवाय परमार्थाचा खरा अधिकार प्राप्त होत नाही, हेच महाराजांनी कडक शब्दांत सुचवले आहे."
     },
     {
       "normalized_saint_name": "श्री प्रभाकर महाराज",
@@ -21,12 +22,13 @@
         "अध्यात्म आणि भक्ती",
         "साधना आणि ध्यान"
       ],
-      "exact_end_text": "असे पारलौकिकाला लावून दिलेले लोक आहेत",
+      "exact_end_text": "काही वेळेला याचा विषय असतो एखाद्या बघतो आणि जाऊ थांबू आपण",
+      "end_time_seconds": 1780,
+      "normalized_saint_name_english": "Shri Prabhakar Maharaj",
+      "title_english": "Namasmaranane Asadhy Rogache Nivaran",
       "title": "नामस्मरणाने असाध्य रोगाचे निवारण",
       "exact_start_text": "आपला प्रभाकर महाराजांचा परवाही विषय झाला तर",
-      "moral": "भगवंताच्या नामामध्ये आणि संतांच्या शब्दांवर दृढ विश्वास ठेवल्यास अशक्य गोष्टीही शक्य होतात. नामस्मरणामुळे केवळ शारीरिक व्याधीच दूर होत नाहीत, तर अदृश्य ईश्वरी सत्तेवर श्रद्धा निर्माण होऊन जीवनाला पारलौकिक दिशा मिळते.",
-      "title_english": "Namasmaranane Asadhy Rogache Nivaran",
-      "normalized_saint_name_english": "Shri Prabhakar Maharaj"
+      "moral": "भगवंताच्या नामामध्ये आणि संतांच्या शब्दांवर दृढ विश्वास ठेवल्यास अशक्य गोष्टीही शक्य होतात. नामस्मरणामुळे केवळ शारीरिक व्याधीच दूर होत नाहीत, तर अदृश्य ईश्वरी सत्तेवर श्रद्धा निर्माण होऊन जीवनाला पारलौकिक दिशा मिळते."
     },
     {
       "normalized_saint_name": "श्री स्वामी महाराज",
@@ -35,26 +37,28 @@
         "साधना आणि ध्यान",
         "अध्यात्म आणि भक्ती"
       ],
-      "exact_end_text": "त्यामुळे त्यांच्या लक्षात आलं जर नामाबद्दल शंका",
+      "exact_end_text": "फक्त त्यासाठी त्याला त्या स्वतःच्या पुरुषातून बाहेर यावं लागतं पान 149 पद",
+      "end_time_seconds": 2017,
+      "normalized_saint_name_english": "Shri Swami Maharaj",
+      "title_english": "Nam Gheta Gheta Shnkanche Nirasan",
       "title": "नाम घेता घेता शंकांचे निरसन",
       "exact_start_text": "स्वामी महाराज तिसरे तर त्यांच्याकडे सतत बाजूला",
-      "moral": "नामस्मरणाविषयी केवळ बौद्धिक चर्चा किंवा शंका काढण्यापेक्षा प्रत्यक्ष नाम घेणे महत्त्वाचे आहे. नाम घेता घेता अंतःकरण शुद्ध होते आणि नामाच्या सामर्थ्यानेच सर्व शंकांचे निरसन आपोआप होते.",
-      "title_english": "Nam Gheta Gheta Shnkanche Nirasan",
-      "normalized_saint_name_english": "Shri Swami Maharaj"
+      "moral": "नामस्मरणाविषयी केवळ बौद्धिक चर्चा किंवा शंका काढण्यापेक्षा प्रत्यक्ष नाम घेणे महत्त्वाचे आहे. नाम घेता घेता अंतःकरण शुद्ध होते आणि नामाच्या सामर्थ्यानेच सर्व शंकांचे निरसन आपोआप होते."
     }
   ],
   "video_id": "2-B2_2tSfBw",
   "musical_segments": [
     {
+      "saint_english": "Shri Pethe Kaka",
       "start_time_seconds": 2023.983,
       "saint": "श्री पेठे काका",
-      "exact_end_text": "मन विस्तारी थोडे मनुजा देव सोयरा करी",
+      "exact_end_text": "मनुजा देव सोयरा करी मनुजा देव सोयरा जानकी जीवन स्मरण जय राम",
+      "end_time_seconds": 2260,
+      "name_english": "Man Vistari Thode Manuja",
       "confidence": "high",
       "name": "मन विस्तारी थोडे मनुजा",
       "type": "bhajan",
-      "exact_start_text": "मन विस्तारी थोडे मनुजा देव सोयरा करी",
-      "name_english": "Man Vistari Thode Manuja",
-      "saint_english": "Shri Pethe Kaka"
+      "exact_start_text": "मन विस्तारी थोडे मनुजा देव सोयरा करी"
     }
   ],
   "actionable_practices": [

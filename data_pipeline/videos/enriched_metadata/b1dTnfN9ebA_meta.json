@@ -8,11 +8,12 @@
         "साधना आणि ध्यान"
       ],
       "exact_end_text": "सुगंधापर्यंत नाही पोहोचलो असेल तर कर्मातून फक्त फळात",
+      "end_time_seconds": 609,
+      "normalized_saint_name_english": "Shri Pethe Kaka",
+      "title_english": "Phulacha Sugndh Ani Karmache Phal",
       "title": "फुलाचा सुगंध आणि कर्माचे फळ",
       "exact_start_text": "फुलाच्या बाबतीत काय होतं हे सगळं बीज आहे",
-      "moral": "प्रपंचात आपण करत असलेली सर्व कर्मे ही केवळ पूर्वतयारी आहेत. ज्याप्रमाणे बी लावणे, पाणी घालणे या कर्मांचा शेवट फुलाच्या सुगंधात (जो सूक्ष्म आहे) होतो, त्याचप्रमाणे आपल्या कर्मांचे पर्यवसान अंतिम समाधानात झाले पाहिजे. केवळ बाह्य फळात अडकून न पडता सूक्ष्माचा शोध घेणे आवश्यक आहे.",
-      "title_english": "Phulacha Sugndh Ani Karmache Phal",
-      "normalized_saint_name_english": "Shri Pethe Kaka"
+      "moral": "प्रपंचात आपण करत असलेली सर्व कर्मे ही केवळ पूर्वतयारी आहेत. ज्याप्रमाणे बी लावणे, पाणी घालणे या कर्मांचा शेवट फुलाच्या सुगंधात (जो सूक्ष्म आहे) होतो, त्याचप्रमाणे आपल्या कर्मांचे पर्यवसान अंतिम समाधानात झाले पाहिजे. केवळ बाह्य फळात अडकून न पडता सूक्ष्माचा शोध घेणे आवश्यक आहे."
     },
     {
       "normalized_saint_name": "श्री पेठे काका",
@@ -22,25 +23,27 @@
         "तत्त्वज्ञान आणि विचार"
       ],
       "exact_end_text": "दोन शिंगावर काढली बाकी सगळ पाणी दाखवायचं",
+      "end_time_seconds": 957,
+      "normalized_saint_name_english": "Shri Pethe Kaka",
+      "title_english": "Panyat Dubanari Mhais Ani Sadhanechi Sopi Suruvat",
       "title": "पाण्यात डुबणारी म्हैस आणि साधनेची सोपी सुरुवात",
       "exact_start_text": "त्यांनी म्हशीच चित्र काढून दाखवलं आणि म्हणले",
-      "moral": "कोणतीही कठीण गोष्ट किंवा साधना एकदम साध्य होत नाही. ज्याप्रमाणे चित्र काढताना थेट म्हैस काढणे अवघड असते, पण पाण्यात डुबणाऱ्या म्हशीची फक्त दोन शिंगे काढून सोपी सुरुवात करता येते, त्याचप्रमाणे साधनेची सुरुवातही सोप्या पायऱ्यांनी करून हळूहळू परिपूर्णतेकडे जावे लागते.",
-      "title_english": "Panyat Dubanari Mhais Ani Sadhanechi Sopi Suruvat",
-      "normalized_saint_name_english": "Shri Pethe Kaka"
+      "moral": "कोणतीही कठीण गोष्ट किंवा साधना एकदम साध्य होत नाही. ज्याप्रमाणे चित्र काढताना थेट म्हैस काढणे अवघड असते, पण पाण्यात डुबणाऱ्या म्हशीची फक्त दोन शिंगे काढून सोपी सुरुवात करता येते, त्याचप्रमाणे साधनेची सुरुवातही सोप्या पायऱ्यांनी करून हळूहळू परिपूर्णतेकडे जावे लागते."
     }
   ],
   "video_id": "b1dTnfN9ebA",
   "musical_segments": [
     {
+      "saint_english": "Shri Niranjan Swami",
       "start_time_seconds": 1714.119,
       "saint": "श्री निरंजन स्वामी",
       "exact_end_text": "काय होऊ राही तया सद्गुरूच्या पायी",
+      "end_time_seconds": 1834,
+      "name_english": "Kay Ho Utarai",
       "confidence": "high",
       "name": "काय हो उतराई",
       "type": "bhajan",
-      "exact_start_text": "काय होत नाही तया सद्गुरूच्या पायी",
-      "name_english": "Kay Ho Utarai",
-      "saint_english": "Shri Niranjan Swami"
+      "exact_start_text": "काय होत नाही तया सद्गुरूच्या पायी"
     }
   ],
   "actionable_practices": [

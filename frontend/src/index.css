@@ -79,7 +79,7 @@ body {
   background: rgba(12, 9, 8, 0.8);
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 900;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
 }
 
@@ -485,9 +485,11 @@ body {
   opacity: 0.7;
 }
 
-.thumbnail-wrapper:hover .video-thumb {
-  transform: scale(1.08);
-  opacity: 0.5;
+@media (hover: hover) {
+  .thumbnail-wrapper:hover .video-thumb {
+    transform: scale(1.08);
+    opacity: 0.5;
+  }
 }
 
 .play-overlay {
@@ -500,8 +502,10 @@ body {
   transition: background 0.3s;
 }
 
-.thumbnail-wrapper:hover .play-overlay {
-  background: radial-gradient(circle, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.4) 100%);
+@media (hover: hover) {
+  .thumbnail-wrapper:hover .play-overlay {
+    background: radial-gradient(circle, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.4) 100%);
+  }
 }
 
 .play-btn {
@@ -521,10 +525,12 @@ body {
   backdrop-filter: blur(4px);
 }
 
-.thumbnail-wrapper:hover .play-btn {
-  transform: scale(1.15);
-  background: var(--saffron);
-  box-shadow: 0 0 40px rgba(249, 115, 22, 0.9);
+@media (hover: hover) {
+  .thumbnail-wrapper:hover .play-btn {
+    transform: scale(1.15);
+    background: var(--saffron);
+    box-shadow: 0 0 40px rgba(249, 115, 22, 0.9);
+  }
 }
 
 .thumb-time-badge {

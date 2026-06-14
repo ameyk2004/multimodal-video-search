@@ -8,25 +8,26 @@
         "साधना आणि ध्यान"
       ],
       "exact_end_text": "मागे उभे असत असं त्यांच वर्णन",
+      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj",
+      "title_english": "Gopalarav Phadake Yanchi Tatpar Seva",
       "title": "गोपाळराव फडके यांची तत्पर सेवा",
       "exact_start_text": "गोपाळराव फडकचा उद्योग काय नवसा महाराजांकडे",
-      "moral": "सद्गुरूंची सेवा करताना नेहमी तत्पर आणि सजग असावे. सेवेमध्ये असा भाव असावा की आपल्यामुळे गुरूंना कोणताही त्रास होणार नाही, आणि बाह्य सेवा करत असतानाही मनात अखंड नामस्मरण चालू राहिले पाहिजे.",
-      "title_english": "Gopalarav Phadake Yanchi Tatpar Seva",
-      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj"
+      "moral": "सद्गुरूंची सेवा करताना नेहमी तत्पर आणि सजग असावे. सेवेमध्ये असा भाव असावा की आपल्यामुळे गुरूंना कोणताही त्रास होणार नाही, आणि बाह्य सेवा करत असतानाही मनात अखंड नामस्मरण चालू राहिले पाहिजे."
     }
   ],
   "video_id": "xAO7GN8zEnA",
   "musical_segments": [
     {
+      "saint_english": "Saint Tukaram Maharaj",
       "start_time_seconds": 1028.66,
       "saint": "संत तुकाराम महाराज",
       "exact_end_text": "जय जय राम कृष्ण हरी जानकी जय जय राम आ",
+      "end_time_seconds": 1146,
+      "name_english": "Ram Krushn Hari Namasmaran",
       "confidence": "high",
       "name": "राम कृष्ण हरी नामस्मरण",
       "type": "namasmarana",
-      "exact_start_text": "जय जय राम कृष्ण हरी राम",
-      "name_english": "Ram Krushn Hari Namasmaran",
-      "saint_english": "Saint Tukaram Maharaj"
+      "exact_start_text": "जय जय राम कृष्ण हरी राम"
     }
   ],
   "actionable_practices": [

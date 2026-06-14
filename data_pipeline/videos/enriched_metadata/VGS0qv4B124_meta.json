@@ -8,11 +8,12 @@
         "अहंकार आणि विकार"
       ],
       "exact_end_text": "अशी ज्यांची बाहेर बाह्य स्थिती आहे त्यांची ही प्रपंचाची स्थिती अशी आहे",
+      "end_time_seconds": 1016,
+      "normalized_saint_name_english": "Shri Bhayaji Maharaj",
+      "title_english": "Bhayaji Maharajanche Prapnchatil Vairagy Ani Varan Prayog",
       "title": "भयाजी महाराजांचे प्रपंचातील वैराग्य आणि वरण प्रयोग",
       "exact_start_text": "आपण भयाजी चरित्र वाच चरित्र वाचल असेल",
-      "moral": "प्रपंचात राहूनही वैराग्य कसे टिकवावे हे या कथेतून शिकायला मिळते. परिस्थिती कशीही असली तरी मनाचा समतोल न गमावता, आलेल्या प्रसंगाला आनंदाने सामोरे जाणे आणि ईश्वरी इच्छेवर विश्वास ठेवणे हेच खरे वैराग्य आहे. वैराग्य हे बाह्य नसून आंतरिक असावे लागते.",
-      "title_english": "Bhayaji Maharajanche Prapnchatil Vairagy Ani Varan Prayog",
-      "normalized_saint_name_english": "Shri Bhayaji Maharaj"
+      "moral": "प्रपंचात राहूनही वैराग्य कसे टिकवावे हे या कथेतून शिकायला मिळते. परिस्थिती कशीही असली तरी मनाचा समतोल न गमावता, आलेल्या प्रसंगाला आनंदाने सामोरे जाणे आणि ईश्वरी इच्छेवर विश्वास ठेवणे हेच खरे वैराग्य आहे. वैराग्य हे बाह्य नसून आंतरिक असावे लागते."
     },
     {
       "normalized_saint_name": "श्री तात्यासाहेब महाराज",
@@ -22,25 +23,27 @@
         "तत्त्वज्ञान आणि विचार"
       ],
       "exact_end_text": "ह्या लोकांना बरोबर विरक्ती म्हणजे काय ते पण कळलं आणि निर्भयता म्हणजे ते पण काय ते कळलं",
+      "end_time_seconds": 1538,
+      "normalized_saint_name_english": "Shri Tatyasaheb Maharaj",
+      "title_english": "Tatyasaheb Ani Pal Padanyacha Drushtant",
       "title": "तात्यासाहेब आणि पाल पडण्याचा दृष्टांत",
       "exact_start_text": "तात्यासाहेब म्हटले तेच खरे पाल पडली म्हणून",
-      "moral": "अंधश्रद्धा आणि अपशकुनाच्या भीतीतून मुक्त होऊन प्रत्येक घटनेकडे सकारात्मकतेने पाहणे आवश्यक आहे. स्वतःच्या नुकसानीची किंवा अपशकुनाची भीती बाळगण्यापेक्षा दुसऱ्या जीवाचे कल्याण झाले यातच आनंद मानणे ही संतांची दृष्टी आहे. यामुळे मनातील भय नष्ट होते.",
-      "title_english": "Tatyasaheb Ani Pal Padanyacha Drushtant",
-      "normalized_saint_name_english": "Shri Tatyasaheb Maharaj"
+      "moral": "अंधश्रद्धा आणि अपशकुनाच्या भीतीतून मुक्त होऊन प्रत्येक घटनेकडे सकारात्मकतेने पाहणे आवश्यक आहे. स्वतःच्या नुकसानीची किंवा अपशकुनाची भीती बाळगण्यापेक्षा दुसऱ्या जीवाचे कल्याण झाले यातच आनंद मानणे ही संतांची दृष्टी आहे. यामुळे मनातील भय नष्ट होते."
     }
   ],
   "video_id": "VGS0qv4B124",
   "musical_segments": [
     {
+      "saint_english": "Saint Tukaram Maharaj",
       "start_time_seconds": 1921.919,
       "saint": "संत तुकाराम महाराज",
       "exact_end_text": "संतांची अपाई माझा विश्वास जानकी जीवन स्मरण जय जय राम",
+      "end_time_seconds": 2098,
+      "name_english": "Santanchiya Payi Ha Majha Vishwas",
       "confidence": "high",
       "name": "संतांचिया पायी हा माझा विश्वास",
       "type": "bhajan",
-      "exact_start_text": "सर्व भावे दास झालो त्यांचा सर्व भावे दास झालो त्यांचा",
-      "name_english": "Santanchiya Payi Ha Majha Vishwas",
-      "saint_english": "Saint Tukaram Maharaj"
+      "exact_start_text": "सर्व भावे दास झालो त्यांचा सर्व भावे दास झालो त्यांचा"
     }
   ],
   "actionable_practices": [

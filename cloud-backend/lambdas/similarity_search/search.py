@@ -80,19 +80,27 @@ class QdrantSearcher:
             
         return models.SparseVector(indices=indices, values=values)
 
-    def search(self, vector: list[float], query_text: str = "", top_k: int = 5, min_score: float = 0.35) -> list[dict[str, Any]]:
+    def search(self, vector: list[float], query_text: str = "", top_k: int = 5, min_score: float = 0.35, filter_book: str = None, filter_video: str = None) -> list[dict[str, Any]]:
         """
         Searches the Qdrant collection using Hybrid Search (Dense + BM25) and applies a minimum score threshold.
         """
         sparse_vec = self._get_sparse_vector(query_text) if query_text else None
+
+        filter_conditions = []
+        if filter_book:
+            filter_conditions.append(models.FieldCondition(key="book_name", match=models.MatchValue(value=filter_book)))
+        if filter_video:
+            filter_conditions.append(models.FieldCondition(key="video_id", match=models.MatchValue(value=filter_video)))
+        
+        qdrant_filter = models.Filter(must=filter_conditions) if filter_conditions else None
 
         if sparse_vec:
             # Hybrid Search using RRF
             hits = self.client.query_points(
                 collection_name=self.collection_name,
                 prefetch=[
-                    models.Prefetch(query=vector, using="", limit=top_k * 2),
-                    models.Prefetch(query=sparse_vec, using="bm25", limit=top_k * 2),
+                    models.Prefetch(query=vector, using="", limit=top_k * 2, filter=qdrant_filter),
+                    models.Prefetch(query=sparse_vec, using="bm25", limit=top_k * 2, filter=qdrant_filter),
                 ],
                 query=models.FusionQuery(fusion=models.Fusion.RRF),
                 limit=top_k,
@@ -105,6 +113,7 @@ class QdrantSearcher:
                 query=vector,
                 limit=top_k,
                 with_payload=True,
+                query_filter=qdrant_filter,
             ).points
 
         results = []

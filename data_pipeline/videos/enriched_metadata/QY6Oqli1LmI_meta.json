@@ -8,11 +8,12 @@
         "प्रपंच आणि परमार्थ"
       ],
       "exact_end_text": "अजूनही तो आहे त्याकडे तो कितीतरी होता",
+      "end_time_seconds": 533,
+      "normalized_saint_name_english": "Shri Pethe Kaka",
+      "title_english": "Nyayadhishacha Sukshm Ahnkar Ani Bhiksha",
       "title": "न्यायाधीशाचा सूक्ष्म अहंकार आणि भिक्षा",
       "exact_start_text": "त्या न्यायाधीशांना ओळखल्यावर ते मागे आपल्याला",
-      "moral": "माणूस बाह्यतः सर्व गोष्टींचा त्याग करू शकतो, जसे की पद, प्रतिष्ठा आणि सत्ता. परंतु, मनाच्या कोपऱ्यात असलेला पैशाचा किंवा सुरक्षिततेचा सूक्ष्म अहंकार पूर्णपणे नष्ट करणे अत्यंत कठीण असते. खऱ्या आध्यात्मिक प्रगतीसाठी हा सूक्ष्म अहंकारही गळून पडणे आवश्यक आहे.",
-      "title_english": "Nyayadhishacha Sukshm Ahnkar Ani Bhiksha",
-      "normalized_saint_name_english": "Shri Pethe Kaka"
+      "moral": "माणूस बाह्यतः सर्व गोष्टींचा त्याग करू शकतो, जसे की पद, प्रतिष्ठा आणि सत्ता. परंतु, मनाच्या कोपऱ्यात असलेला पैशाचा किंवा सुरक्षिततेचा सूक्ष्म अहंकार पूर्णपणे नष्ट करणे अत्यंत कठीण असते. खऱ्या आध्यात्मिक प्रगतीसाठी हा सूक्ष्म अहंकारही गळून पडणे आवश्यक आहे."
     },
     {
       "normalized_saint_name": "श्री ब्रह्मचैतन्य गोंदवलेकर महाराज",
@@ -22,25 +23,27 @@
         "अहंकार आणि विकार"
       ],
       "exact_end_text": "कदाचित काकण पुढे असेल म्हणून गुरुपद माझ्याकडे",
+      "end_time_seconds": 763,
+      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj",
+      "title_english": "Shri Brahmannd Maharaj Ani Shri Gondavalekar Maharaj Yanchyatil Linata",
       "title": "श्री ब्रह्मानंद महाराज आणि श्री गोंदवलेकर महाराज यांच्यातील लीनता",
       "exact_start_text": "ब्रह्मानंदांच्या याच्या बाबतीत त्याच्या बाबतीत हे",
-      "moral": "विद्येचा आणि ज्ञानाचा अहंकार अत्यंत सूक्ष्म असतो. श्री ब्रह्मानंद महाराजांनी आपला विद्येचा अहंकार नष्ट करण्यासाठी ती गुरूंना अर्पण केली. तसेच, स्वतःला पूर्णपणे विसरणे (अहंकारशून्यता) हीच गुरुपदाची खरी पात्रता आहे, जी श्री गोंदवलेकर महाराजांनी दाखवून दिली.",
-      "title_english": "Shri Brahmannd Maharaj Ani Shri Gondavalekar Maharaj Yanchyatil Linata",
-      "normalized_saint_name_english": "Shri Brahmachaitany Gondavalekar Maharaj"
+      "moral": "विद्येचा आणि ज्ञानाचा अहंकार अत्यंत सूक्ष्म असतो. श्री ब्रह्मानंद महाराजांनी आपला विद्येचा अहंकार नष्ट करण्यासाठी ती गुरूंना अर्पण केली. तसेच, स्वतःला पूर्णपणे विसरणे (अहंकारशून्यता) हीच गुरुपदाची खरी पात्रता आहे, जी श्री गोंदवलेकर महाराजांनी दाखवून दिली."
     }
   ],
   "video_id": "QY6Oqli1LmI",
   "musical_segments": [
     {
+      "saint_english": "Svami Raman Maharshi",
       "start_time_seconds": 1351.92,
       "saint": "स्वामी रमण महर्षी",
       "exact_end_text": "देह नाम कोहम सोहम",
+      "end_time_seconds": 1477,
+      "name_english": "Deh Naham Koham Soham",
       "confidence": "high",
       "name": "देह नाहम कोहम सोहम",
       "type": "namasmarana",
-      "exact_start_text": "देह नाहम कोहम सोहम देह नाहम कोहम",
-      "name_english": "Deh Naham Koham Soham",
-      "saint_english": "Svami Raman Maharshi"
+      "exact_start_text": "देह नाहम कोहम सोहम देह नाहम कोहम"
     }
   ],
   "actionable_practices": [

@@ -9,11 +9,12 @@
         "प्रपंच आणि परमार्थ"
       ],
       "exact_end_text": "त्या क्षणी नाही त्यांच्या समोर फक्त पेशंट",
+      "end_time_seconds": 4350,
+      "normalized_saint_name_english": "Shri Pethe Kaka",
+      "title_english": "Dr. Ani Tyanchya Putanicha Prasng",
       "title": "डॉक्टर आणि त्यांच्या पुतणीचा प्रसंग",
       "exact_start_text": "एक डॉक्टर होते साय त्यावेळ त्यांच्या समोर पेशंट",
-      "moral": "आपले कर्तव्य बजावताना किंवा कोणतेही काम करताना पूर्णपणे एकाग्र असणे म्हणजेच वर्तमानकाळात जगणे होय. बाह्य नातेसंबंध किंवा विचार बाजूला ठेवून केवळ समोर असलेल्या कार्यावर लक्ष केंद्रित केल्यास कामात अचूकता येते आणि मनाची चंचलता थांबते.",
-      "title_english": "Dr. Ani Tyanchya Putanicha Prasng",
-      "normalized_saint_name_english": "Shri Pethe Kaka"
+      "moral": "आपले कर्तव्य बजावताना किंवा कोणतेही काम करताना पूर्णपणे एकाग्र असणे म्हणजेच वर्तमानकाळात जगणे होय. बाह्य नातेसंबंध किंवा विचार बाजूला ठेवून केवळ समोर असलेल्या कार्यावर लक्ष केंद्रित केल्यास कामात अचूकता येते आणि मनाची चंचलता थांबते."
     },
     {
       "normalized_saint_name": "संत भाऊसाहेब महाराज",
@@ -24,11 +25,12 @@
         "अहंकार आणि विकार"
       ],
       "exact_end_text": "प्रार्थना एवढी की आहे तस तुम्ही शेवटच्या",
+      "end_time_seconds": 4093,
+      "normalized_saint_name_english": "Saint Bhausaheb Maharaj",
+      "title_english": "Amarav Maharaj Ani Bhausaheb Maharaj Yanchyatil Snvad",
       "title": "अमराव महाराज आणि भाऊसाहेब महाराज यांच्यातील संवाद",
       "exact_start_text": "भाऊसाहेब आहेत अंबराव महाराज आहेत",
-      "moral": "साधनेमुळे विकार नष्ट झाले तरी 'माझे सर्व विकार नष्ट झाले आहेत' हा सूक्ष्म अहंकार निर्माण होऊ शकतो. हा सात्विक अहंकार देखील साधनेत बाधक ठरतो. सद्गुरू आपल्या कृपेने अशा सूक्ष्म अहंकाराची जाणीव करून देतात आणि साधकाला पूर्ण शरणागती पत्करण्यास शिकवतात.",
-      "title_english": "Amarav Maharaj Ani Bhausaheb Maharaj Yanchyatil Snvad",
-      "normalized_saint_name_english": "Saint Bhausaheb Maharaj"
+      "moral": "साधनेमुळे विकार नष्ट झाले तरी 'माझे सर्व विकार नष्ट झाले आहेत' हा सूक्ष्म अहंकार निर्माण होऊ शकतो. हा सात्विक अहंकार देखील साधनेत बाधक ठरतो. सद्गुरू आपल्या कृपेने अशा सूक्ष्म अहंकाराची जाणीव करून देतात आणि साधकाला पूर्ण शरणागती पत्करण्यास शिकवतात."
     },
     {
       "normalized_saint_name": "संत बाबा महाराज सहस्रबुद्धे",
@@ -38,11 +40,12 @@
         "इतर"
       ],
       "exact_end_text": "तेव्हा आणि मोठ्या घरचे आहात आनंदात थोडा",
+      "end_time_seconds": 2806,
+      "normalized_saint_name_english": "Saint Baba Maharaj Sahasrabuddhe",
+      "title_english": "Baba Maharaj Ani Relve Steshanavaril Prasng",
       "title": "बाबा महाराज आणि रेल्वे स्टेशनवरील प्रसंग",
       "exact_start_text": "गुरुदेवांच्या बोलून घेतल त्यांनी स्टेशनवर मागे बोल",
-      "moral": "संतांचे अंतःकरण अत्यंत विशाल असते. ते आपल्या शिष्यांवर निरतिशय प्रेम करतात. त्यांच्या चरित्रातील असे प्रसंग वाचल्याने मनात भक्ती आणि प्रेमाचा पाझर फुटतो, ज्यामुळे संकुचित विचार नष्ट होऊन चित्त शुद्ध होते.",
-      "title_english": "Baba Maharaj Ani Relve Steshanavaril Prasng",
-      "normalized_saint_name_english": "Saint Baba Maharaj Sahasrabuddhe"
+      "moral": "संतांचे अंतःकरण अत्यंत विशाल असते. ते आपल्या शिष्यांवर निरतिशय प्रेम करतात. त्यांच्या चरित्रातील असे प्रसंग वाचल्याने मनात भक्ती आणि प्रेमाचा पाझर फुटतो, ज्यामुळे संकुचित विचार नष्ट होऊन चित्त शुद्ध होते."
     },
     {
       "normalized_saint_name": "श्री रामकृष्ण परमहंस",
@@ -52,25 +55,27 @@
         "अहंकार आणि विकार"
       ],
       "exact_end_text": "रामकृष्ण पैसा बोलतो बर म्हले तस आहे",
+      "end_time_seconds": 3759,
+      "normalized_saint_name_english": "Shri Ramakrushn Paramahns",
+      "title_english": "Ramakrushn Paramahns Ani Ghatavaracha Dhnda",
       "title": "रामकृष्ण परमहंस आणि घाटावरचा धंदा",
       "exact_start_text": "रामकृष्ण चरित्रामध्ये याच उदाहरण किती ठिकाणी आहे",
-      "moral": "अतिश्रीमंती किंवा गरजेपेक्षा जास्त पैसा आल्यास माणसाची वृत्ती बदलते आणि त्याच्यात अहंकार निर्माण होतो. पैसा माणसाला जमिनीवरून हवेत उडवतो, ज्यामुळे त्याचे आध्यात्मिक नुकसान होते. म्हणून गरजेपुरताच पैसा असावा हीच भगवंताची कृपा मानली पाहिजे.",
-      "title_english": "Ramakrushn Paramahns Ani Ghatavaracha Dhnda",
-      "normalized_saint_name_english": "Shri Ramakrushn Paramahns"
+      "moral": "अतिश्रीमंती किंवा गरजेपेक्षा जास्त पैसा आल्यास माणसाची वृत्ती बदलते आणि त्याच्यात अहंकार निर्माण होतो. पैसा माणसाला जमिनीवरून हवेत उडवतो, ज्यामुळे त्याचे आध्यात्मिक नुकसान होते. म्हणून गरजेपुरताच पैसा असावा हीच भगवंताची कृपा मानली पाहिजे."
     }
   ],
   "video_id": "UL0CUMswqBY",
   "musical_segments": [
     {
+      "saint_english": "Shri Pethe Kaka",
       "start_time_seconds": 4393.679,
       "saint": "श्री पेठे काका",
       "exact_end_text": "ओवाळू आरती आरती साई शिर्डीच्या नाथा ओवाळू आरती साई शिर्डीच्या अ",
+      "end_time_seconds": 4627,
+      "name_english": "Saibabachi Aarti",
       "confidence": "high",
       "name": "साईबाबांची आरती",
       "type": "aarti",
-      "exact_start_text": "आम्हाथांच्या नाथा आम्हांचा नाथा चरणी ठेवनिया माथा",
-      "name_english": "Saibabachi Aarti",
-      "saint_english": "Shri Pethe Kaka"
+      "exact_start_text": "आम्हाथांच्या नाथा आम्हांचा नाथा चरणी ठेवनिया माथा"
     }
   ],
   "actionable_practices": [

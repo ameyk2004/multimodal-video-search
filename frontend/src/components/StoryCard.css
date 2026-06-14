@@ -40,9 +40,11 @@
   opacity: 0.85;
 }
 
-.premium-story-card:hover .story-card-thumb {
-  transform: scale(1.42); /* Keep crop scaled up slightly on hover */
-  opacity: 0.65;
+@media (hover: hover) {
+  .premium-story-card:hover .story-card-thumb {
+    transform: scale(1.42); /* Keep crop scaled up slightly on hover */
+    opacity: 0.65;
+  }
 }
 
 .story-card-overlay {
@@ -63,8 +65,10 @@
   transition: opacity 0.3s;
 }
 
-.premium-story-card:hover .story-card-play-hover {
-  opacity: 1;
+@media (hover: hover) {
+  .premium-story-card:hover .story-card-play-hover {
+    opacity: 1;
+  }
 }
 
 .story-card-play-btn {
@@ -82,9 +86,11 @@
   backdrop-filter: blur(4px);
 }
 
-.story-card-play-btn:hover {
-  transform: scale(1.15);
-  background: var(--saffron);
+@media (hover: hover) {
+  .story-card-play-btn:hover {
+    transform: scale(1.15);
+    background: var(--saffron);
+  }
 }
 
 /* Center - Content Area */
