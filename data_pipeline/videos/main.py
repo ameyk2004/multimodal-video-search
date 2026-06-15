@@ -41,6 +41,12 @@ def extract_video_id(url: str) -> str:
     return url
 
 if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description="Run the multimodal video search data pipeline.")
+    parser.add_argument('--urls', nargs='+', help='List of YouTube video URLs to process')
+    parser.add_argument('--file', type=str, help='Path to a text file containing YouTube video URLs (one per line)')
+    args = parser.parse_args()
+
     # You can now paste full YouTube URLs here!
     video_urls = [
     "https://www.youtube.com/watch?v=uXThrvQSdF0",
@@ -212,7 +218,16 @@ if __name__ == "__main__":
     "https://www.youtube.com/watch?v=2bDcCFU5AmY",
     "https://www.youtube.com/watch?v=aqB9aJKI7W8",
     "https://www.youtube.com/watch?v=psid81b2Mxw",
+    "https://www.youtube.com/watch?v=rVjOUAt2WaY",
+    "https://www.youtube.com/watch?v=slTRSTAs1RU"
 ]
+
+    if args.urls:
+        video_urls = args.urls
+    elif args.file:
+        with open(args.file, 'r') as f:
+            video_urls = [line.strip() for line in f if line.strip()]
+
     # Automatically extract IDs from the URLs
     video_ids = [extract_video_id(url) for url in video_urls]
     
