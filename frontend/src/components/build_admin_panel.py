@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import os
+
+code = """import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { api } from '../utils/api';
 
 export default function AdminPanel() {
@@ -465,9 +467,6 @@ export default function AdminPanel() {
                         </div>
                         <div><label>Moral</label><input value={s.moral || ''} onChange={e => handleStoryChange(i, 'moral', e.target.value)} className="premium-search-input" style={{ width: '100%', padding: '10px 14px', background: 'rgba(0,0,0,0.4)', borderRadius: '8px' }} /></div>
                         
-                        <div style={{ marginBottom: '8px', fontSize: '13px', color: 'var(--text-dim)', textAlign: 'right' }}>
-                          Duration: <strong style={{ color: '#fff' }}>{getDurationString(s.start_time_seconds, s.end_time_seconds)}</strong>
-                        </div>
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', background: 'rgba(0,0,0,0.3)', padding: '16px', borderRadius: '12px' }}>
                           <div style={{ display: 'flex', gap: '8px' }}>
                             <input type="number" value={s.start_time_seconds || 0} onChange={e => handleStoryChange(i, 'start_time_seconds', e.target.value)} className="premium-search-input" style={{ width: '100px' }} />
@@ -507,9 +506,6 @@ export default function AdminPanel() {
                            <div><label>Moral</label><input value={m.moral || ''} onChange={e => handleMusicChange(i, 'moral', e.target.value)} className="premium-search-input" style={{ width: '100%', padding: '10px 14px', background: 'rgba(0,0,0,0.4)', borderRadius: '8px' }} /></div>
                         </div>
 
-                        <div style={{ marginBottom: '8px', fontSize: '13px', color: 'var(--text-dim)', textAlign: 'right' }}>
-                          Duration: <strong style={{ color: '#fff' }}>{getDurationString(m.start_time_seconds, m.end_time_seconds)}</strong>
-                        </div>
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', background: 'rgba(0,0,0,0.3)', padding: '16px', borderRadius: '12px' }}>
                           <div style={{ display: 'flex', gap: '8px' }}>
                             <input type="number" value={m.start_time_seconds || 0} onChange={e => handleMusicChange(i, 'start_time_seconds', e.target.value)} className="premium-search-input" style={{ width: '100px' }} />
@@ -558,9 +554,6 @@ export default function AdminPanel() {
                             </div>
                             <div><label>Moral</label><input value={s.moral || ''} onChange={e => handleSaintItemChange(s.vIndex, 'stories', s.sIndex, 'moral', e.target.value)} className="premium-search-input" style={{ width: '100%', padding: '10px 14px', background: 'rgba(0,0,0,0.4)', borderRadius: '8px' }} /></div>
                             
-                            <div style={{ marginBottom: '8px', fontSize: '13px', color: 'var(--text-dim)', textAlign: 'right' }}>
-                              Duration: <strong style={{ color: '#fff' }}>{getDurationString(s.start_time_seconds, s.end_time_seconds)}</strong>
-                            </div>
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', background: 'rgba(0,0,0,0.3)', padding: '16px', borderRadius: '12px' }}>
                               <div style={{ display: 'flex', gap: '8px' }}>
                                 <input type="number" value={s.start_time_seconds || 0} onChange={e => handleSaintItemChange(s.vIndex, 'stories', s.sIndex, 'start_time_seconds', e.target.value)} className="premium-search-input" style={{ width: '100px' }} />
@@ -605,9 +598,6 @@ export default function AdminPanel() {
                               <div><label>Moral</label><input value={m.moral || ''} onChange={e => handleSaintItemChange(m.vIndex, 'musical_segments', m.mIndex, 'moral', e.target.value)} className="premium-search-input" style={{ width: '100%', padding: '10px 14px', background: 'rgba(0,0,0,0.4)', borderRadius: '8px' }} /></div>
                             </div>
                             
-                            <div style={{ marginBottom: '8px', fontSize: '13px', color: 'var(--text-dim)', textAlign: 'right' }}>
-                              Duration: <strong style={{ color: '#fff' }}>{getDurationString(m.start_time_seconds, m.end_time_seconds)}</strong>
-                            </div>
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', background: 'rgba(0,0,0,0.3)', padding: '16px', borderRadius: '12px' }}>
                               <div style={{ display: 'flex', gap: '8px' }}>
                                 <input type="number" value={m.start_time_seconds || 0} onChange={e => handleSaintItemChange(m.vIndex, 'musical_segments', m.mIndex, 'start_time_seconds', e.target.value)} className="premium-search-input" style={{ width: '100px' }} />
@@ -635,3 +625,8 @@ export default function AdminPanel() {
     </div>
   );
 }
+"""
+
+with open('AdminPanel.jsx', 'w') as f:
+    f.write(code)
+
