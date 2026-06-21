@@ -18,8 +18,9 @@ Idempotency:
   • VIDEO / BOOK items: put_item overwrites on same PK+SK — safe upsert.
   • SAINT METADATA:     written with ConditionExpression so existing hand-crafted
                         bios / imageUrls are NEVER overwritten.
-  • STORY / MUSIC:      UUIDs are deterministic (uuid5 of "video_id:start_time")
-                        so re-running produces the same IDs and overwrites safely.
+  • STORY / MUSIC:      ALL existing STORY# and MUSIC# children for the video are
+                        DELETED via GSI2 before re-inserting. This prevents
+                        duplicate items when the saint name changes between runs.
 """
 
 import json
@@ -29,6 +30,7 @@ import glob
 import uuid
 import logging
 import boto3
+from boto3.dynamodb.conditions import Key
 from botocore.exceptions import ClientError
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
@@ -58,6 +60,44 @@ def _deterministic_id(video_id: str, discriminator: str) -> str:
     """
     key = f"{video_id}:{discriminator}"
     return str(uuid.uuid5(uuid.NAMESPACE_URL, key))
+
+
+def _delete_video_children(table, video_id: str):
+    """
+    Delete ALL STORY# and MUSIC# items linked to this video_id via GSI2.
+
+    This is critical for idempotency: saint names can change between runs
+    (due to normalization), which would create a NEW PK and leave the old
+    item orphaned. By deleting all children first, we guarantee no duplicates
+    regardless of PK changes.
+    """
+    # GSI2 key is video_id — fetch ALL child items (only need PK + SK to delete)
+    items_to_delete = []
+    response = table.query(
+        IndexName="GSI2",
+        KeyConditionExpression=Key("video_id").eq(video_id),
+        ProjectionExpression="PK, SK",
+    )
+    items_to_delete.extend(response.get("Items", []))
+    while "LastEvaluatedKey" in response:
+        response = table.query(
+            IndexName="GSI2",
+            KeyConditionExpression=Key("video_id").eq(video_id),
+            ProjectionExpression="PK, SK",
+            ExclusiveStartKey=response["LastEvaluatedKey"],
+        )
+        items_to_delete.extend(response.get("Items", []))
+
+    if not items_to_delete:
+        return 0
+
+    with table.batch_writer() as batch:
+        for item in items_to_delete:
+            sk = item.get("SK", "")
+            if sk.startswith("STORY#") or sk.startswith("MUSIC#"):
+                batch.delete_item(Key={"PK": item["PK"], "SK": item["SK"]})
+
+    return len(items_to_delete)
 
 
 def _ensure_saint(table, saint_name: str, processed_saints: set, batch):
@@ -176,7 +216,13 @@ def upload_metadata(input_dir: str, table_name: str = NEW_TABLE_NAME):
             if is_book:
                 continue  # books have no stories / musical segments
 
-            # ── 2. Upsert Stories ─────────────────────────────────────────────
+            # ── 2. DELETE all existing STORY# and MUSIC# children ────────────
+            # Must happen OUTSIDE the batch_writer (uses a separate batch internally)
+            deleted = _delete_video_children(table, video_id)
+            if deleted:
+                logging.info(f"  🗑️  Deleted {deleted} stale child items for VIDEO#{video_id}")
+
+            # ── 3. Upsert Stories ─────────────────────────────────────────────
             stories = data.get("stories", data.get("stories_found", []))
             for story in stories:
                 saint_name = (
