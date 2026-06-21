@@ -41,60 +41,65 @@ def _build_response(status_code, body):
 def lambda_handler(event, context):
     try:
         dynamodb = boto3.resource("dynamodb")
-        table_name = os.environ.get("DYNAMODB_TABLE", "sadhananandadeep-content")
+        table_name = os.environ.get("DYNAMODB_TABLE", "sadhananandadeep-metadata")
         table = dynamodb.Table(table_name)
         
-        # Scan the table with pagination to avoid 1MB limit
-        response = table.scan()
+        from boto3.dynamodb.conditions import Key
+        
+        # Query GSI1 for all stories
+        response = table.query(
+            IndexName='GSI1',
+            KeyConditionExpression=Key('GSI1PK').eq('STORIES')
+        )
         items = response.get('Items', [])
         
         while 'LastEvaluatedKey' in response:
-            response = table.scan(ExclusiveStartKey=response['LastEvaluatedKey'])
+            response = table.query(
+                IndexName='GSI1',
+                KeyConditionExpression=Key('GSI1PK').eq('STORIES'),
+                ExclusiveStartKey=response['LastEvaluatedKey']
+            )
             items.extend(response.get('Items', []))
         
         all_stories = []
         for item in items:
             video_id = item.get("video_id")
-            title = item.get("title", "प्रवचन") # Fallback to item title if story title missing
-            stories = item.get("stories", [])
-            for story in stories:
-                story_title = story.get("title", title)
-                story_title_english = story.get("title_english", "")
-                moral = story.get("moral", "")
-                saint = story.get("character_or_saint", story.get("normalized_saint_name", ""))
-                norm_saint = story.get("normalized_saint_name", saint)
-                norm_saint_english = story.get("normalized_saint_name_english", "")
-                assoc_topics = story.get("associated_topics", [])
-                start_text = story.get("exact_start_text", "")
+            story_title = item.get("title", "प्रवचन")
+            story_title_english = item.get("title_english", "")
+            moral = item.get("moral", "")
+            
+            # Extract saint name from PK or item
+            saint = item.get("character_or_saint", item.get("normalized_saint_name", ""))
+            if not saint and item.get("PK", "").startswith("SAINT#"):
+                saint = item.get("PK").split("#", 1)[1]
+            
+            norm_saint = item.get("normalized_saint_name", saint)
+            norm_saint_english = item.get("normalized_saint_name_english", "")
+            assoc_topics = item.get("associated_topics", [])
+            start_text = item.get("exact_start_text", "")
+            
+            # Handle possible float/decimal values safely
+            raw_start = item.get("start_time_seconds", 0)
+            start_time = int(raw_start) if raw_start else 0
                 
-                # Handle possible float/decimal values safely
-                raw_start = story.get("start_time_seconds", 0)
-                if isinstance(raw_start, decimal.Decimal):
-                    start_time = int(raw_start)
-                else:
-                    start_time = int(raw_start) if raw_start else 0
-                    
-                raw_end = story.get("end_time_seconds", 0)
-                if isinstance(raw_end, decimal.Decimal):
-                    end_time = int(raw_end)
-                else:
-                    end_time = int(raw_end) if raw_end else 0
+            raw_end = item.get("end_time_seconds", 0)
+            end_time = int(raw_end) if raw_end else 0
 
-                all_stories.append(StoryItem(
-                    video_id=video_id,
-                    title=story_title,
-                    title_english=story_title_english,
-                    character_or_saint=saint,
-                    normalized_saint_name=norm_saint,
-                    normalized_saint_name_english=norm_saint_english,
-                    associated_topics=assoc_topics,
-                    moral=moral,
-                    exact_start_text=start_text,
-                    start_time_seconds=start_time,
-                    end_time_seconds=end_time,
-                    thumbnail_url=f"https://img.youtube.com/vi/{video_id}/hqdefault.jpg",
-                    youtube_url=f"https://www.youtube.com/watch?v={video_id}&t={start_time}s"
-                ))
+            all_stories.append(StoryItem(
+                video_id=video_id,
+                title=story_title,
+                title_english=story_title_english,
+                character_or_saint=saint,
+                normalized_saint_name=norm_saint,
+                normalized_saint_name_english=norm_saint_english,
+                associated_topics=assoc_topics,
+                moral=moral,
+                exact_start_text=start_text,
+                start_time_seconds=start_time,
+                end_time_seconds=end_time,
+                thumbnail_url=f"https://img.youtube.com/vi/{video_id}/hqdefault.jpg",
+                youtube_url=f"https://www.youtube.com/watch?v={video_id}&t={start_time}s"
+            ))
         # Shuffle the stories to provide a Discovery-style feed
         random.shuffle(all_stories)
         

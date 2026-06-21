@@ -31,7 +31,7 @@ Parameters:
   DynamoDbTableName:
     Type: String
     Description: Name of the DynamoDB table for video metadata
-    Default: sadhananandadeep-content
+    Default: sadhananandadeep-metadata
   UiArtifactsBucket:
     Type: String
     Description: Name of the artifacts bucket where the UI is uploaded before deploy
@@ -52,6 +52,48 @@ Resources:
       Tags:
         - Key: Project
           Value: PetheKaka
+
+  SadhanaNandadeepCoreTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: sadhananandadeep-metadata
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: PK
+          AttributeType: S
+        - AttributeName: SK
+          AttributeType: S
+        - AttributeName: GSI1PK
+          AttributeType: S
+        - AttributeName: GSI1SK
+          AttributeType: S
+        - AttributeName: video_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: PK
+          KeyType: HASH
+        - AttributeName: SK
+          KeyType: RANGE
+      GlobalSecondaryIndexes:
+        - IndexName: GSI1
+          KeySchema:
+            - AttributeName: GSI1PK
+              KeyType: HASH
+            - AttributeName: GSI1SK
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+        - IndexName: GSI2
+          KeySchema:
+            - AttributeName: video_id
+              KeyType: HASH
+            - AttributeName: SK
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+      Tags:
+        - Key: Project
+          Value: PetheKaka
   SadhanaNandadeepSearchFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -69,6 +111,8 @@ Resources:
       Policies:
         - DynamoDBReadPolicy:
             TableName: !Ref DynamoDbTableName
+        - DynamoDBReadPolicy:
+            TableName: !Ref SadhanaNandadeepCoreTable
       Events:
         SearchApiEvent:
           Type: Api
@@ -85,10 +129,12 @@ Resources:
       Description: Fetches all stories from DynamoDB
       Environment:
         Variables:
-          DYNAMODB_TABLE: !Ref DynamoDbTableName
+          DYNAMODB_TABLE: !Ref SadhanaNandadeepCoreTable
       Policies:
         - DynamoDBReadPolicy:
             TableName: !Ref DynamoDbTableName
+        - DynamoDBReadPolicy:
+            TableName: !Ref SadhanaNandadeepCoreTable
       Events:
         GetStoriesApi:
           Type: Api
@@ -105,10 +151,12 @@ Resources:
       Description: Library APIs for videos and video details
       Environment:
         Variables:
-          DYNAMODB_TABLE: !Ref DynamoDbTableName
+          DYNAMODB_TABLE: !Ref SadhanaNandadeepCoreTable
       Policies:
         - DynamoDBReadPolicy:
             TableName: !Ref DynamoDbTableName
+        - DynamoDBReadPolicy:
+            TableName: !Ref SadhanaNandadeepCoreTable
       Events:
         GetVideosApi:
           Type: Api
@@ -152,6 +200,18 @@ Resources:
             Path: /books/{bookId}
             Method: get
             RestApiId: !Ref SadhanaNandadeepApi
+        GetSaintsApi:
+          Type: Api
+          Properties:
+            Path: /saints
+            Method: get
+            RestApiId: !Ref SadhanaNandadeepApi
+        GetSaintDetailsApi:
+          Type: Api
+          Properties:
+            Path: /saints/{saintId}
+            Method: get
+            RestApiId: !Ref SadhanaNandadeepApi
 
   SadhanaNandadeepAdminFunction:
     Type: AWS::Serverless::Function
@@ -161,10 +221,12 @@ Resources:
       Description: Admin APIs to edit video metadata
       Environment:
         Variables:
-          DYNAMODB_TABLE: !Ref DynamoDbTableName
+          DYNAMODB_TABLE: !Ref SadhanaNandadeepCoreTable
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref DynamoDbTableName
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SadhanaNandadeepCoreTable
       Events:
         GetAdminVideosApi:
           Type: Api

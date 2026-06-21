@@ -1,0 +1,155 @@
+/* ── Saint Card Styling ──────────────────────────────────── */
+.saint-card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  height: 100%;
+}
+
+.saint-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(249, 115, 22, 0.4);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(249, 115, 22, 0.15);
+}
+
+.saint-card-glow-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle, rgba(249, 115, 22, 0.15) 0%, transparent 60%);
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  animation: pulse-glow 3s infinite alternate;
+}
+
+.saint-card:hover .saint-card-glow-bg {
+  opacity: 1;
+}
+
+@keyframes pulse-glow {
+  0% { transform: translate(-50%, -50%) scale(0.9); }
+  100% { transform: translate(-50%, -50%) scale(1.1); }
+}
+
+.saint-card-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+  z-index: 1;
+  background: #000;
+}
+
+.saint-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.saint-card:hover .saint-card-image {
+  transform: scale(1.05);
+}
+
+.saint-card-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, var(--surface) 100%);
+  z-index: 2;
+}
+
+.saint-card-content {
+  position: relative;
+  z-index: 3;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.saint-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.saint-card-name {
+  font-family: var(--font-dev);
+  font-size: 24px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+}
+
+.saint-card-tradition {
+  font-size: 12px;
+  background: rgba(249, 115, 22, 0.15);
+  color: var(--saffron);
+  padding: 4px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(249, 115, 22, 0.3);
+}
+
+.saint-card-era {
+  font-size: 13px;
+  color: var(--gold-soft);
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.saint-card-quote {
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  font-style: italic;
+  flex: 1;
+  margin-bottom: 24px;
+}
+
+.saint-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--glass-border);
+  padding-top: 16px;
+}
+
+.saint-stats {
+  display: flex;
+  gap: 12px;
+}
+
+.stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.stat-pill .icon {
+  opacity: 0.7;
+}
+
+.explore-btn {
+  font-size: 14px;
+  color: var(--saffron);
+  font-weight: 600;
+  transition: transform 0.3s ease;
+}
+
+.saint-card:hover .explore-btn {
+  transform: translateX(4px);
+}

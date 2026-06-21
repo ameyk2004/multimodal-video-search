@@ -9,8 +9,8 @@ load_dotenv()
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
-TABLE_NAME = "sadhananandadeep-content"
-REGION = "us-east-1"
+TABLE_NAME = os.environ.get("DYNAMODB_TABLE", "sadhananandadeep-metadata")
+REGION = os.environ.get("AWS_DEFAULT_REGION", "us-east-1")
 
 # =========================
 # NORMALIZATION MAPS
@@ -86,13 +86,26 @@ table = dynamodb.Table(TABLE_NAME)
 # HELPERS
 # =========================
 
-def scan_all_items():
+def get_all_story_and_music_items():
+    """
+    Returns all STORY# and MUSIC# items from the new single-table
+    using GSI1 queries for STORIES and MUSIC.
+    """
+    from boto3.dynamodb.conditions import Key
     items = []
-    response = table.scan()
-    items.extend(response.get("Items", []))
-    while "LastEvaluatedKey" in response:
-        response = table.scan(ExclusiveStartKey=response["LastEvaluatedKey"])
-        items.extend(response.get("Items", []))
+    for gsi1pk in ("STORIES", "MUSIC"):
+        resp = table.query(
+            IndexName="GSI1",
+            KeyConditionExpression=Key("GSI1PK").eq(gsi1pk)
+        )
+        items.extend(resp.get("Items", []))
+        while "LastEvaluatedKey" in resp:
+            resp = table.query(
+                IndexName="GSI1",
+                KeyConditionExpression=Key("GSI1PK").eq(gsi1pk),
+                ExclusiveStartKey=resp["LastEvaluatedKey"]
+            )
+            items.extend(resp.get("Items", []))
     return items
 
 
@@ -166,28 +179,68 @@ if __name__ == "__main__":
     # 1. Normalize local JSON files
     logging.info("Starting normalization of local JSON files...")
     normalize_local_files()
-    
-    # 2. Normalize DynamoDB
-    logging.info("Starting normalization of DynamoDB...")
-    items = scan_all_items()
-    logging.info(f"Total Items Scanned from DynamoDB: {len(items)}")
+
+    # 2. Normalize DynamoDB (new single-table schema)
+    # Stories and music are now SEPARATE items under SAINT#/STORY# and SAINT#/MUSIC#
+    # We fetch them via GSI1 and update via their real PK+SK
+    logging.info("Starting normalization of DynamoDB (new schema)...")
+    items = get_all_story_and_music_items()
+    logging.info(f"Total child items fetched (STORIES + MUSIC): {len(items)}")
 
     updated_count = 0
-
     for item in items:
-        if normalize_item(item):
-            video_id = item["video_id"]
+        pk = item.get("PK", "")
+        sk = item.get("SK", "")
+        changed = False
+
+        if sk.startswith("STORY#"):
+            saint = item.get("normalized_saint_name")
+            if saint and saint in SAINT_MAP:
+                new_saint = SAINT_MAP[saint]
+                logging.info(f"[SAINT/story] PK={pk} SK={sk}  OLD: {saint!r}  →  NEW: {new_saint!r}")
+                item["normalized_saint_name"] = new_saint
+                changed = True
+
+        elif sk.startswith("MUSIC#"):
+            saint = item.get("saint")
+            if saint and saint in SAINT_MAP:
+                new_saint = SAINT_MAP[saint]
+                logging.info(f"[SAINT/music] PK={pk} SK={sk}  OLD: {saint!r}  →  NEW: {new_saint!r}")
+                item["saint"] = new_saint
+                changed = True
+
+            name = item.get("name")
+            if name and name in BHAJAN_MAP:
+                new_name = BHAJAN_MAP[name]
+                logging.info(f"[BHAJAN] PK={pk} SK={sk}  OLD: {name!r}  →  NEW: {new_name!r}")
+                item["name"] = new_name
+                changed = True
+
+        if changed:
             try:
+                update_expr = "SET "
+                attr_values = {}
+                if sk.startswith("STORY#"):
+                    update_expr += "normalized_saint_name = :ns"
+                    attr_values[":ns"] = item["normalized_saint_name"]
+                elif sk.startswith("MUSIC#"):
+                    fields = []
+                    if "saint" in item:
+                        fields.append("#saint = :s")
+                        attr_values[":s"] = item["saint"]
+                    if "name" in item:
+                        fields.append("#nm = :n")
+                        attr_values[":n"] = item["name"]
+                    update_expr += ", ".join(fields)
+
                 table.update_item(
-                    Key={"video_id": video_id},
-                    UpdateExpression="SET musical_segments = :ms, stories = :st",
-                    ExpressionAttributeValues={
-                        ":ms": item.get("musical_segments", []),
-                        ":st": item.get("stories", []),
-                    },
+                    Key={"PK": pk, "SK": sk},
+                    UpdateExpression=update_expr,
+                    ExpressionAttributeNames={"#saint": "saint", "#nm": "name"} if sk.startswith("MUSIC#") else {},
+                    ExpressionAttributeValues=attr_values,
                 )
                 updated_count += 1
             except Exception as e:
-                logging.error(f"Failed to update {video_id}: {e}")
+                logging.error(f"Failed to update {pk}/{sk}: {e}")
 
-    logging.info(f"Done. Total Updated Items: {updated_count}")
+    logging.info(f"Done. Total Updated Items in DynamoDB: {updated_count}")

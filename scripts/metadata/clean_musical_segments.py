@@ -10,7 +10,7 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
 REGION = os.environ.get("AWS_DEFAULT_REGION", "us-east-1")
-TABLE_NAME = os.environ.get("DYNAMODB_TABLE", "sadhananandadeep-content")
+TABLE_NAME = os.environ.get("DYNAMODB_TABLE", "sadhananandadeep-metadata")
 
 # =========================
 # CONFIGURATION
@@ -242,6 +242,8 @@ SEGMENT_CORRECTIONS = {
 # DYNAMODB SETUP
 # =========================
 
+from boto3.dynamodb.conditions import Key
+
 dynamodb = boto3.resource("dynamodb", region_name=REGION)
 table = dynamodb.Table(TABLE_NAME)
 
@@ -249,13 +251,21 @@ table = dynamodb.Table(TABLE_NAME)
 # HELPERS
 # =========================
 
-def scan_all_items():
+def get_all_music_items():
+    """Return all MUSIC# items via GSI1 (new single-table schema)."""
     items = []
-    response = table.scan()
-    items.extend(response.get("Items", []))
-    while "LastEvaluatedKey" in response:
-        response = table.scan(ExclusiveStartKey=response["LastEvaluatedKey"])
-        items.extend(response.get("Items", []))
+    resp = table.query(
+        IndexName="GSI1",
+        KeyConditionExpression=Key("GSI1PK").eq("MUSIC")
+    )
+    items.extend(resp.get("Items", []))
+    while "LastEvaluatedKey" in resp:
+        resp = table.query(
+            IndexName="GSI1",
+            KeyConditionExpression=Key("GSI1PK").eq("MUSIC"),
+            ExclusiveStartKey=resp["LastEvaluatedKey"]
+        )
+        items.extend(resp.get("Items", []))
     return items
 
 def clean_item(item):
@@ -383,32 +393,89 @@ if __name__ == "__main__":
     logging.info("Starting cleanup of local JSON files...")
     clean_local_files(dry_run=dry_run)
 
-    # 2. Clean DynamoDB
-    logging.info("Starting cleanup of DynamoDB...")
+    # 2. Clean DynamoDB (new single-table schema — MUSIC# items via GSI1)
+    logging.info("Starting cleanup of DynamoDB (new schema)...")
     try:
-        items = scan_all_items()
-        logging.info(f"Total Items Scanned from DynamoDB: {len(items)}")
+        music_items = get_all_music_items()
+        logging.info(f"Total MUSIC# Items fetched from DynamoDB: {len(music_items)}")
 
         updated_count = 0
-        for item in items:
-            if clean_item(item):
-                video_id = item["video_id"]
-                updated_count += 1
+        for item in music_items:
+            pk = item.get("PK", "")
+            sk = item.get("SK", "")
+            name = item.get("name", "")
+            changed = False
+            update_parts = []
+            attr_values = {}
+            attr_names = {}
+
+            # Delete check: we can't truly "delete" from inside a loop;
+            # instead we mark it for removal (call delete_item)
+            should_delete = (
+                name in BHAJANS_TO_DELETE
+                or ("रघुपति" in name or "रघुपती" in name)
+                or ("अंतर यात्रा" in name or "अंतरयात्रा" in name)
+                or "जागृत जीवन जगुनी जिज्ञासा" in name
+                or item.get("type") == "background_music"
+                or not name
+            )
+
+            if should_delete:
                 if not dry_run:
                     try:
-                        table.update_item(
-                            Key={"video_id": video_id},
-                            UpdateExpression="SET musical_segments = :ms",
-                            ExpressionAttributeValues={
-                                ":ms": item.get("musical_segments", []),
-                            },
-                        )
+                        table.delete_item(Key={"PK": pk, "SK": sk})
+                        logging.info(f"[DELETE] DynamoDB PK={pk} SK={sk} name={name!r}")
+                        updated_count += 1
                     except Exception as e:
-                        logging.error(f"Failed to update {video_id} in DynamoDB: {e}")
+                        logging.error(f"Failed to delete {pk}/{sk}: {e}")
+                else:
+                    logging.info(f"[DRY-DELETE] PK={pk} SK={sk} name={name!r}")
+                continue
+
+            # Rename
+            if name in BHAJANS_TO_RENAME:
+                new_name = BHAJANS_TO_RENAME[name]
+                if new_name != name:
+                    update_parts.append("#nm = :n")
+                    attr_names["#nm"] = "name"
+                    attr_values[":n"] = new_name
+                    name = new_name
+                    changed = True
+
+            # Corrections
+            if name in SEGMENT_CORRECTIONS:
+                for field, value in SEGMENT_CORRECTIONS[name].items():
+                    if field == "name":
+                        update_parts.append("#nm = :n")
+                        attr_names["#nm"] = "name"
+                        attr_values[":n"] = value
+                        changed = True
+                    elif field == "type":
+                        update_parts.append("#tp = :tp")
+                        attr_names["#tp"] = "type"
+                        attr_values[":tp"] = value
+                        changed = True
+                    elif field == "saint":
+                        update_parts.append("#snt = :snt")
+                        attr_names["#snt"] = "saint"
+                        attr_values[":snt"] = value
+                        changed = True
+
+            if changed and not dry_run:
+                try:
+                    table.update_item(
+                        Key={"PK": pk, "SK": sk},
+                        UpdateExpression="SET " + ", ".join(update_parts),
+                        ExpressionAttributeNames=attr_names,
+                        ExpressionAttributeValues=attr_values,
+                    )
+                    updated_count += 1
+                except Exception as e:
+                    logging.error(f"Failed to update {pk}/{sk}: {e}")
 
         action = "Would update" if dry_run else "Total Updated"
         logging.info(f"Done. {action} Items in DynamoDB: {updated_count}")
 
     except Exception as e:
-        logging.error(f"Failed to scan or update DynamoDB: {e}")
+        logging.error(f"Failed to query or update DynamoDB: {e}")
         logging.info("Local files were still updated.")

@@ -6,6 +6,7 @@ import uuid
 import sys
 import boto3
 from typing import List, Dict
+from boto3.dynamodb.conditions import Key
 from qdrant_client import QdrantClient
 from qdrant_client.http.models import Distance, VectorParams, PointStruct
 from dotenv import load_dotenv
@@ -16,7 +17,7 @@ load_dotenv()
 QDRANT_URL = os.getenv("QDRANT_URL")
 QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")
 HF_API_KEY = os.getenv("HF_API_KEY")
-DYNAMODB_TABLE = os.getenv("DYNAMODB_TABLE", "sadhananandadeep-content")
+DYNAMODB_TABLE = os.getenv("DYNAMODB_TABLE", "sadhananandadeep-metadata")
 
 COLLECTION_NAME = "sadhananandadeep-queries"
 MODEL_ID = "BAAI/bge-m3"
@@ -65,37 +66,47 @@ def get_embeddings(texts: List[str]) -> List[List[float]]:
     return embeddings
 
 def get_queries_from_dynamodb(table_name: str) -> List[tuple[str, str]]:
+    """
+    Fetches all (query, video_id) pairs from the NEW single-table schema.
+
+    Uses GSI1 (GSI1PK = "VIDEOS") to page through every VIDEO# METADATA item
+    and extract the `queries` list — no full table scan required.
+    """
     region = os.environ.get("AWS_DEFAULT_REGION", os.environ.get("AWS_REGION", "us-east-1"))
-    print(f"Connecting to DynamoDB in region '{region}'...")
+    print(f"Connecting to DynamoDB table '{table_name}' in region '{region}'...")
     try:
         dynamodb = boto3.resource('dynamodb', region_name=region)
         table = dynamodb.Table(table_name)
-        
-        print(f"Scanning DynamoDB table '{table_name}' for query metadata...")
+
+        print(f"Querying GSI1 (VIDEOS) from '{table_name}' for queries...")
         all_queries = []
-        
-        response = table.scan(
-            ProjectionExpression="video_id, queries"
+
+        response = table.query(
+            IndexName='GSI1',
+            KeyConditionExpression=Key('GSI1PK').eq('VIDEOS'),
+            ProjectionExpression='video_id, queries'
         )
-        items = response.get('Items', [])
-        
+        items = list(response.get('Items', []))
+
         while 'LastEvaluatedKey' in response:
-            response = table.scan(
-                ProjectionExpression="video_id, queries",
+            response = table.query(
+                IndexName='GSI1',
+                KeyConditionExpression=Key('GSI1PK').eq('VIDEOS'),
+                ProjectionExpression='video_id, queries',
                 ExclusiveStartKey=response['LastEvaluatedKey']
             )
             items.extend(response.get('Items', []))
-            
+
         for item in items:
             video_id = item.get('video_id')
-            queries = item.get('queries', [])
+            queries  = item.get('queries', [])
             for q in queries:
                 if q and isinstance(q, str):
                     all_queries.append((q.strip(), video_id))
-                    
+
         return all_queries
     except Exception as e:
-        print(f"❌ Error scanning DynamoDB: {e}")
+        print(f"❌ Error querying DynamoDB GSI1: {e}")
         print("Please verify your AWS credentials (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY) and AWS_DEFAULT_REGION.")
         raise
 

@@ -11,6 +11,8 @@ import HomePage from './components/HomePage';
 import SearchPage from './components/SearchPage';
 import StoriesBanner from './components/StoriesBanner';
 import MusicPage from './components/MusicPage';
+import SaintsGallery from './components/SaintsGallery';
+import SaintDetail from './components/SaintDetail';
 import AdminPanel from './components/AdminPanel';
 import MiniPlayer from './components/MiniPlayer';
 import { PlayerProvider } from './context/PlayerContext';
@@ -29,6 +31,7 @@ const CONTENT = {
     tryThese: 'हे प्रश्न विचारून पहा:',
     searchTab: 'ज्ञानकोश',
     storiesTab: 'कथा व गोष्टी',
+    saintsTab: 'संत व महात्मे',
     libraryTab: 'अध्यात्मिक संग्रह',
     musicTab: 'अभंग व आरत्या',
     storiesTitle: 'अध्यात्मिक गोष्टी व कथा',
@@ -53,6 +56,7 @@ const CONTENT = {
     tryThese: 'Suggested Queries:',
     searchTab: 'Search',
     storiesTab: 'Stories',
+    saintsTab: 'Saints & Sages',
     libraryTab: 'Spiritual Library',
     musicTab: 'Music & Aartis',
     storiesTitle: 'Spiritual Stories & Tales',
@@ -361,6 +365,9 @@ export default function App() {
             <NavLink to="/stories" onClick={() => setIsMobileMenuOpen(false)} className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>
               {t.storiesTab}
             </NavLink>
+            <NavLink to="/saints" onClick={() => setIsMobileMenuOpen(false)} className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>
+              {t.saintsTab}
+            </NavLink>
             <NavLink to="/music" onClick={() => setIsMobileMenuOpen(false)} className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>
               {t.musicTab}
             </NavLink>
@@ -663,6 +670,9 @@ export default function App() {
 
             <Route path="/music" element={<MusicPage lang={lang} />} />
             
+            <Route path="/saints" element={<SaintsGallery allStories={allStories} />} />
+            <Route path="/saints/:saintId" element={<SaintDetail allStories={allStories} />} />
+
             <Route path="/admin" element={<AdminPanel />} />
 
             <Route path="/" element={<HomePage t={t} lang={lang} allVideos={allVideos} onSearch={handleSearch} />} />

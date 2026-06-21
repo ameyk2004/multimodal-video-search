@@ -1,7 +1,12 @@
 """
 DynamoDB Extractor Script.
-Reverse of dynamo_uploader.py — pulls all items from the DynamoDB content table
-and writes them back to data_pipeline/videos/enriched_metadata/ as <video_id>_meta.json files.
+Reverse of dynamo_uploader.py — pulls all items from the NEW DynamoDB
+single-table (sadhananandadeep-metadata) and writes them back to
+data_pipeline/videos/enriched_metadata/ as <video_id>_meta.json files.
+
+Access patterns:
+  • GSI1 (GSI1PK = "VIDEOS") → discover all video records & their top-level metadata
+  • GSI2 (video_id = <id>)   → fetch STORY# and MUSIC# items per video
 
 To run:
     source venv/bin/activate
@@ -13,15 +18,16 @@ import decimal
 import boto3
 import logging
 from botocore.exceptions import ClientError
+from boto3.dynamodb.conditions import Key
 from dotenv import load_dotenv
 
 load_dotenv()
 
-logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
-TABLE_NAME  = os.environ.get("DYNAMODB_TABLE", "sadhananandadeep-content")
+TABLE_NAME   = os.environ.get("DYNAMODB_TABLE", "sadhananandadeep-metadata")
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-OUTPUT_DIR  = os.path.join(PROJECT_ROOT, "data_pipeline", "enriched_metadata")
+OUTPUT_DIR   = os.path.join(PROJECT_ROOT, "data_pipeline", "videos", "enriched_metadata")
 
 
 class DecimalConverter(json.JSONEncoder):
@@ -32,22 +38,28 @@ class DecimalConverter(json.JSONEncoder):
         return super().default(obj)
 
 
-def scan_table(table) -> list[dict]:
-    """Full table scan with automatic pagination."""
-    items = []
-    response = table.scan()
-    items.extend(response.get("Items", []))
+def decimal_to_native(obj):
+    if isinstance(obj, decimal.Decimal):
+        return int(obj) if obj % 1 == 0 else float(obj)
+    if isinstance(obj, dict):
+        return {k: decimal_to_native(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [decimal_to_native(v) for v in obj]
+    return obj
 
-    while "LastEvaluatedKey" in response:
-        response = table.scan(ExclusiveStartKey=response["LastEvaluatedKey"])
-        items.extend(response.get("Items", []))
 
+def fetch_all_pages(query_fn, **kwargs) -> list:
+    resp  = query_fn(**kwargs)
+    items = list(resp.get("Items", []))
+    while "LastEvaluatedKey" in resp:
+        resp = query_fn(ExclusiveStartKey=resp["LastEvaluatedKey"], **kwargs)
+        items.extend(resp.get("Items", []))
     return items
 
 
 def main():
     region = os.environ.get("AWS_DEFAULT_REGION", os.environ.get("AWS_REGION", "us-east-1"))
-    print(f"Connecting to DynamoDB in region '{region}'...")
+    print(f"Connecting to DynamoDB table '{TABLE_NAME}' in region '{region}'...")
 
     dynamodb = boto3.resource("dynamodb", region_name=region)
     client   = boto3.client("dynamodb", region_name=region)
@@ -65,13 +77,49 @@ def main():
 
     table = dynamodb.Table(TABLE_NAME)
 
-    print(f"Scanning DynamoDB table '{TABLE_NAME}'...")
-    items = scan_table(table)
-    print(f"\n📊 Scan Results: {len(items)} total items found in DynamoDB.\n")
+    # ── 1. Fetch all videos via GSI1 ──────────────────────────────────────────
+    print(f"Querying GSI1 (VIDEOS) from '{TABLE_NAME}'...")
 
-    if not items:
+    def _query_videos(**kw):
+        return table.query(
+            IndexName="GSI1",
+            KeyConditionExpression=Key("GSI1PK").eq("VIDEOS"),
+            **kw,
+        )
+
+    video_items = fetch_all_pages(_query_videos)
+    print(f"\n📊 Found {len(video_items)} video records in DynamoDB.\n")
+
+    if not video_items:
         print("Nothing to extract. Exiting.")
         return
+
+    # ── 2. Fetch stories & music per video via GSI2 ───────────────────────────
+    print("Fetching stories & music segments per video via GSI2...")
+    dynamo_stories: dict = {}
+    dynamo_music:   dict = {}
+
+    for vi in video_items:
+        vid = vi.get("video_id")
+        if not vid:
+            continue
+
+        def _query_gsi2(vid=vid, **kw):
+            return table.query(
+                IndexName="GSI2",
+                KeyConditionExpression=Key("video_id").eq(vid),
+                **kw,
+            )
+
+        children = fetch_all_pages(_query_gsi2)
+        dynamo_stories[vid] = [
+            {k: decimal_to_native(v) for k, v in i.items()}
+            for i in children if i.get("SK", "").startswith("STORY#")
+        ]
+        dynamo_music[vid] = [
+            {k: decimal_to_native(v) for k, v in i.items()}
+            for i in children if i.get("SK", "").startswith("MUSIC#")
+        ]
 
     # ── Overwrite flag ────────────────────────────────────────────────────────
     try:
@@ -95,7 +143,7 @@ def main():
     skipped = 0
     errors  = 0
 
-    for item in items:
+    for item in video_items:
         video_id = item.get("video_id")
         if not video_id:
             logging.warning("Item has no video_id — skipping: %s", item)
@@ -109,12 +157,23 @@ def main():
             skipped += 1
             continue
 
+        # Reconstruct the flat format expected by the local pipeline
+        native_item = decimal_to_native(dict(item))
+        native_item["stories"]          = dynamo_stories.get(video_id, [])
+        native_item["musical_segments"] = dynamo_music.get(video_id, [])
+
+        # Strip internal DynamoDB keys from the output
+        for internal_key in ("PK", "SK", "GSI1PK", "GSI1SK"):
+            native_item.pop(internal_key, None)
+
         try:
             with open(out_path, "w", encoding="utf-8") as f:
-                json.dump(dict(item), f, ensure_ascii=False, indent=2, cls=DecimalConverter)
+                json.dump(native_item, f, ensure_ascii=False, indent=2)
 
             action = "OVERWRITTEN" if os.path.exists(out_path) and overwrite else "SAVED"
-            print(f"  ✅ {action}: {video_id}_meta.json")
+            print(f"  ✅ {action}: {video_id}_meta.json  "
+                  f"(stories={len(native_item['stories'])}, "
+                  f"music={len(native_item['musical_segments'])})")
             saved += 1
 
         except Exception as e:
@@ -125,7 +184,7 @@ def main():
     print("\n" + "=" * 50)
     print("📥 EXTRACTION SUMMARY")
     print("=" * 50)
-    print(f"Total items in DynamoDB:   {len(items)}")
+    print(f"Total items in DynamoDB:   {len(video_items)}")
     print(f"Files saved / overwritten: {saved}")
     print(f"Files skipped (existing):  {skipped}")
     print(f"Errors:                    {errors}")

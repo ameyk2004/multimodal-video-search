@@ -80,59 +80,93 @@ def main():
     
     region = os.environ.get("AWS_DEFAULT_REGION", os.environ.get("AWS_REGION", "us-east-1"))
     dynamodb = boto3.resource('dynamodb', region_name=region)
-    table_name = os.environ.get("DYNAMODB_TABLE", "sadhananandadeep-content")
+    table_name = os.environ.get("DYNAMODB_TABLE", "sadhananandadeep-metadata")
     table = dynamodb.Table(table_name)
-    
-    print(f"Scanning DynamoDB table: {table_name}")
-    response = table.scan()
-    items = response.get('Items', [])
-    
-    while 'LastEvaluatedKey' in response:
-        response = table.scan(ExclusiveStartKey=response['LastEvaluatedKey'])
-        items.extend(response.get('Items', []))
-        
-    print(f"Found {len(items)} items in DynamoDB.")
+    from boto3.dynamodb.conditions import Key
+
+    print(f"Querying DynamoDB table (GSI1 VIDEOS): {table_name}")
+    # Fetch all video IDs via GSI1
+    resp = table.query(
+        IndexName='GSI1',
+        KeyConditionExpression=Key('GSI1PK').eq('VIDEOS'),
+        ProjectionExpression='video_id'
+    )
+    video_items = list(resp.get('Items', []))
+    while 'LastEvaluatedKey' in resp:
+        resp = table.query(
+            IndexName='GSI1',
+            KeyConditionExpression=Key('GSI1PK').eq('VIDEOS'),
+            ProjectionExpression='video_id',
+            ExclusiveStartKey=resp['LastEvaluatedKey']
+        )
+        video_items.extend(resp.get('Items', []))
+
+    print(f"Found {len(video_items)} videos in DynamoDB.")
     
     updated_videos = 0
     total_stories_updated = 0
     total_music_updated = 0
 
-    for item in items:
-        video_id = item.get("video_id")
+    for vi in video_items:
+        video_id = vi.get("video_id")
         if not video_id:
             continue
-            
-        stories = item.get("stories", [])
-        music = item.get("musical_segments", [])
-        
-        if not stories and not music:
-            continue
-            
+
         raw_path = os.path.join(raw_dir, f"{video_id}.json")
         if not os.path.exists(raw_path):
             print(f"Warning: Raw transcript not found locally for {video_id}. Skipping.")
             continue
-            
+
         with open(raw_path, "r", encoding="utf-8") as f:
             fragments = json.load(f)
-            
+
         full_text, char_to_time_map = _reconstruct_transcript(fragments)
-        
-        updated_s = _resolve_end_times(stories, full_text, char_to_time_map)
-        updated_m = _resolve_end_times(music, full_text, char_to_time_map)
-        
-        if updated_s or updated_m:
-            table.update_item(
-                Key={'video_id': video_id},
-                UpdateExpression="SET stories = :s, musical_segments = :m",
-                ExpressionAttributeValues={
-                    ':s': stories,
-                    ':m': music
-                }
+
+        # Fetch all STORY# and MUSIC# children for this video via GSI2
+        gsi2_resp = table.query(
+            IndexName='GSI2',
+            KeyConditionExpression=Key('video_id').eq(video_id)
+        )
+        children = list(gsi2_resp.get('Items', []))
+        while 'LastEvaluatedKey' in gsi2_resp:
+            gsi2_resp = table.query(
+                IndexName='GSI2',
+                KeyConditionExpression=Key('video_id').eq(video_id),
+                ExclusiveStartKey=gsi2_resp['LastEvaluatedKey']
             )
+            children.extend(gsi2_resp.get('Items', []))
+
+        stories = [i for i in children if i.get('SK', '').startswith('STORY#')]
+        music   = [i for i in children if i.get('SK', '').startswith('MUSIC#')]
+
+        if not stories and not music:
+            continue
+
+        updated_s = _resolve_end_times(stories, full_text, char_to_time_map)
+        updated_m = _resolve_end_times(music,   full_text, char_to_time_map)
+
+        if updated_s:
+            for s in stories:
+                if s.get('end_time_seconds'):
+                    table.update_item(
+                        Key={'PK': s['PK'], 'SK': s['SK']},
+                        UpdateExpression="SET end_time_seconds = :e",
+                        ExpressionAttributeValues={':e': s['end_time_seconds']}
+                    )
+            total_stories_updated += len(stories)
+
+        if updated_m:
+            for m in music:
+                if m.get('end_time_seconds'):
+                    table.update_item(
+                        Key={'PK': m['PK'], 'SK': m['SK']},
+                        UpdateExpression="SET end_time_seconds = :e",
+                        ExpressionAttributeValues={':e': m['end_time_seconds']}
+                    )
+            total_music_updated += len(music)
+
+        if updated_s or updated_m:
             updated_videos += 1
-            if updated_s: total_stories_updated += len(stories)
-            if updated_m: total_music_updated += len(music)
             print(f"Updated {video_id} in DynamoDB.")
 
     print(f"✅ Successfully updated {updated_videos} videos in DynamoDB.")

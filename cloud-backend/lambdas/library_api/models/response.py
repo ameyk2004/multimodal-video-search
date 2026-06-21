@@ -18,6 +18,7 @@ class VerseItem(BaseModel):
     source_or_author: Optional[str] = ""
 
 class StorySummary(BaseModel):
+    video_id: str = ""
     title: str
     title_english: Optional[str] = ""
     moral: Optional[str] = ""
@@ -73,3 +74,24 @@ class BookDetailResponse(BaseModel):
     questions: List[str] = Field(default_factory=list)
     key_learnings: List[str] = Field(default_factory=list)
     table_of_contents: list = Field(default_factory=list)
+
+# For GET /saints
+class SaintSummary(BaseModel):
+    name: str
+    quote: str = ""
+    imageUrl: str = ""
+
+class SaintsListResponse(BaseModel):
+    saints: List[SaintSummary]
+
+# For GET /saints/{saint_id}
+class SaintDetailResponse(BaseModel):
+    name: str
+    quote: str = ""
+    tradition: str = ""
+    era: str = ""
+    fullBio: str = ""
+    imageUrl: str = ""
+    learnings: List[str] = Field(default_factory=list)
+    stories: List[StorySummary] = Field(default_factory=list)
+    music: List[MusicalSegmentItem] = Field(default_factory=list)

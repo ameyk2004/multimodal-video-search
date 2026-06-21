@@ -1,0 +1,284 @@
+/* ── Saint Detail Page ──────────────────────────────────── */
+.saint-detail-page {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.back-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  align-self: flex-start;
+  transition: color 0.3s ease;
+}
+
+.back-btn:hover {
+  color: #fff;
+}
+
+/* ── Sanctum Hero ─────────────────────────────────────── */
+.sanctum-hero-container {
+  position: relative;
+  width: 100%;
+  height: 480px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+  background: var(--bg-mid);
+}
+
+.sanctum-hero-bg {
+  position: absolute;
+  inset: -20px; /* Bleed for parallax */
+  background-size: cover;
+  background-position: center;
+  filter: blur(8px) brightness(0.4);
+  z-index: 0;
+  transition: transform 0.1s linear, opacity 0.1s linear;
+}
+
+.sanctum-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(12,9,8,0.2) 0%, rgba(12,9,8,0.95) 100%);
+  z-index: 1;
+}
+
+/* Particles */
+.sanctum-particles {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(251, 191, 36, 0.4) 1px, transparent 1px),
+    radial-gradient(circle at 80% 20%, rgba(249, 115, 22, 0.4) 1.5px, transparent 1.5px),
+    radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
+  background-size: 100px 100px;
+  animation: floatUp 15s linear infinite;
+  opacity: 0.6;
+}
+
+@keyframes floatUp {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 -100px; }
+}
+
+.sanctum-hero-content {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.sanctum-portrait-ring {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  padding: 4px;
+  background: linear-gradient(135deg, var(--saffron), transparent, var(--gold-soft));
+  margin-bottom: 24px;
+  box-shadow: 0 0 40px rgba(249, 115, 22, 0.4);
+  animation: pulse-ring 4s infinite alternate;
+}
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 20px rgba(249, 115, 22, 0.2); }
+  100% { box-shadow: 0 0 50px rgba(249, 115, 22, 0.6); }
+}
+
+.sanctum-portrait {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #000;
+}
+
+.sanctum-title {
+  font-family: var(--font-dev);
+  font-size: 3rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 12px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+}
+
+.sanctum-meta {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.sanctum-tradition, .sanctum-era {
+  font-size: 14px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text-dim);
+}
+
+.sanctum-tradition {
+  color: var(--saffron);
+  border-color: rgba(249, 115, 22, 0.3);
+  background: rgba(249, 115, 22, 0.1);
+}
+
+.sanctum-quote {
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--text-dim);
+  max-width: 600px;
+}
+
+/* ── Tabs ─────────────────────────────────────────────── */
+.sanctum-tabs-wrapper {
+  position: sticky;
+  top: 76px;
+  z-index: 100;
+  background: rgba(12, 9, 8, 0.9);
+  backdrop-filter: blur(12px);
+  padding: 16px 0;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.sanctum-tabs {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+}
+
+.sanctum-tab {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 0;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.sanctum-tab:hover {
+  color: #fff;
+}
+
+.sanctum-tab.active {
+  color: var(--saffron);
+}
+
+.sanctum-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -17px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--saffron);
+  box-shadow: 0 -2px 10px var(--saffron);
+}
+
+/* ── Tab Content ──────────────────────────────────────── */
+.sanctum-content-area {
+  min-height: 400px;
+}
+
+.sanctum-tab-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Teachings Grid */
+.teachings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.teaching-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  padding: 24px;
+  border-radius: var(--radius);
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  transition: transform 0.3s ease;
+}
+
+.teaching-card:hover {
+  transform: translateY(-4px);
+  background: var(--glass-hover);
+}
+
+.teaching-icon {
+  font-size: 24px;
+}
+
+.teaching-card p {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: #fff;
+}
+
+/* Bio */
+.biography-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: var(--gold-soft);
+}
+
+.bio-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--text-dim);
+  background: var(--surface);
+  padding: 32px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--glass-border);
+}
+
+/* Stories List */
+.sanctum-stories-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--glass);
+  border-radius: var(--radius-lg);
+  border: 1px dashed rgba(255,255,255,0.1);
+  color: var(--text-dim);
+  font-size: 1.2rem;
+}

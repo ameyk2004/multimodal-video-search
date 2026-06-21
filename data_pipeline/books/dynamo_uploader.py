@@ -8,7 +8,7 @@ from botocore.exceptions import ClientError
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
-def upload_book_metadata(input_dir: str, table_name: str = "sadhananandadeep-content"):
+def upload_book_metadata(input_dir: str, table_name: str = "sadhananandadeep-metadata"):
     """
     Reads all JSON files in the input_dir and uploads them to the specified DynamoDB table.
     Ensures that type="book" is set and video_id is uniquely prefixed.
@@ -51,7 +51,12 @@ def upload_book_metadata(input_dir: str, table_name: str = "sadhananandadeep-con
                 # To coexist with videos, we prefix the ID
                 video_id = f"book_{book_name}"
                 
+                # Build the new-schema item: BOOK#<book_name> / METADATA
                 item = {
+                    "PK":      f"BOOK#{video_id}",
+                    "SK":      "METADATA",
+                    "GSI1PK": "BOOKS",
+                    "GSI1SK": "0",
                     "video_id": video_id,
                     "type": "book",
                     "title": book_name,
@@ -87,6 +92,6 @@ if __name__ == "__main__":
     base_dir = os.path.dirname(os.path.abspath(__file__))
     input_directory = os.path.join(base_dir, "books_enriched_metadata")
     
-    target_table = os.environ.get("DYNAMODB_TABLE", "sadhananandadeep-content")
+    target_table = os.environ.get("DYNAMODB_TABLE", "sadhananandadeep-metadata")
     
     upload_book_metadata(input_directory, target_table)

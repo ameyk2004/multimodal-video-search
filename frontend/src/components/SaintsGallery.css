@@ -1,0 +1,221 @@
+/* ── Saints Gallery Page ────────────────────────────────── */
+.saints-gallery-page {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+}
+
+/* ── Hero Section ─────────────────────────────────────── */
+.saints-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 20px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--glass-border);
+}
+
+.saints-hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+.mandala-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 600px;
+  height: 600px;
+  transform: translate(-50%, -50%);
+  opacity: 0.5;
+}
+
+.rotating-mandala {
+  width: 100%;
+  height: 100%;
+  animation: rotate-slow 60s linear infinite;
+}
+
+@keyframes rotate-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.saints-hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 600px;
+}
+
+.saints-hero-title {
+  font-family: var(--font-dev);
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #FFF, var(--saffron));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 4px 20px rgba(249, 115, 22, 0.3);
+}
+
+.saints-hero-subtitle {
+  font-size: 1.2rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+/* ── Filter Bar ───────────────────────────────────────── */
+.saints-filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: sticky;
+  top: 80px; /* Below app header */
+  z-index: 100;
+  background: rgba(12, 9, 8, 0.8);
+  backdrop-filter: blur(16px);
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+@media (min-width: 768px) {
+  .saints-filter-bar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.saints-search-wrapper {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+}
+
+.saints-search-wrapper .search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-dim);
+  opacity: 0.7;
+}
+
+.saints-search-input {
+  width: 100%;
+  padding: 14px 16px 14px 44px;
+  border-radius: 999px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.saints-search-input:focus {
+  outline: none;
+  border-color: var(--saffron);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
+}
+
+.saints-era-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.era-pill {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  color: var(--text-dim);
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.era-pill:hover {
+  background: var(--glass-hover);
+  color: #fff;
+}
+
+.era-pill.active {
+  background: var(--saffron);
+  border-color: var(--saffron);
+  color: #fff;
+  font-weight: 500;
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+}
+
+/* ── Grid ─────────────────────────────────────────────── */
+.saints-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 24px;
+}
+
+@media (min-width: 640px) {
+  .saints-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .saints-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .saints-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ── Empty State ──────────────────────────────────────── */
+.no-saints-found {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--glass);
+  border-radius: var(--radius-lg);
+  border: 1px dashed rgba(255,255,255,0.1);
+  color: var(--text-dim);
+}
+
+.no-saints-found p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.reset-saints-btn {
+  background: var(--saffron);
+  color: #fff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 999px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity 0.3s ease;
+}
+
+.reset-saints-btn:hover {
+  opacity: 0.9;
+}
